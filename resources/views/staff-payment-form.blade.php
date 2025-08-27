@@ -19,6 +19,7 @@
         rel="stylesheet" />
     <!-- css -->
     <link rel="stylesheet" href="{{ asset('./css/payment-approval-form.css') }}" />
+    <link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
 
     <!-- favicon -->
     <link rel="icon" href="{{ asset('./img/RCPL.png') }}" />
@@ -44,7 +45,7 @@
                                 </p>
                             </div>
 
-                            <a href="/stuff/stuff-profile" style="width: fit-content;">
+                            <a href="/staff/staff-profile" style="width: fit-content;">
                                 <img src="{{ asset('./img/user.png') }}" alt="Profile" class="profile-img" />
                             </a>
                         </div>
@@ -54,12 +55,14 @@
                     <div class="payment-body">
                         <div class="row">
                             <div class="col-lg-8">
-                                <div class="secure-badge">
-                                    <i class="fas fa-shield-alt me-2"></i>Secure Transaction
+                                <div class="secure-badge" style="font-size: 15px; text-transform: capitalize;">
+                                    <i class="fas fa-user me-2"></i>Name: {{ $user->name }} &nbsp;<i class="fas fa-shield-alt"></i> Code: {{ $user->staff_code }}
                                 </div>
                                 <h4 class="mb-4">Payment Approval Slip</h4>
 
-                                <form>
+                                <form method="POST" action="{{ route('staff.staff-payment-form.store') }}" enctype="multipart/form-data">
+                                    @csrf
+
                                     <div class="row mb-4">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -68,6 +71,15 @@
                                                     type="date"
                                                     class="form-control"
                                                     id="date"
+                                                    name="date"
+                                                    required />
+
+                                                <input
+                                                    type="hidden"
+                                                    class="form-control"
+                                                    id="user_id"
+                                                    name="user_id"
+                                                    value="{{ Auth::id() }}"
                                                     required />
                                             </div>
                                         </div>
@@ -78,99 +90,71 @@
                                             <div class="checkbox-group">
                                                 <h5 class="mb-3">Material Payments</h5>
                                                 <div class="form-check mb-2">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        id="materialPurchase" />
-                                                    <label
-                                                        class="form-check-label"
-                                                        for="materialPurchase">Material Purchase</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Material Purchase" id="materialPurchase">
+                                                    <label class="form-check-label" for="materialPurchase">Material Purchase</label>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        id="materialDuePayment" />
-                                                    <label
-                                                        class="form-check-label"
-                                                        for="materialDuePayment">Material Due Payment</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Material Due Payment" id="materialDuePayment">
+                                                    <label class="form-check-label" for="materialDuePayment">Material Due Payment</label>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        id="advanceMaterials" />
-                                                    <label
-                                                        class="form-check-label"
-                                                        for="advanceMaterials">Advance for Materials</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Advance for Materials" id="advanceMaterials">
+                                                    <label class="form-check-label" for="advanceMaterials">Advance for Materials</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        id="toolsPurchase" />
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Tools & Machinery Purchase" id="toolsPurchase">
                                                     <label class="form-check-label" for="toolsPurchase">Tools & Machinery Purchase</label>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
                                             <div class="checkbox-group">
                                                 <h5 class="mb-3">Labor & Other Payments</h5>
                                                 <div class="form-check mb-2">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        id="labourPayment" />
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Labour Cont. Payment" id="labourPayment">
                                                     <label class="form-check-label" for="labourPayment">Labour Cont. Payment</label>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        id="labourDuePayment" />
-                                                    <label
-                                                        class="form-check-label"
-                                                        for="labourDuePayment">Labour Cont. Due Payment</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Labour Cont. Due Payment" id="labourDuePayment">
+                                                    <label class="form-check-label" for="labourDuePayment">Labour Cont. Due Payment</label>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        id="advanceTools" />
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Advance for Tools" id="advanceTools">
                                                     <label class="form-check-label" for="advanceTools">Advance for Tools</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        id="establishment" />
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Establish (room rent, cooking utensils)" id="establishment">
                                                     <label class="form-check-label" for="establishment">Establish (room rent, cooking utensils)</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
+
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="vendorName" class="form-label">Vendor Name
+                                                <label for="vendor_name" class="form-label">Vendor Name
                                                     <span class="text-danger">*</span></label>
                                                 <input
                                                     type="text"
                                                     class="form-control"
-                                                    id="vendorName"
+                                                    id="vendor_name"
+                                                    name="vendor_name"
                                                     placeholder="Enter vendor name"
                                                     required />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="vendorCode" class="form-label">Vendor Code
+                                                <label for="vendor_code" class="form-label">Vendor Code
                                                     <span class="text-danger">*</span></label>
                                                 <input
                                                     type="text"
                                                     class="form-control"
-                                                    id="vendorCode"
+                                                    id="vendor_code"
+                                                    name="vendor_code"
                                                     placeholder="Enter vendor code"
                                                     required />
                                             </div>
@@ -180,11 +164,12 @@
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="siteName" class="form-label">Site Name <span class="text-danger">*</span></label>
+                                                <label for="site_name" class="form-label">Site Name <span class="text-danger">*</span></label>
                                                 <input
                                                     type="text"
                                                     class="form-control"
-                                                    id="siteName"
+                                                    id="site_name"
+                                                    name="site_name"
                                                     placeholder="Enter site name"
                                                     required />
                                             </div>
@@ -195,27 +180,30 @@
                                                 <label for="amount" class="form-label">Amount (₹)
                                                     <span class="text-danger">*</span></label>
                                                 <input
-                                                    type="number"
+                                                    type="text"
                                                     class="form-control"
                                                     id="amount"
+                                                    name="amount"
                                                     placeholder="Enter amount"
                                                     required />
                                             </div>
                                         </div>
                                         <div class="col-md-12 mt-2">
-                                            <label class="form-label">Amount in Words</label>
+                                            <label class="form-label" for="amount_in_words">Amount in Words
+                                                <span class="text-danger">*</span></label>
                                             <div class="amount-in-words" id="amountWords">
                                                 Amount will appear here...
                                             </div>
+                                            <input type="hidden" class="form-control" id="amount_in_words" name="amount_in_words" placeholder="Enter amount in words" readonly>
                                         </div>
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <label for="itemDescription" class="form-label">Item Description
-                                            <span class="text-danger">*</span></label>
+                                        <label for="item_description" class="form-label">Item Description</label>
                                         <textarea
                                             class="form-control"
-                                            id="itemDescription"
+                                            id="item_description"
+                                            name="item_description"
                                             rows="3"
                                             placeholder="Enter item description"
                                             required></textarea>
@@ -225,23 +213,25 @@
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="accountNumber" class="form-label">Account Number
+                                                <label for="party_account_number" class="form-label">Account Number
                                                     <span class="text-danger">*</span></label>
                                                 <input
-                                                    type="text"
+                                                    type="number"
                                                     class="form-control"
-                                                    id="accountNumber"
+                                                    id="party_account_number"
+                                                    name="party_account_number"
                                                     placeholder="Enter account number"
                                                     required />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="ifscCode" class="form-label">IFSC Code <span class="text-danger">*</span></label>
+                                                <label for="party_ifsc_code" class="form-label">IFSC Code <span class="text-danger">*</span></label>
                                                 <input
                                                     type="text"
                                                     class="form-control"
-                                                    id="ifscCode"
+                                                    id="party_ifsc_code"
+                                                    name="party_ifsc_code"
                                                     placeholder="Enter IFSC code"
                                                     required />
                                             </div>
@@ -251,22 +241,24 @@
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="bankName" class="form-label">Bank Name <span class="text-danger">*</span></label>
+                                                <label for="party_bank_name" class="form-label">Bank Name <span class="text-danger">*</span></label>
                                                 <input
                                                     type="text"
                                                     class="form-control"
-                                                    id="bankName"
+                                                    id="party_bank_name"
+                                                    name="party_bank_name"
                                                     placeholder="Enter bank name"
                                                     required />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="branch" class="form-label">Branch <span class="text-danger">*</span></label>
+                                                <label for="party_bank_branch_name" class="form-label">Branch <span class="text-danger">*</span></label>
                                                 <input
                                                     type="text"
                                                     class="form-control"
-                                                    id="branch"
+                                                    id="party_bank_branch_name"
+                                                    name="party_bank_branch_name"
                                                     placeholder="Enter branch"
                                                     required />
                                             </div>
@@ -371,100 +363,91 @@
         </div>
     </div>
 
+    @if (session('success'))
+    <div id="successPopup" class="custom-success-popup">
+        {{ session('success') }}
+    </div>
+    @endif
+
+    @if (session('error'))
+    <div id="errorPopup" class="custom-error-popup">
+        {{ session('error') }}
+    </div>
+    @endif
+
     <!-- Bootstrap 5 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Function to convert numbers to words
-        function numberToWords(number) {
-            const units = [
-                "",
-                "One",
-                "Two",
-                "Three",
-                "Four",
-                "Five",
-                "Six",
-                "Seven",
-                "Eight",
-                "Nine",
+        function numberToWords(num) {
+            const a = [
+                '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six',
+                'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve',
+                'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen',
+                'Seventeen', 'Eighteen', 'Nineteen'
             ];
-            const teens = [
-                "Ten",
-                "Eleven",
-                "Twelve",
-                "Thirteen",
-                "Fourteen",
-                "Fifteen",
-                "Sixteen",
-                "Seventeen",
-                "Eighteen",
-                "Nineteen",
-            ];
-            const tens = [
-                "",
-                "Ten",
-                "Twenty",
-                "Thirty",
-                "Forty",
-                "Fifty",
-                "Sixty",
-                "Seventy",
-                "Eighty",
-                "Ninety",
+            const b = [
+                '', '', 'Twenty', 'Thirty', 'Forty', 'Fifty',
+                'Sixty', 'Seventy', 'Eighty', 'Ninety'
             ];
 
-            if (number === 0) return "Zero";
-
-            let words = "";
-
-            // Handle lakhs
-            if (number >= 100000) {
-                words += numberToWords(Math.floor(number / 100000)) + " Lakh ";
-                number %= 100000;
+            function inWords(num) {
+                if ((num = num.toString()).length > 9) return 'Overflow';
+                let n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+                if (!n) return;
+                let str = '';
+                str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + ' Crore ' : '';
+                str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + ' Lakh ' : '';
+                str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + ' Thousand ' : '';
+                str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + ' Hundred ' : '';
+                str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + ' ' : '';
+                return str.trim();
             }
 
-            // Handle thousands
-            if (number >= 1000) {
-                words += numberToWords(Math.floor(number / 1000)) + " Thousand ";
-                number %= 1000;
+            let parts = num.toString().split(".");
+            let rupees = parseInt(parts[0]) || 0;
+            let paise = parseInt(parts[1]) || 0;
+
+            let words = '';
+            if (rupees > 0) {
+                words += inWords(rupees) + ' Rupees';
+            }
+            if (paise > 0) {
+                words += (words ? ' and ' : '') + inWords(paise) + ' Paisa';
             }
 
-            // Handle hundreds
-            if (number >= 100) {
-                words += units[Math.floor(number / 100)] + " Hundred ";
-                number %= 100;
-            }
-
-            // Handle tens and units
-            if (number > 0) {
-                if (number < 10) {
-                    words += units[number];
-                } else if (number < 20) {
-                    words += teens[number - 10];
-                } else {
-                    words += tens[Math.floor(number / 10)];
-                    if (number % 10 > 0) {
-                        words += " " + units[number % 10];
-                    }
-                }
-            }
-
-            return words.trim() + " Rupees Only";
+            return words ? words + ' Only' : '';
         }
 
-        // Update amount in words when amount changes
+        // Update amount in words when typing
         document.getElementById("amount").addEventListener("input", function() {
-            const amount = parseFloat(this.value);
+            const amount = this.value;
             const amountWords = document.getElementById("amountWords");
+            const wordsInput = document.getElementById("amount_in_words");
 
-            if (!isNaN(amount) && amount >= 0) {
-                amountWords.textContent = numberToWords(amount);
+            if (amount && !isNaN(amount)) {
+                let words = numberToWords(amount);
+                amountWords.textContent = words;
+                wordsInput.value = words; // also set in input field
             } else {
                 amountWords.textContent = "Amount will appear here...";
+                wordsInput.value = "";
             }
         });
     </script>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successPopup = document.getElementById('successPopup');
+            const errorPopup = document.getElementById('errorPopup');
+
+            if (successPopup) setTimeout(() => successPopup.remove(), 4000);
+            if (errorPopup) setTimeout(() => errorPopup.remove(), 4000);
+        });
+    </script>
+
 </body>
 
 </html>

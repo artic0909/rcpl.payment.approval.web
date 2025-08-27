@@ -52,8 +52,12 @@
                                         </div>
                                     </div>
 
+                                    <div class="mb-3 form-check">
+                                        <button type="button" id="showEmail" class="float-end btn btn-login">Show Email</button>
+                                    </div>
+
                                     <div class="mb-3">
-                                        <label for="email" class="form-label">Register Email<span style="color: red">*</span></label>
+                                        <label for="email" class="form-label">Registered Email<span style="color: red">*</span></label>
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                             <input
@@ -69,7 +73,19 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="password" class="form-label">New Password</label>
+                                        <label for="email" class="form-label">Enter OTP<span style="color: red">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-shield-alt"></i></span>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id=""
+                                                placeholder="Enter your otp" />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">New Password<span style="color: red">*</span></label>
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                                             <input
@@ -87,7 +103,7 @@
                                     <div class="text-center">
                                         <p class="mb-0">
                                             New to our payment system?
-                                            <a href="/stuff-register">Register</a>
+                                            <a href="/staff-register">Register</a>
                                         </p>
                                     </div>
                                 </form>

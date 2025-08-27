@@ -21,7 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'stuff_code',
+        'staff_code',
         'mobile',
         'password',
     ];
@@ -59,5 +59,13 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    /**
+     * Get the user's payment approvals
+     */
+    public function paymentApprovals()
+    {
+        return $this->hasMany(PaymentApproval::class);
     }
 }

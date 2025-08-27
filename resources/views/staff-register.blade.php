@@ -20,6 +20,7 @@
 
   <!-- css -->
   <link rel="stylesheet" href="{{ asset('./css/register.css') }}" />
+  <link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
 
   <!-- favicon -->
   <link rel="icon" href="{{ asset('./img/RCPL.png') }}" />
@@ -248,6 +249,36 @@
       </div>
     </div>
   </div>
+
+  @if (session('success'))
+  <div id="successPopup" class="custom-success-popup">
+    {{ session('success') }}
+  </div>
+  @endif
+
+  @if (session('error'))
+  <div id="errorPopup" class="custom-error-popup">
+    {{ session('error') }}
+  </div>
+  @endif
+
+  <!-- {{-- For validation errors (from withErrors) --}} -->
+  @if ($errors->has('error'))
+  <div id="errorPopup" class="custom-error-popup">
+    {{ $errors->first('error') }}
+  </div>
+  @endif
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const successPopup = document.getElementById('successPopup');
+      const errorPopup = document.getElementById('errorPopup');
+
+      if (successPopup) setTimeout(() => successPopup.remove(), 4000);
+      if (errorPopup) setTimeout(() => errorPopup.remove(), 4000);
+    });
+  </script>
 
   <!-- Bootstrap 5 JS Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
