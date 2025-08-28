@@ -56,77 +56,23 @@
                 </td>
 
                 <td class="td d-flex flex-column gap-2">
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal1{{ $payment->id }}" data-bs-backdrop="static">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#remark{{ $payment->id }}" data-bs-backdrop="static">
                         Remark
                     </button>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal1{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <form class="modal-content" action="{{ route('admin.add.remarks', $payment->id) }}" method="POST">
-                                @csrf
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Remarks</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <textarea name="remarks" class="form-control" id="remarks" rows="3"></textarea>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
 
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal11{{ $payment->id }}" data-bs-backdrop="static">
+
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#approve{{ $payment->id }}" data-bs-backdrop="static">
                         Approved
                     </button>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal11{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel11" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <form class="modal-content" action="{{ route('admin.approved.status', $payment->id) }}" method="POST">
-                                @csrf
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Approved Confirmation</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <h4>Are you sure you want to approve this payment request?</h4>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Approved</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
 
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal111{{ $payment->id }}" data-bs-backdrop="static">
+
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reject{{ $payment->id }}" data-bs-backdrop="static">
                         Rejected
                     </button>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal111{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel111" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <form class="modal-content" action="{{ route('admin.rejected.status', $payment->id) }}" method="POST">
-                                @csrf
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Rejected Confirmation</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <h4>Are you sure you want to reject this payment request?</h4>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Rejected</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+
                 </td>
 
                 <td class="td">
@@ -154,28 +100,12 @@
                 </td>
 
                 <td class="td">
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $payment->id }}" data-bs-backdrop="static">
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#desc{{ $payment->id }}" data-bs-backdrop="static">
                         View
                     </button>
                 </td>
 
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Item Description</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                {{ $payment->item_description }}
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
 
 
                 <td class="td">₹ {{ number_format($payment->amount, 2) }}</td>
@@ -206,6 +136,95 @@
         </tbody>
 
     </table>
+
+    <!-- Modal -->
+    @foreach($paymentRequestDetails as $payment)
+    <div class="modal fade" id="desc{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="desc" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="desc">Item Description</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ $payment->item_description }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
+
+
+    <!-- Modal -->
+    @foreach($paymentRequestDetails as $payment)
+    <div class="modal fade" id="reject{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="reject" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" action="{{ route('admin.rejected.status', $payment->id) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="reject">Rejected Confirmation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4>Are you sure you want to reject this payment request?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Rejected</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    @endforeach
+
+
+    <!-- Modal -->
+    @foreach($paymentRequestDetails as $payment)
+    <div class="modal fade" id="approve{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="approve" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" action="{{ route('admin.approved.status', $payment->id) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="approve">Approved Confirmation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4>Are you sure you want to approve this payment request?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Approved</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    @endforeach
+
+
+    <!-- Modal -->
+    @foreach($paymentRequestDetails as $payment)
+    <div class="modal fade" id="remark{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="remark" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" action="{{ route('admin.add.remarks', $payment->id) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="remark">Add Remarks</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea name="remarks" class="form-control" id="remarks" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    @endforeach
 </body>
 
 </html>
