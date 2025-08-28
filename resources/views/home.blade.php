@@ -60,7 +60,10 @@
                         name="staff_code"
                         placeholder="Enter your staff code"
                         value="{{ old('staff_code') }}"
-                        autocomplete="off" />
+                        autocomplete="off"
+                        autocapitalize="off"
+                        spellcheck="false" />
+
                     </div>
                   </div>
 
