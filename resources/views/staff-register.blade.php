@@ -123,6 +123,7 @@
                           placeholder="Enter password"
                           required />
                       </div>
+                      <small>Password must be at least <span style="color: red;">8 characters</span></small>
                     </div>
 
                     <div class="mb-3">
