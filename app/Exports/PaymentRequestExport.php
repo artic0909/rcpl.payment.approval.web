@@ -9,6 +9,8 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 class PaymentRequestExport implements FromCollection, WithHeadings, WithMapping
 {
+    private $serial = 0;
+
     public function collection()
     {
         return PaymentApproval::with('user')->orderBy('id', 'desc')->get();
@@ -16,6 +18,8 @@ class PaymentRequestExport implements FromCollection, WithHeadings, WithMapping
 
     public function map($item): array
     {
+       
+        $this->serial++;
 
         $requestFor = $item->request_for;
         if (is_array($requestFor)) {
@@ -24,13 +28,12 @@ class PaymentRequestExport implements FromCollection, WithHeadings, WithMapping
             $requestFor = implode(", ", json_decode($requestFor, true));
         }
 
-
         $staffDetails = $item->user
             ? "Name: {$item->user->name}, Code: {$item->user->staff_code}, Email: {$item->user->email}, Mobile: {$item->user->mobile}"
             : 'N/A';
 
         return [
-            $item->id,
+            $this->serial,
             $item->date ? \Carbon\Carbon::parse($item->date)->format('d M Y') : '',
             $requestFor,
             '₹ ' . number_format($item->amount, 2),
@@ -50,7 +53,6 @@ class PaymentRequestExport implements FromCollection, WithHeadings, WithMapping
             'Staff Details',
         ];
     }
-
 
     private function isJson($string): bool
     {
