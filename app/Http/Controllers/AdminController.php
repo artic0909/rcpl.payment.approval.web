@@ -115,10 +115,11 @@ class AdminController extends Controller
                         'Material Due Payment',
                         'Advance for Materials',
                         'Tools & Machinery Purchase',
+                        'Plant Machinery Rent',
                         'Labour Cont. Payment',
                         'Labour Cont. Due Payment',
                         'Advance for Tools',
-                        'Establish'
+                        'Establish (room rent, cooking utensils)',
                     ];
 
                     foreach ($options as $option) {
@@ -148,5 +149,43 @@ class AdminController extends Controller
     public function exportInExcel()
     {
         return Excel::download(new PaymentRequestExport, 'payment_requests.xlsx');
+    }
+
+    public function addRemarks(Request $request, $id)
+    {
+        $request->validate([
+            'remarks' => 'nullable|string',
+        ]);
+
+        $payment = PaymentApproval::findOrFail($id);
+
+        $payment->update([
+            'remarks' => $request->remarks,
+            'status'  => 'remarked',
+        ]);
+
+        return redirect()->back()->with('success', 'Remarks added successfully.');
+    }
+
+    public function approvedStatus($id)
+    {
+        $payment = PaymentApproval::findOrFail($id);
+
+        $payment->update([
+            'status' => 'approved',
+        ]);
+
+        return redirect()->back()->with('success', 'Payment request approved successfully.');
+    }
+
+    public function rejectedStatus($id)
+    {
+        $payment = PaymentApproval::findOrFail($id);
+
+        $payment->update([
+            'status' => 'rejected',
+        ]);
+
+        return redirect()->back()->with('success', 'Payment request rejected successfully.');
     }
 }

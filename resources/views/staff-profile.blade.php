@@ -72,21 +72,42 @@
                                             <tr>
                                                 <th class="th">SL.</th>
                                                 <th class="th">Action</th>
+                                                <th class="th">Status</th>
                                                 <th class="th">Date</th>
                                                 <th class="th">Request For</th>
                                                 <th class="th">Amount</th>
                                                 <th class="th">Vendor Details</th>
+                                                <th class="th">Remarks</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @forelse($paymentRequestDetails as $payment)
                                             <tr>
                                                 <td class="td">{{ $loop->iteration }}</td>
-                                                <td class="td">
+                                                <td class="td" style="display: flex; flex-direction: column; gap: 5px;">
                                                     <a href="{{ route('staff.payment.pdf', $payment->id) }}" class="btn btn-download" style="font-size: 12px;">
-                                                        <i class="fas fa-download me-1"></i> PDF
+                                                        <i class="fas fa-download me-1"></i>
+                                                    </a>
+                                                    <a href="{{ route('stuff.stuff-payment-form.edit', $payment->id) }}" class="btn btn-update" style="font-size: 12px;">
+                                                        <i class="fas fa-pencil me-1"></i>
+                                                    </a>
+                                                    <a href="{{ route('stuff.stuff-payment-form.delete', $payment->id) }}" class="btn btn-delete" style="font-size: 12px;">
+                                                        <i class="fas fa-trash me-1"></i>
                                                     </a>
                                                 </td>
+
+                                                <td class="td">
+                                                    @if($payment->status == 'pending')
+                                                    <p class="btn btn-update" style="color: black;">Pending</p>
+                                                    @elseif($payment->status == 'approved')
+                                                    <p class="btn btn-download" style="color: white;">Approved</p>
+                                                    @elseif($payment->status == 'rejected')
+                                                    <p class="btn btn-delete" style="color: white;">Rejected</p>
+                                                    @elseif($payment->status == 'remarked')
+                                                    <p class="btn btn-status" style="color: white;">Remarked</p>
+                                                    @endif
+                                                </td>
+
                                                 <td class="td">{{ $payment->date?->format('d M Y') }}</td>
                                                 <td class="td">
                                                     @if(!empty($payment->request_for))
@@ -104,6 +125,14 @@
                                                 <td class="td">
                                                     <p class="m-0">{{ $payment->vendor_name }}</p>
                                                     <p class="m-0">Code: {{ $payment->vendor_code }}</p>
+                                                </td>
+
+                                                <td class="td">
+                                                    @if(!empty($payment->remarks))
+                                                    <p class="m-0">{{ $payment->remarks }}</p>
+                                                    @else
+                                                    <span>No Remarks Found</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @empty

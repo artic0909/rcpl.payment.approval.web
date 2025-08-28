@@ -18,7 +18,6 @@ class PaymentRequestExport implements FromCollection, WithHeadings, WithMapping
 
     public function map($item): array
     {
-       
         $this->serial++;
 
         $requestFor = $item->request_for;
@@ -35,8 +34,11 @@ class PaymentRequestExport implements FromCollection, WithHeadings, WithMapping
         return [
             $this->serial,
             $item->date ? \Carbon\Carbon::parse($item->date)->format('d M Y') : '',
+            ucfirst($item->status ?? 'pending'),  
             $requestFor,
+            $item->item_description ?? '',        
             '₹ ' . number_format($item->amount, 2),
+            $item->remarks ?? '',               
             "Vendor Name: {$item->vendor_name}, Code: {$item->vendor_code}",
             $staffDetails,
         ];
@@ -47,8 +49,11 @@ class PaymentRequestExport implements FromCollection, WithHeadings, WithMapping
         return [
             'SL',
             'Date',
+            'Status',
             'Request For',
+            'Item Description',
             'Amount',
+            'Remarks',
             'Vendor Details',
             'Staff Details',
         ];

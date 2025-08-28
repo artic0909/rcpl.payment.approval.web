@@ -15,4 +15,8 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/logout', [AdminController::class, 'adminLogout'])->name('admin.logout');
     Route::get('/admin/payment-pdf/{id}', [AdminController::class, 'paymentPdfDownload'])->name('admin.payment.pdf');
     Route::get('/admin/export/payment-requests', [AdminController::class, 'exportInExcel'])->name('export.payment.requests');
+
+    Route::post('/admin/add-remarks/{id}', [AdminController::class, 'addRemarks'])->name('admin.add.remarks');
+    Route::post('/admin/approved/{id}', [AdminController::class, 'approvedStatus'])->name('admin.approved.status');
+    Route::post('/admin/rejected/{id}', [AdminController::class, 'rejectedStatus'])->name('admin.rejected.status');
 });

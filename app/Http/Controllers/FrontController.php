@@ -106,9 +106,7 @@ class FrontController extends Controller
         return view('staff-forget-password');
     }
 
-    public function staffForgetPassword(){
-        
-    }
+    public function staffForgetPassword() {}
 
     public function staffPaymentFormView()
     {
@@ -155,6 +153,64 @@ class FrontController extends Controller
         return redirect()->back()->with('success', 'Payment approval form submitted successfully!');
     }
 
+    // Show edit form
+    public function staffPaymentFormEdit($id)
+    {
+        $user = Auth::guard('staff')->user();
+        $payment = PaymentApproval::with('user')->findOrFail($id);
+        return view('staff-edit-payment-form', compact('payment', 'user'));
+    }
+
+    // Update payment
+    public function staffPaymentFormUpdate(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'date' => 'required|date',
+            'request_for' => 'required|array',
+            'vendor_name' => 'required|string|max:255',
+            'vendor_code' => 'nullable|string|max:100',
+            'site_name' => 'nullable|string|max:255',
+            'amount' => 'required|numeric|min:0',
+            'amount_in_words' => 'required|string|max:500',
+            'item_description' => 'nullable|string',
+            'party_account_number' => 'required|string|max:50',
+            'party_ifsc_code' => 'required|string|max:20',
+            'party_bank_name' => 'required|string|max:255',
+            'party_bank_branch_name' => 'nullable|string|max:255',
+        ]);
+
+        $payment = PaymentApproval::findOrFail($id);
+
+        $payment->update([
+            'user_id' => $validated['user_id'],
+            'date' => $validated['date'],
+            'request_for' => $validated['request_for'],
+            'vendor_name' => $validated['vendor_name'],
+            'vendor_code' => $validated['vendor_code'] ?? null,
+            'site_name' => $validated['site_name'] ?? null,
+            'amount' => $validated['amount'],
+            'amount_in_words' => $validated['amount_in_words'],
+            'item_description' => $validated['item_description'] ?? null,
+            'party_account_number' => $validated['party_account_number'],
+            'party_ifsc_code' => $validated['party_ifsc_code'],
+            'party_bank_name' => $validated['party_bank_name'],
+            'party_bank_branch_name' => $validated['party_bank_branch_name'] ?? null,
+        ]);
+
+        return redirect()->route('staff.staff-profile')->with('success', 'Payment updated successfully!');
+    }
+
+    // Delete payment
+    public function staffPaymentFormDelete($id)
+    {
+        $payment = PaymentApproval::findOrFail($id);
+        $payment->delete();
+
+        return redirect()->route('staff.staff-profile')->with('success', 'Payment deleted successfully!');
+    }
+
+
 
     public function staffProfileView()
     {
@@ -166,6 +222,7 @@ class FrontController extends Controller
 
         return view('staff-profile', compact('user', 'paymentRequestDetails'));
     }
+
 
     public function paymentPdfDownload($id)
     {
@@ -186,6 +243,7 @@ class FrontController extends Controller
                         'Material Due Payment',
                         'Advance for Materials',
                         'Tools & Machinery Purchase',
+                        'Plant Machinery Rent',
                         'Labour Cont. Payment',
                         'Labour Cont. Due Payment',
                         'Advance for Tools',

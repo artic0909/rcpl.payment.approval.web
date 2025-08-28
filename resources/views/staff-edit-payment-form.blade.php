@@ -60,7 +60,7 @@
                                 </div>
                                 <h4 class="mb-4">Payment Approval Slip</h4>
 
-                                <form method="POST" action="{{ route('staff.staff-payment-form.store') }}" enctype="multipart/form-data">
+                                <form method="POST" action="{{ route('stuff.stuff-payment-form.update', $payment->id) }}" enctype="multipart/form-data">
                                     @csrf
 
                                     <div class="row mb-4">
@@ -72,6 +72,7 @@
                                                     class="form-control"
                                                     id="date"
                                                     name="date"
+                                                    value="{{ old('date', \Carbon\Carbon::parse($payment->date)->format('Y-m-d')) }}"
                                                     required />
 
                                                 <input
@@ -90,23 +91,29 @@
                                             <div class="checkbox-group">
                                                 <h5 class="mb-3">Material Payments</h5>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Material Purchase" id="materialPurchase">
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Material Purchase" id="materialPurchase"
+                                                        {{ in_array('Material Purchase', (array) $payment->request_for) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="materialPurchase">Material Purchase</label>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Material Due Payment" id="materialDuePayment">
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Material Due Payment" id="materialDuePayment"
+                                                        {{ in_array('Material Due Payment', (array) $payment->request_for) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="materialDuePayment">Material Due Payment</label>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Advance for Materials" id="advanceMaterials">
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Advance for Materials" id="advanceMaterials"
+                                                        {{ in_array('Advance for Materials', (array) $payment->request_for) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="advanceMaterials">Advance for Materials</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Tools & Machinery Purchase" id="toolsPurchase">
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Tools & Machinery Purchase" id="toolsPurchase"
+                                                        {{ in_array('Tools & Machinery Purchase', (array) $payment->request_for) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="toolsPurchase">Tools & Machinery Purchase</label>
                                                 </div>
+
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Plant Machinery Rent" id="plantMachineryRent">
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Plant Machinery Rent" id="plantMachineryRent"
+                                                        {{ in_array('Plant Machinery Rent', (array) $payment->request_for) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="plantMachineryRent">Plant Machinery Rent</label>
                                                 </div>
                                             </div>
@@ -116,50 +123,51 @@
                                             <div class="checkbox-group">
                                                 <h5 class="mb-3">Labor & Other Payments</h5>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Labour Cont. Payment" id="labourPayment">
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Labour Cont. Payment" id="labourPayment"
+                                                        {{ in_array('Labour Cont. Payment', (array) $payment->request_for) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="labourPayment">Labour Cont. Payment</label>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Labour Cont. Due Payment" id="labourDuePayment">
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Labour Cont. Due Payment" id="labourDuePayment"
+                                                        {{ in_array('Labour Cont. Due Payment', (array) $payment->request_for) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="labourDuePayment">Labour Cont. Due Payment</label>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Advance for Tools" id="advanceTools">
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Advance for Tools" id="advanceTools"
+                                                        {{ in_array('Advance for Tools', (array) $payment->request_for) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="advanceTools">Advance for Tools</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Establish (room rent, cooking utensils)" id="establishment">
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Establish (room rent, cooking utensils)" id="establishment"
+                                                        {{ in_array('Establish (room rent, cooking utensils)', (array) $payment->request_for) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="establishment">Establish (room rent, cooking utensils)</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="vendor_name" class="form-label">Vendor Name
-                                                    <span class="text-danger">*</span></label>
+                                                <label for="vendor_name" class="form-label">Vendor Name <span class="text-danger">*</span></label>
                                                 <input
                                                     type="text"
                                                     class="form-control"
                                                     id="vendor_name"
                                                     name="vendor_name"
-                                                    placeholder="Enter vendor name"
+                                                    value="{{ old('vendor_name', $payment->vendor_name) }}"
                                                     required />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="vendor_code" class="form-label">Vendor Code
-                                                    <span class="text-danger">*</span></label>
+                                                <label for="vendor_code" class="form-label">Vendor Code <span class="text-danger">*</span></label>
                                                 <input
                                                     type="text"
                                                     class="form-control"
                                                     id="vendor_code"
                                                     name="vendor_code"
-                                                    placeholder="Enter vendor code"
+                                                    value="{{ old('vendor_code', $payment->vendor_code) }}"
                                                     required />
                                             </div>
                                         </div>
@@ -174,31 +182,30 @@
                                                     class="form-control"
                                                     id="site_name"
                                                     name="site_name"
-                                                    placeholder="Enter site name"
+                                                    value="{{ old('site_name', $payment->site_name) }}"
                                                     required />
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="amount" class="form-label">Amount (₹)
-                                                    <span class="text-danger">*</span></label>
+                                                <label for="amount" class="form-label">Amount (₹) <span class="text-danger">*</span></label>
                                                 <input
                                                     type="text"
                                                     class="form-control"
                                                     id="amount"
                                                     name="amount"
-                                                    placeholder="Enter amount"
+                                                    value="{{ old('amount', $payment->amount) }}"
                                                     required />
                                             </div>
                                         </div>
                                         <div class="col-md-12 mt-2">
-                                            <label class="form-label" for="amount_in_words">Amount in Words
-                                                <span class="text-danger">*</span></label>
+                                            <label class="form-label" for="amount_in_words">Amount in Words <span class="text-danger">*</span></label>
                                             <div class="amount-in-words" id="amountWords">
-                                                Amount will appear here...
+                                                {{ old('amount_in_words', $payment->amount_in_words) }}
                                             </div>
-                                            <input type="hidden" class="form-control" id="amount_in_words" name="amount_in_words" placeholder="Enter amount in words" readonly>
+                                            <input type="hidden" class="form-control" id="amount_in_words" name="amount_in_words"
+                                                value="{{ old('amount_in_words', $payment->amount_in_words) }}" readonly>
                                         </div>
                                     </div>
 
@@ -209,22 +216,20 @@
                                             id="item_description"
                                             name="item_description"
                                             rows="3"
-                                            placeholder="Enter item description"
-                                            required></textarea>
+                                            required>{{ old('item_description', $payment->item_description) }}</textarea>
                                     </div>
 
                                     <h4 class="mb-3">Party Bank Details</h4>
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="party_account_number" class="form-label">Account Number
-                                                    <span class="text-danger">*</span></label>
+                                                <label for="party_account_number" class="form-label">Account Number <span class="text-danger">*</span></label>
                                                 <input
                                                     type="number"
                                                     class="form-control"
                                                     id="party_account_number"
                                                     name="party_account_number"
-                                                    placeholder="Enter account number"
+                                                    value="{{ old('party_account_number', $payment->party_account_number) }}"
                                                     required />
                                             </div>
                                         </div>
@@ -236,7 +241,7 @@
                                                     class="form-control"
                                                     id="party_ifsc_code"
                                                     name="party_ifsc_code"
-                                                    placeholder="Enter IFSC code"
+                                                    value="{{ old('party_ifsc_code', $payment->party_ifsc_code) }}"
                                                     required />
                                             </div>
                                         </div>
@@ -251,7 +256,7 @@
                                                     class="form-control"
                                                     id="party_bank_name"
                                                     name="party_bank_name"
-                                                    placeholder="Enter bank name"
+                                                    value="{{ old('party_bank_name', $payment->party_bank_name) }}"
                                                     required />
                                             </div>
                                         </div>
@@ -263,15 +268,14 @@
                                                     class="form-control"
                                                     id="party_bank_branch_name"
                                                     name="party_bank_branch_name"
-                                                    placeholder="Enter branch"
+                                                    value="{{ old('party_bank_branch_name', $payment->party_bank_branch_name) }}"
                                                     required />
                                             </div>
                                         </div>
                                     </div>
 
                                     <button type="submit" class="btn btn-submit w-100 mb-3">
-                                        <i class="fas fa-check-circle me-2"></i>Submit for
-                                        Approval
+                                        <i class="fas fa-check-circle me-2"></i>Update Payment
                                     </button>
                                 </form>
                             </div>

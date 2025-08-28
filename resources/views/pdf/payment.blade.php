@@ -251,6 +251,10 @@
                         <input type="checkbox" {{ in_array('Tools & Machinery Purchase', $selectedOptions) ? 'checked' : '' }}>
                         <span>Tools & Machinery Purchase</span>
                     </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" {{ in_array('Plant Machinery Rent', $selectedOptions) ? 'checked' : '' }}>
+                        <span>Plant Machinery Rent</span>
+                    </div>
                 </td>
                 <td style="width: 50%;">
                     <div class="checkbox-item">
@@ -266,7 +270,7 @@
                         <span>Advance for Tools</span>
                     </div>
                     <div class="checkbox-item">
-                        <input type="checkbox" {{ in_array('Establish', $selectedOptions) ? 'checked' : '' }}>
+                        <input type="checkbox" {{ in_array('Establish (room rent, cooking utensils)', $selectedOptions) ? 'checked' : '' }}>
                         <span>Establish (room rent, cooking utensils)</span>
                     </div>
                 </td>
@@ -320,7 +324,7 @@
             </tr>
         </table>
 
-        
+
 
         {{-- Bank Details --}}
         <div style="font-weight:bold; margin-bottom:5px;">Party Bank Details:</div>
@@ -347,15 +351,39 @@
         <table style="width:100%; margin-top:50px; text-align:center; font-size:12px;">
             <tr>
                 <td style="width:33%; color: green;">
-                    Approved By<br><br>
+                    
+                    @if($payment->status == 'pending')
+                    Approved By<br>
+                    <span style="color: red;">Pending</span>
+                    @elseif($payment->status == 'approved')
+                    Approved By<br>
+                    <span style="color: green;">Sekh Arif Hossain</span><span style="color: green;"> (MD)</span>
+                    @elseif($payment->status == 'rejected')
+                    Rejected By<br>
+                    <span style="color: red;">Sekh Arif Hossain</span><span style="color: red;"> (MD)</span>
+                    @elseif($payment->status == 'remarked')
+                    Remarked By<br>
+                    <span style="color: black;">Sekh Arif Hossain</span><span style="color: black;"> (MD)</span>
+                    @endif
+                    <br>
                     ___________________
                 </td>
                 <td style="width:33%;">
-                    Accounts (after payment)<br><br>
+                    Accounts (after payment)<br>
+                    @if($payment->status == 'pending')
+                    <span style="color: red;">Pending</span>
+                    @elseif($payment->status == 'approved')
+                    <span style="color: green;">Sayek Ali Mallick</span><span style="color: green;"> (Senior Accountant)</span>
+                    @elseif($payment->status == 'rejected')
+                    <span style="color: red;">Sayek Ali Mallick</span><span style="color: red;"> (Senior Accountant)</span>
+                    @elseif($payment->status == 'remarked')
+                    <span style="color: black;">Sayek Ali Mallick</span><span style="color: black;"> (Senior Accountant)</span>
+                    @endif
+                    <br>
                     ___________________
                 </td>
                 <td style="width:33%;">
-                    Requisition By<br><br>
+                    Requisition By<br>{{ $payment->user->name ?? '' }}<br>
                     ___________________
                 </td>
             </tr>
