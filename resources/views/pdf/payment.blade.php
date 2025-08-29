@@ -306,6 +306,11 @@
                 <td><strong>Amount in Words:</strong></td>
                 <td style="border-bottom:1px dotted #000;"><strong>&nbsp; {{ $payment->amount_in_words ?? '' }}</strong></td>
             </tr>
+
+            <tr>
+                <td><strong>Remarks:</strong></td>
+                <td style="border-bottom:1px dotted #000;">&nbsp; {{ $payment->remarks ?? '' }}</td>
+            </tr>
         </table>
 
         {{-- Description --}}

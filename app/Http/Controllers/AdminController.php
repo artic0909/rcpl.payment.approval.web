@@ -138,10 +138,35 @@ class AdminController extends Controller
     }
 
 
-    public function adminDashboardView()
+    public function adminDashboardView(Request $request)
     {
 
-        $paymentRequestDetails = PaymentApproval::orderBy('id', 'desc')->paginate(5);
+        $query = PaymentApproval::with('user');
+
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('vendor_name', 'like', "%{$search}%")
+                    ->orWhere('vendor_code', 'like', "%{$search}%")
+                    ->orWhere('remarks', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhereJsonContains('request_for', $search)
+                    ->orWhereHas('user', function ($uq) use ($search) {
+                        $uq->where('name', 'like', "%{$search}%")
+                            ->orWhere('staff_code', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('mobile', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(1)->appends($request->all());
+
 
         return view('admin.admin-dashboard', compact('paymentRequestDetails'));
     }

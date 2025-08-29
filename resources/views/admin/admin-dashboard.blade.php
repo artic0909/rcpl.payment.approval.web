@@ -6,17 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js">
     </script>
     <title>Admin Dashboard</title>
 </head>
 
-<body style="margin: 50px;">
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="mb-3">All Payments Requests</h1>
-        <div>
-            <a href="{{ route('export.payment.requests') }}"
-                style="font-size: 20px; color:#007bff;">
+<body style="margin: 50px; background-color: #f8f9fa;">
+    <div class="d-flex justify-content-between align-items-center mb-3 gap-4">
+        <h2 class="mb-3 w-100">All Payments Requests</h2>
+
+        <form action="{{ route('admin.dashboard') }}" method="GET" class="w-100 d-flex gap-2 mb-3">
+            <input
+                type="text"
+                class="form-control border border-primary"
+                name="search"
+                placeholder="Search the payment request"
+                value="{{ request('search') }}">
+            <input
+                type="date"
+                class="form-control border border-primary"
+                name="date"
+                value="{{ request('date') }}">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Reset</a>
+        </form>
+
+
+
+        <div class="w-100 d-flex align-items-center justify-content-end">
+            <a class="btn btn-primary" href="{{ route('export.payment.requests') }}"
+                style="font-size: 20px;">
                 Export
             </a>
 
@@ -24,14 +44,14 @@
             &nbsp;
             &nbsp;
 
-            <a href="{{ route('admin.logout') }}"
-                style="font-size: 20px; color:#007bff;">
+            <a class="btn btn-secondary" href="{{ route('admin.logout') }}"
+                style="font-size: 20px;">
                 Logout
             </a>
         </div>
 
     </div>
-    <table class="table table-hover table-responsive table-bordered">
+    <table class="table table-hover table-responsive table-bordered" style="border: 1px solid #000;">
         <thead>
             <tr>
                 <th class="th">SL.</th>
@@ -86,7 +106,7 @@
                     <span class="badge rounded-border bg-primary p-3">Remarked</span>
                     @endif
                 </td>
-                <td class="td">{{ $payment->date?->format('d M Y') }}</td>
+                <td class="td"><strong>{{ $payment->date?->format('d M Y') }}</strong></td>
                 <td class="td">
                     @if(!empty($payment->request_for))
                     <ul style="padding-left: 16px; margin: 0;">
@@ -108,24 +128,24 @@
 
 
 
-                <td class="td">₹ {{ number_format($payment->amount, 2) }}</td>
+                <td class="td"><strong>₹ {{ number_format($payment->amount, 2) }}</strong></td>
                 <td class="td">
                     @if(!empty($payment->remarks))
-                    {{ $payment->remarks }}
+                    <strong>{{ $payment->remarks }}</strong>
                     @else
                     <span>No Remarks Found</span>
                     @endif
                 </td>
                 <td class="td">
-                    <p class="m-0">Vendor Name: {{ $payment->vendor_name }}</p>
-                    <p class="m-0">Code: {{ $payment->vendor_code }}</p>
+                    <p class="m-0">Vendor: <strong>{{ $payment->vendor_name }}</strong></p>
+                    <p class="m-0">Code: <strong>{{ $payment->vendor_code }}</strong></p>
                 </td>
 
                 <td class="td">
-                    <p class="m-0">Name: {{ $payment->user->name }}</p>
+                    <p class="m-0">{{ $payment->user->name }}</p>
                     <p class="m-0">Code: {{ $payment->user->staff_code }}</p>
-                    <p class="m-0">Email: {{ $payment->user->email }}</p>
-                    <p class="m-0">Mobile: {{ $payment->user->mobile }}</p>
+                    <p class="m-0">{{ $payment->user->email }}</p>
+                    <p class="m-0">{{ $payment->user->mobile }}</p>
                 </td>
             </tr>
             @empty
@@ -136,6 +156,42 @@
         </tbody>
 
     </table>
+
+
+    @if ($paymentRequestDetails->hasPages())
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-4 align-items-center">
+
+            <!-- {{-- Prev Button --}} -->
+            <li class="page-item {{ $paymentRequestDetails->onFirstPage() ? 'disabled' : '' }}">
+                <a class="page-link btn btn-primary"
+                    href="{{ $paymentRequestDetails->previousPageUrl() }}">Prev</a>
+            </li>
+            &nbsp;
+            <!-- {{-- Page Input + Total --}} -->
+            <li class="page-item d-flex align-items-center" style="margin: 0 2px;">
+                <form action="" method="GET" class="d-flex align-items-center" style="margin:0; padding:0;">
+                    <input type="number" name="page"
+                        value="{{ $paymentRequestDetails->currentPage() }}"
+                        min="1"
+                        max="{{ $paymentRequestDetails->lastPage() }}"
+                        class="form-control">
+                    <input type="text"
+                        value="/ {{ $paymentRequestDetails->lastPage() }}"
+                        readonly
+                        class="form-control">
+                </form>
+            </li>
+            &nbsp;
+            <!-- {{-- Next Button --}} -->
+            <li class="page-item {{ !$paymentRequestDetails->hasMorePages() ? 'disabled' : '' }}" style="">
+                <a class="page-link btn btn-primary"
+                    href="{{ $paymentRequestDetails->nextPageUrl() }}">Next</a>
+            </li>
+
+        </ul>
+    </nav>
+    @endif
 
     <!-- Modal -->
     @foreach($paymentRequestDetails as $payment)
