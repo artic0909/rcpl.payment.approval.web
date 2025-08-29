@@ -171,6 +171,12 @@ class AdminController extends Controller
         return view('admin.admin-dashboard', compact('paymentRequestDetails'));
     }
 
+    public function adminPdfView($id)
+    {
+        $payment = PaymentApproval::findOrFail($id);
+        return view('pdf.admin-payment', compact('payment'));
+    }
+
     public function exportInExcel()
     {
         return Excel::download(new PaymentRequestExport, 'payment_requests.xlsx');

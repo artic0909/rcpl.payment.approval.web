@@ -72,7 +72,7 @@
             <tr>
                 <td class="td">{{ $loop->iteration }}</td>
                 <td class="td">
-                    <a href="{{ route('admin.payment.pdf', $payment->id) }}" class="btn btn-primary">PDF</a>
+                    <a href="{{ route('admin.payment.pdf.view', $payment->id) }}" class="btn btn-primary">PDF</a>
                 </td>
 
                 <td class="td d-flex flex-column gap-2">
