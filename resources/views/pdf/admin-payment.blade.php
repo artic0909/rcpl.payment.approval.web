@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+<link rel="icon" href="{{ asset('./img/rupee.png') }}" />
 <head>
     <meta charset="utf-8">
     <title>Payment Approval Slip</title>
