@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AdminStatusMail;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -195,6 +197,11 @@ class AdminController extends Controller
             'status'  => 'remarked',
         ]);
 
+        Mail::to('saklinmustakofficial@gmail.com')
+            ->cc('alfag327@gmail.com')
+            ->send(new AdminStatusMail($payment, 'remarked'));
+
+
         return redirect()->back()->with('success', 'Remarks added successfully.');
     }
 
@@ -206,6 +213,11 @@ class AdminController extends Controller
             'status' => 'approved',
         ]);
 
+        Mail::to('saklinmustakofficial@gmail.com')
+            ->cc('alfag327@gmail.com')
+            ->send(new AdminStatusMail($payment, 'approved'));
+
+
         return redirect()->back()->with('success', 'Payment request approved successfully.');
     }
 
@@ -216,6 +228,11 @@ class AdminController extends Controller
         $payment->update([
             'status' => 'rejected',
         ]);
+
+        Mail::to('saklinmustakofficial@gmail.com')
+            ->cc('alfag327@gmail.com')
+            ->send(new AdminStatusMail($payment, 'rejected'));
+
 
         return redirect()->back()->with('success', 'Payment request rejected successfully.');
     }

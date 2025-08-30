@@ -9,7 +9,53 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js">
     </script>
+    <!-- icon -->
+    <link rel="icon" href="{{ asset('./img/rupee.png') }}" />
     <title>Admin Dashboard</title>
+
+        <style>
+            .custom-success-popup,
+            .custom-error-popup {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 5px;
+                color: white;
+                z-index: 9999;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                animation: fadeInOut 4s ease-in-out forwards;
+            }
+
+            .custom-success-popup {
+                background-color: #4CAF50;
+            }
+
+            .custom-error-popup {
+                background-color: #f44336;
+            }
+
+            @keyframes fadeInOut {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+
+                10% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+
+                90% {
+                    opacity: 1;
+                }
+
+                100% {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+        </style>
 </head>
 
 <body style="margin: 50px; background-color: #f8f9fa;">
@@ -281,6 +327,31 @@
         </div>
     </div>
     @endforeach
+
+
+
+    @if (session('success'))
+    <div id="successPopup" class="custom-success-popup">
+        {{ session('success') }}
+    </div>
+    @endif
+
+    @if (session('error'))
+    <div id="errorPopup" class="custom-error-popup">
+        {{ session('error') }}
+    </div>
+    @endif
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successPopup = document.getElementById('successPopup');
+            const errorPopup = document.getElementById('errorPopup');
+
+            if (successPopup) setTimeout(() => successPopup.remove(), 4000);
+            if (errorPopup) setTimeout(() => errorPopup.remove(), 4000);
+        });
+    </script>
 </body>
 
 </html>
