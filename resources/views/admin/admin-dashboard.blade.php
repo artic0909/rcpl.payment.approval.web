@@ -105,6 +105,7 @@
                 <th class="th">Action</th>
                 <th class="th">Status</th>
                 <th class="th">Date</th>
+                <th class="th">Site Name</th>
                 <th class="th">Request For</th>
                 <th class="th">Item Description</th>
                 <th class="th">Amount</th>
@@ -153,6 +154,7 @@
                     @endif
                 </td>
                 <td class="td"><strong>{{ $payment->date?->format('d M Y') }}</strong></td>
+                <td class="td"><strong>{{ $payment->site_name}}</strong></td>
                 <td class="td">
                     @if(!empty($payment->request_for))
                     <ul style="padding-left: 16px; margin: 0;">
@@ -196,7 +198,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="6" class="text-center">No record found</td>
+                <td colspan="12" class="text-center">No record found</td>
             </tr>
             @endforelse
         </tbody>
