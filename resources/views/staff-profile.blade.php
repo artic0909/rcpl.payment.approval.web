@@ -193,7 +193,7 @@
                                         </li>
 
                                         <!-- {{-- Next Button --}} -->
-                                        <li class="page-item {{ !$paymentRequestDetails->hasMorePages() ? 'disabled' : '' }}" style="">
+                                        <li class="page-item {{ !$paymentRequestDetails->hasMorePages() ? 'disabled' : '' }}">
                                             <a class="page-link"
                                                 href="{{ $paymentRequestDetails->nextPageUrl() }}"
                                                 style="font-size: 12px; height: 32px; padding: 4px 10px;">Next</a>
