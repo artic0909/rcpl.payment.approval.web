@@ -13,6 +13,7 @@ class PaymentApproval extends Model
 
     protected $fillable = [
         'status',
+        'payment_status',
         'remarks',
         'user_id',
         'date',

@@ -20,6 +20,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/admin/add-remarks/{id}', [AdminController::class, 'addRemarks'])->name('admin.add.remarks');
     Route::post('/admin/approved/{id}', [AdminController::class, 'approvedStatus'])->name('admin.approved.status');
     Route::post('/admin/rejected/{id}', [AdminController::class, 'rejectedStatus'])->name('admin.rejected.status');
+    Route::post('/admin/payment-status/{id}', [AdminController::class, 'paymentStatus'])->name('admin.payment.status');
 
 
 });

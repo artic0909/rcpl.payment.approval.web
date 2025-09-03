@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\PaymentRequestExport;
+use App\Mail\AdminPaymentStatusMail;
 use App\Models\Admin;
 use App\Models\PaymentApproval;
 use Illuminate\Support\Facades\Auth;
@@ -153,6 +154,7 @@ class AdminController extends Controller
                     ->orWhere('vendor_code', 'like', "%{$search}%")
                     ->orWhere('remarks', 'like', "%{$search}%")
                     ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhere('payment_status', 'like', "%{$search}%")
                     ->orWhereJsonContains('request_for', $search)
                     ->orWhereHas('user', function ($uq) use ($search) {
                         $uq->where('name', 'like', "%{$search}%")
@@ -235,5 +237,24 @@ class AdminController extends Controller
 
 
         return redirect()->back()->with('success', 'Payment request rejected successfully.');
+    }
+
+    public function paymentStatus(Request $request, $id)
+    {
+        $request->validate([
+            'payment_status' => 'required|in:Pending,Done',
+        ]);
+
+        $payment = PaymentApproval::findOrFail($id);
+
+        $payment->update([
+            'payment_status' => $request->payment_status,
+        ]);
+
+        Mail::to('saklinmustakofficial@gmail.com')
+            ->cc('alfag327@gmail.com')
+            ->send(new AdminPaymentStatusMail($payment, $request->payment_status));
+
+        return redirect()->back()->with('success', 'Payment status updated successfully.');
     }
 }

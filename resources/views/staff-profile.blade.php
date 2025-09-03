@@ -72,10 +72,13 @@
                                             <tr>
                                                 <th class="th">SL.</th>
                                                 <th class="th">Action</th>
-                                                <th class="th">Status</th>
+                                                <th class="th">Approval Status</th>
+                                                <th class="th">Payment Status</th>
                                                 <th class="th">Date</th>
+                                                <th class="th">Site Name</th>
                                                 <th class="th">Request For</th>
                                                 <th class="th">Amount</th>
+                                                <th class="th">Item Description</th>
                                                 <th class="th">Vendor Details</th>
                                                 <th class="th">Remarks</th>
                                             </tr>
@@ -108,7 +111,16 @@
                                                     @endif
                                                 </td>
 
-                                                <td class="td">{{ $payment->date?->format('d M Y') }}</td>
+                                                <td class="td">
+                                                    @if($payment->payment_status == 'Pending')
+                                                    <p class="btn btn-update" style="color: black;"><i class="fa-solid fa-clock-rotate-left"></i></p>
+                                                    @elseif($payment->payment_status == 'Done')
+                                                    <p class="btn btn-download" style="color: white;"><i class="fa-solid fa-circle-check"></i></p>
+                                                    @endif
+                                                </td>
+
+                                                <td class="td"><strong>{{ $payment->date?->format('d M Y') }}</strong></td>
+                                                <td class="td">{{ $payment->site_name }}</td>
                                                 <td class="td">
                                                     @if(!empty($payment->request_for))
                                                     <ul style="padding-left: 16px; margin: 0;">
@@ -121,7 +133,13 @@
                                                     @endif
                                                 </td>
 
-                                                <td class="td">₹ {{ number_format($payment->amount, 2) }}</td>
+                                                <td class="td"><strong>₹ {{ number_format($payment->amount, 2) }}</strong></td>
+
+                                                <td>
+                                                    <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#desc{{ $payment->id }}" data-bs-backdrop="static">
+                                                        View
+                                                    </button>
+                                                </td>
                                                 <td class="td">
                                                     <p class="m-0">{{ $payment->vendor_name }}</p>
                                                     <p class="m-0">Code: {{ $payment->vendor_code }}</p>
@@ -129,7 +147,7 @@
 
                                                 <td class="td">
                                                     @if(!empty($payment->remarks))
-                                                    <p class="m-0">{{ $payment->remarks }}</p>
+                                                    <p class="m-0"><strong>{{ $payment->remarks }}</strong></p>
                                                     @else
                                                     <span>No Remarks Found</span>
                                                     @endif
@@ -137,7 +155,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="6" class="text-center">No record found</td>
+                                                <td colspan="11" class="text-center">No record found</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -163,6 +181,7 @@
                                                     value="{{ $paymentRequestDetails->currentPage() }}"
                                                     min="1"
                                                     max="{{ $paymentRequestDetails->lastPage() }}"
+                                                    readonly
                                                     class="form-control"
                                                     style="width: 50px; height: 32px; font-size: 12px; text-align: center; padding: 0; border-radius:0;">
                                                 <input type="text"
@@ -271,6 +290,27 @@
                 </div>
             </div>
         </div>
+
+
+        <!-- Modal -->
+        @foreach($paymentRequestDetails as $payment)
+        <div class="modal fade" id="desc{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="desc" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="desc">Item Description</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {{ $payment->item_description }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
 
         <!-- Footer -->
         <div class="row justify-content-center">

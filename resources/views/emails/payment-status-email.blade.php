@@ -213,15 +213,13 @@
     <div class="email-container">
         <div class="email-header">
             {{-- Dynamic Status Badge --}}
-            @if($status == 'approved')
-            <div class="status-badge status-approved">Approved</div>
-            @elseif($status == 'rejected')
-            <div class="status-badge status-rejected">Rejected</div>
-            @elseif($status == 'remarked')
-            <div class="status-badge status-remarks">Remarked</div>
+            @if($payment_status == 'Done')
+            <div class="status-badge status-approved">Done</div>
+            @elseif($payment_status == 'Pending')
+            <div class="status-badge status-remarks">Pending</div>
             @endif
 
-            <div class="approver">- by Sekh Arif Hossain (MD)</div>
+            <div class="approver">- Sayek Ali Mallick (Commercial Head)</div>
         </div>
 
         <div class="email-body">

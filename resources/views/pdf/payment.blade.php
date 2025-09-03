@@ -355,8 +355,8 @@
         {{-- Footer Signatures --}}
         <table style="width:100%; margin-top:50px; text-align:center; font-size:12px;">
             <tr>
-                <td style="width:33%; color: green;">
-                    
+                <td style="width:33%; color: black;">
+
                     @if($payment->status == 'pending')
                     Approved By<br>
                     <span style="color: red;">Pending</span>
@@ -368,21 +368,17 @@
                     <span style="color: red;">Sekh Arif Hossain</span><span style="color: red;"> (MD)</span>
                     @elseif($payment->status == 'remarked')
                     Remarked By<br>
-                    <span style="color: black;">Sekh Arif Hossain</span><span style="color: black;"> (MD)</span>
+                    <span style="color: #083D77;">Sekh Arif Hossain</span><span style="color: #083D77;"> (MD)</span>
                     @endif
                     <br>
                     ___________________
                 </td>
                 <td style="width:33%;">
                     Accounts (after payment)<br>
-                    @if($payment->status == 'pending')
+                    @if($payment->payment_status == 'Pending')
                     <span style="color: red;">Pending</span>
-                    @elseif($payment->status == 'approved')
-                    <span style="color: green;">Sayek Ali Mallick</span><span style="color: green;"> (Senior Accountant)</span>
-                    @elseif($payment->status == 'rejected')
-                    <span style="color: red;">Sayek Ali Mallick</span><span style="color: red;"> (Senior Accountant)</span>
-                    @elseif($payment->status == 'remarked')
-                    <span style="color: black;">Sayek Ali Mallick</span><span style="color: black;"> (Senior Accountant)</span>
+                    @elseif($payment->payment_status == 'Done')
+                    <span style="color: green;">Sayek Ali Mallick</span><span style="color: green;"> (Commercial Head)</span>
                     @endif
                     <br>
                     ___________________
