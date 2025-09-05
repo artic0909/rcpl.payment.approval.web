@@ -327,7 +327,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <label for="">Requested Amount: {{ $payment->amount }}</label>
+                    <label for="">Requested Amount: <strong>₹ {{ $payment->amount }}</strong></label>
                     <br>
                     <br>
                     <label for="" class="form-check-label mb-2">Enter New Amount<span class="text-danger">*</span></label>
