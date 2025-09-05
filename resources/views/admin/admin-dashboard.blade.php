@@ -186,10 +186,10 @@
                 <td class="td">
                     <p class="m-0"><strong>{{ $payment->vendor_name }}</strong></p>
                     <p class="m-0">Code: <strong>{{ $payment->vendor_code }}</strong></p>
-                    <p class="m-0">Acc: <strong>{{ $payment->party_account_number }}</strong></p>
+                    <!-- <p class="m-0">Acc: <strong>{{ $payment->party_account_number }}</strong></p>
                     <p class="m-0">IFSC: <strong>{{ $payment->party_ifsc_code }}</strong></p>
                     <p class="m-0">Bank: <strong>{{ $payment->party_bank_name }}</strong></p>
-                    <p class="m-0">Branch: <strong>{{ $payment->party_bank_branch_name }}</strong></p>
+                    <p class="m-0">Branch: <strong>{{ $payment->party_bank_branch_name }}</strong></p> -->
                 </td>
 
                 <td class="td">
