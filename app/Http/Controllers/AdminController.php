@@ -154,6 +154,7 @@ class AdminController extends Controller
                     ->orWhere('vendor_code', 'like', "%{$search}%")
                     ->orWhere('remarks', 'like', "%{$search}%")
                     ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhere('amount', 'like', "%{$search}%")
                     ->orWhere('payment_status', 'like', "%{$search}%")
                     ->orWhereJsonContains('request_for', $search)
                     ->orWhereHas('user', function ($uq) use ($search) {
@@ -252,5 +253,20 @@ class AdminController extends Controller
             ->send(new AdminPaymentStatusMail($payment, $request->payment_status));
 
         return redirect()->back()->with('success', 'Payment status updated successfully.');
+    }
+
+    public function editAmount(Request $request, $id)
+    {
+        $request->validate([
+            'amount' => 'required|numeric',
+        ]);
+
+        $payment = PaymentApproval::findOrFail($id);
+
+        $payment->update([
+            'amount' => $request->amount,
+        ]);
+
+        return redirect()->back()->with('success', 'Amount updated successfully.');
     }
 }

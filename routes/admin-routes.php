@@ -21,6 +21,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/admin/approved/{id}', [AdminController::class, 'approvedStatus'])->name('admin.approved.status');
     Route::post('/admin/rejected/{id}', [AdminController::class, 'rejectedStatus'])->name('admin.rejected.status');
     Route::post('/admin/payment-status/{id}', [AdminController::class, 'paymentStatus'])->name('admin.payment.status');
+    Route::post('/admin/edit-amount/{id}', [AdminController::class, 'editAmount'])->name('admin.edit.amount');
 
 
 });

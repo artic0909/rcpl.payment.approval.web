@@ -110,7 +110,6 @@
                 <th class="th">Request For</th>
                 <th class="th">Item Description</th>
                 <th class="th">Amount</th>
-                <th class="th">Remarks</th>
                 <th class="th">Vendor Details</th>
                 <th class="th">Staff Details</th>
                 <th class="th">Account's Action</th>
@@ -125,14 +124,18 @@
                 </td>
 
                 <td class="td d-flex flex-column gap-2">
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#remark{{ $payment->id }}" data-bs-backdrop="static">
+                    <!-- <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#remark{{ $payment->id }}" data-bs-backdrop="static">
                         Remark
-                    </button>
+                    </button> -->
 
 
 
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#approve{{ $payment->id }}" data-bs-backdrop="static">
                         Approved
+                    </button>
+
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editAmount{{ $payment->id }}" data-bs-backdrop="static">
+                        Edit
                     </button>
 
 
@@ -181,15 +184,12 @@
 
                 <td class="td"><strong>₹ {{ number_format($payment->amount, 2) }}</strong></td>
                 <td class="td">
-                    @if(!empty($payment->remarks))
-                    <strong>{{ $payment->remarks }}</strong>
-                    @else
-                    <span>No Remarks Found</span>
-                    @endif
-                </td>
-                <td class="td">
-                    <p class="m-0">Vendor: <strong>{{ $payment->vendor_name }}</strong></p>
+                    <p class="m-0"><strong>{{ $payment->vendor_name }}</strong></p>
                     <p class="m-0">Code: <strong>{{ $payment->vendor_code }}</strong></p>
+                    <p class="m-0">Acc: <strong>{{ $payment->party_account_number }}</strong></p>
+                    <p class="m-0">IFSC: <strong>{{ $payment->party_ifsc_code }}</strong></p>
+                    <p class="m-0">Bank: <strong>{{ $payment->party_bank_name }}</strong></p>
+                    <p class="m-0">Branch: <strong>{{ $payment->party_bank_branch_name }}</strong></p>
                 </td>
 
                 <td class="td">
@@ -310,6 +310,32 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Approved</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    @endforeach
+
+    <!-- Modal -->
+    @foreach($paymentRequestDetails as $payment)
+    <div class="modal fade" id="editAmount{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="editAmount" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" action="{{ route('admin.edit.amount', $payment->id) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="remark">Set Amount</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="">Requested Amount: {{ $payment->amount }}</label>
+                    <br>
+                    <br>
+                    <label for="" class="form-check-label mb-2">Enter New Amount<span class="text-danger">*</span></label>
+                    <input type="number" name="amount" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </form>
         </div>
