@@ -100,12 +100,12 @@
     <table class="table table-hover table-responsive table-bordered" style="border: 1px solid #000;">
         <thead>
             <tr>
-                <th class="th">SL.</th>
+                <!-- <th class="th">SL.</th> -->
+                <th class="th">Date</th>
                 <th class="th">PDF</th>
                 <th class="th">MD's Action</th>
                 <th class="th">Approval Status</th>
                 <th class="th">Payment Status</th>
-                <th class="th">Date</th>
                 <th class="th">Site Name</th>
                 <th class="th">Request For</th>
                 <th class="th">Item Description</th>
@@ -118,7 +118,8 @@
         <tbody>
             @forelse($paymentRequestDetails as $payment)
             <tr>
-                <td class="td">{{ $loop->iteration }}</td>
+                <!-- <td class="td">{{ $loop->iteration }}</td> -->
+                <td class="td"><strong>{{ $payment->date?->format('d M Y') }}</strong></td>
                 <td class="td">
                     <a href="{{ route('admin.payment.pdf.view', $payment->id) }}" class="btn btn-primary">PDF</a>
                 </td>
@@ -163,7 +164,7 @@
                     <span class="badge rounded-border bg-success p-3">Done</span>
                     @endif
                 </td>
-                <td class="td"><strong>{{ $payment->date?->format('d M Y') }}</strong></td>
+
                 <td class="td"><strong>{{ $payment->site_name}}</strong></td>
                 <td class="td">
                     @if(!empty($payment->request_for))
