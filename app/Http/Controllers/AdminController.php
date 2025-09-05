@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Exports\PaymentRequestExport;
-use App\Mail\AdminPaymentStatusMail;
 use App\Models\Admin;
 use App\Models\PaymentApproval;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +11,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminStatusMail;
+use App\Mail\AdminPaymentStatusMail;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -169,7 +169,7 @@ class AdminController extends Controller
             $query->whereDate('date', $request->date);
         }
 
-        $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(1)->appends($request->all());
+        $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
 
 
         return view('admin.admin-dashboard', compact('paymentRequestDetails'));
@@ -199,10 +199,9 @@ class AdminController extends Controller
             'status'  => 'remarked',
         ]);
 
-        Mail::to('saklinmustakofficial@gmail.com')
-            ->cc('alfag327@gmail.com')
+        Mail::to('ranihati.construction@gmail.com')
+            ->cc('karmakarnetai866@gmail.com')
             ->send(new AdminStatusMail($payment, 'remarked'));
-
 
         return redirect()->back()->with('success', 'Remarks added successfully.');
     }
@@ -215,10 +214,9 @@ class AdminController extends Controller
             'status' => 'approved',
         ]);
 
-        Mail::to('saklinmustakofficial@gmail.com')
-            ->cc('alfag327@gmail.com')
+        Mail::to('ranihati.construction@gmail.com')
+            ->cc('karmakarnetai866@gmail.com')
             ->send(new AdminStatusMail($payment, 'approved'));
-
 
         return redirect()->back()->with('success', 'Payment request approved successfully.');
     }
@@ -231,14 +229,12 @@ class AdminController extends Controller
             'status' => 'rejected',
         ]);
 
-        Mail::to('saklinmustakofficial@gmail.com')
-            ->cc('alfag327@gmail.com')
+        Mail::to('ranihati.construction@gmail.com')
+            ->cc('karmakarnetai866@gmail.com')
             ->send(new AdminStatusMail($payment, 'rejected'));
-
 
         return redirect()->back()->with('success', 'Payment request rejected successfully.');
     }
-
     public function paymentStatus(Request $request, $id)
     {
         $request->validate([
@@ -251,8 +247,8 @@ class AdminController extends Controller
             'payment_status' => $request->payment_status,
         ]);
 
-        Mail::to('saklinmustakofficial@gmail.com')
-            ->cc('alfag327@gmail.com')
+        Mail::to('ranihati.construction@gmail.com')
+            ->cc('karmakarnetai866@gmail.com')
             ->send(new AdminPaymentStatusMail($payment, $request->payment_status));
 
         return redirect()->back()->with('success', 'Payment status updated successfully.');
