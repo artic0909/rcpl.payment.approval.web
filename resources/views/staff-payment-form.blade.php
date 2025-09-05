@@ -220,7 +220,7 @@
                                                 <label for="party_account_number" class="form-label">Account Number
                                                     <span class="text-danger">*</span></label>
                                                 <input
-                                                    type="number"
+                                                    type="text"
                                                     class="form-control"
                                                     id="party_account_number"
                                                     name="party_account_number"
