@@ -130,7 +130,7 @@
                     </button> -->
 
 
-
+                    @if($payment->status == 'pending')
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#approve{{ $payment->id }}" data-bs-backdrop="static">
                         Approved
                     </button>
@@ -139,11 +139,29 @@
                         Edit
                     </button>
 
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reject{{ $payment->id }}" data-bs-backdrop="static">
+                        Rejected
+                    </button>
 
+                    @elseif($payment->status == 'approved')
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editAmount{{ $payment->id }}" data-bs-backdrop="static">
+                        Edit
+                    </button>
 
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reject{{ $payment->id }}" data-bs-backdrop="static">
                         Rejected
                     </button>
+
+                    @elseif($payment->status == 'rejected')
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#approve{{ $payment->id }}" data-bs-backdrop="static">
+                        Approved
+                    </button>
+
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editAmount{{ $payment->id }}" data-bs-backdrop="static">
+                        Edit
+                    </button>
+                    @endif
+
                 </td>
 
                 <td class="td">
