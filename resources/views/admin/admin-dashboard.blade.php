@@ -139,7 +139,7 @@
                         Edit
                     </button>
 
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reject{{ $payment->id }}" data-bs-backdrop="static">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#remark{{ $payment->id }}" data-bs-backdrop="static">
                         Rejected
                     </button>
 
@@ -148,7 +148,7 @@
                         Edit
                     </button>
 
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reject{{ $payment->id }}" data-bs-backdrop="static">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#remark{{ $payment->id }}" data-bs-backdrop="static">
                         Rejected
                     </button>
 
@@ -365,15 +365,16 @@
     <!-- Modal -->
     @foreach($paymentRequestDetails as $payment)
     <div class="modal fade" id="remark{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="remark" aria-hidden="true">
-        <div class="modal-dialog">
-            <form class="modal-content" action="{{ route('admin.add.remarks', $payment->id) }}" method="POST">
+        <div class="modal-dialog modal-lg">
+            <form class="modal-content" action="{{ route('admin.rejected.status', $payment->id) }}" method="POST">
                 @csrf
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="remark">Add Remarks</h1>
+                    <h1 class="modal-title fs-5" id="remark">Give A Reason</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <textarea name="remarks" class="form-control" id="remarks" rows="3"></textarea>
+                    <label for="" class="form-check-label mb-2">Give a reason why you want to <span class="text-danger fw-bold">reject</span> this payment request<span class="text-danger">*</span></label>
+                    <textarea name="remarks" class="form-control" id="remarks" rows="5"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

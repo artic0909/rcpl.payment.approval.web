@@ -230,6 +230,17 @@
                     your payment request has been <strong>{{ ucfirst($status) }}</strong>.</h3>
             </div>
 
+            @if($status == 'rejected')
+            <div class="section" style="margin-top: 15px">
+                <p>
+                    Your payment request has been rejected with the following remark: <strong style="color: red;">{{ $payment->remarks }}</strong>.
+                    Please resubmit your request after further discussion.
+                    Thank you for your understanding.
+                </p>
+
+            </div>
+            @endif
+
             <div class="section">
                 <h3 class="section-title">Your payment request for:</h3>
                 <ul class="payment-items">

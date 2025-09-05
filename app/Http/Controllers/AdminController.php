@@ -222,12 +222,18 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Payment request approved successfully.');
     }
 
-    public function rejectedStatus($id)
+    public function rejectedStatus(Request $request, $id)
     {
+
+        $request->validate([
+            'remarks' => 'nullable|string',
+        ]);
+
         $payment = PaymentApproval::findOrFail($id);
 
         $payment->update([
-            'status' => 'rejected',
+            'remarks' => $request->remarks,
+            'status'  => 'rejected',
         ]);
 
         Mail::to('ranihati.construction@gmail.com')

@@ -78,8 +78,8 @@
                                                 <th class="th">Site Name</th>
                                                 <th class="th">Request For</th>
                                                 <th class="th">Amount</th>
-                                                <th class="th">Item Description</th>
                                                 <th class="th">Vendor Details</th>
+                                                <th class="th">Item Description</th>
                                                 <th class="th">Remarks</th>
                                             </tr>
                                         </thead>
@@ -135,21 +135,25 @@
 
                                                 <td class="td"><strong>₹ {{ number_format($payment->amount, 2) }}</strong></td>
 
-                                                <td>
-                                                    <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#desc{{ $payment->id }}" data-bs-backdrop="static">
-                                                        View
-                                                    </button>
-                                                </td>
+                                                
                                                 <td class="td">
                                                     <p class="m-0">{{ $payment->vendor_name }}</p>
                                                     <p class="m-0">Code: {{ $payment->vendor_code }}</p>
                                                 </td>
 
+                                                <td>
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#desc{{ $payment->id }}" data-bs-backdrop="static">
+                                                        View
+                                                    </button>
+                                                </td>
+
                                                 <td class="td">
                                                     @if(!empty($payment->remarks))
-                                                    <p class="m-0"><strong>{{ $payment->remarks }}</strong></p>
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#remark{{ $payment->id }}" data-bs-backdrop="static">
+                                                        Show
+                                                    </button>
                                                     @else
-                                                    <span>No Remarks Found</span>
+                                                    <span>Not Found</span>
                                                     @endif
                                                 </td>
                                             </tr>
@@ -295,7 +299,7 @@
         <!-- Modal -->
         @foreach($paymentRequestDetails as $payment)
         <div class="modal fade" id="desc{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="desc" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="desc">Item Description</h1>
@@ -303,6 +307,28 @@
                     </div>
                     <div class="modal-body">
                         {{ $payment->item_description }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
+
+        <!-- Modal -->
+        @foreach($paymentRequestDetails as $payment)
+        <div class="modal fade" id="remark{{ $payment->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="desc" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="desc">Why request is rejected?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Your payment request has been rejected with the following remark: <strong style="color: red;">{{ $payment->remarks }}</strong>.
+                        Please resubmit your request after further discussion.
+                        Thank you for your understanding.
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
