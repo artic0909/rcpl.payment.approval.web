@@ -191,7 +191,7 @@
 
                         <!-- Search -->
                         <div class="navbar-nav align-items-center">
-                            <form action="{{ route('admin.all-requests') }}" method="GET" class="d-flex align-items-center">
+                            <form action="{{ route('admin.done-requests') }}" method="GET" class="d-flex align-items-center">
                                 <div class="nav-item d-flex align-items-center">
                                     <i class="bx bx-search fs-4 lh-0"></i>
                                     <input
@@ -215,7 +215,7 @@
 
                                 <button class="btn btn-primary" type="submit">Search</button>&nbsp;&nbsp;
 
-                                <a href="{{ route('admin.all-requests') }}" class="btn btn-secondary">Reset</a>
+                                <a href="{{ route('admin.done-requests') }}" class="btn btn-secondary">Reset</a>
                             </form>
                         </div>
                         <!-- /Search -->
