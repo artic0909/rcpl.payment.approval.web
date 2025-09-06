@@ -113,7 +113,7 @@
 }
 
 .card-footer{
-  overflow-x: auto;
+  overflow-x: auto !important;
 }
 
 @media screen and (max-width: 1300px) {
