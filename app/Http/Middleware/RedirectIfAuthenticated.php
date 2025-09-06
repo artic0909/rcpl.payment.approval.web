@@ -27,6 +27,8 @@ class RedirectIfAuthenticated
                         return redirect()->route('account.dashboard');
                     case 'admin':
                         return redirect()->route('admin.dashboard');
+                    case 'creator':
+                        return redirect()->route('creator.dashboard');
                     default:
                         return redirect('/');
                 }

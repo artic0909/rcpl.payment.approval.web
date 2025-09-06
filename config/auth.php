@@ -51,6 +51,11 @@ return [
             'provider' => 'account',
         ],
 
+        'creator' => [
+            'driver' => 'session',
+            'provider' => 'creator',
+        ],
+
         'admin' => [
             'driver' => 'session',
             'provider' => 'admin',
@@ -88,6 +93,11 @@ return [
         'account' => [
             'driver' => 'eloquent',
             'model' => App\Models\Account::class,
+        ],
+
+        'creator' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Creator::class,
         ],
 
         'admin' => [
@@ -137,6 +147,13 @@ return [
 
         'account' => [
             'provider' => 'account',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'creator' => [
+            'provider' => 'creator',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,

@@ -176,8 +176,8 @@ class AccountController extends Controller
             'payment_status' => 'Done',
         ]);
 
-        Mail::to('alfag327@gmail.com')
-            ->cc('saklinmustakofficial@gmail.com')
+        Mail::to('ranihati.construction@gmail.com')
+            ->cc('karmakarnetai866@gmail.com')
             ->send(new AdminPaymentStatusMail($payment, 'Done'));
 
         return redirect()->back()->with('success', 'Payment status updated to Done successfully.');

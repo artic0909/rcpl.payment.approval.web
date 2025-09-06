@@ -52,6 +52,10 @@ class Authenticate
             return route('account.login');
         }
 
+        if ($request->is('creator/*')) {
+            return route('creator.login');
+        }
+
         if ($request->is('admin/*')) {
             return route('admin.login');
         }
