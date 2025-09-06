@@ -14,6 +14,16 @@
     <title>Admin Dashboard</title>
 
     <style>
+        .card-footer {
+            overflow-x: auto !important;
+        }
+
+        @media screen and (max-width: 1300px) {
+            table * {
+                font-size: 11px !important;
+            }
+        }
+
         .custom-success-popup,
         .custom-error-popup {
             position: fixed;
