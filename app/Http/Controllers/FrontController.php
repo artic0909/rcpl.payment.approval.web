@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PaymentApproval;
 use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -113,7 +114,9 @@ class FrontController extends Controller
 
         $user = Auth::guard('staff')->user();
 
-        return view('staff-payment-form', compact('user'));
+        $vendors = Vendor::all();
+
+        return view('staff-payment-form', compact('user', 'vendors'));
     }
 
     public function staffPaymentForm(Request $request)
@@ -158,7 +161,8 @@ class FrontController extends Controller
     {
         $user = Auth::guard('staff')->user();
         $payment = PaymentApproval::with('user')->findOrFail($id);
-        return view('staff-edit-payment-form', compact('payment', 'user'));
+        $vendors = Vendor::all();
+        return view('staff-edit-payment-form', compact('payment', 'user', 'vendors'));
     }
 
     // Update payment
@@ -288,5 +292,19 @@ class FrontController extends Controller
         $user->update($updateData);
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function getVendorDetails($code)
+    {
+        $vendor = Vendor::where('vendor_code', $code)->first();
+
+        if ($vendor) {
+            return response()->json([
+                'success' => true,
+                'data' => $vendor
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Vendor not found'], 404);
     }
 }

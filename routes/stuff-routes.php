@@ -16,4 +16,7 @@ Route::middleware(['auth:staff'])->group(function () {
     Route::post('/staff/{id}/update', [FrontController::class, 'staffPaymentFormUpdate'])->name('stuff.stuff-payment-form.update');
     Route::get('/staff/{id}/delete', [FrontController::class, 'staffPaymentFormDelete'])->name('stuff.stuff-payment-form.delete');
 
+    Route::get('/staff/get-vendor-details/{code}', [FrontController::class, 'getVendorDetails'])->name('staff.get-vendor-details');
+
+
 });

@@ -147,6 +147,23 @@
                                     </div>
 
                                     <div class="row mb-4">
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="vendor_code" class="form-label">Vendor Code
+                                                    <span class="text-danger">*</span></label>
+
+                                                <select name="vendor_code" id="vendor_code" class="form-select" required>
+                                                    <option value="{{ old('vendor_code', $payment->vendor_code) }}" selected>{{ old('vendor_code', $payment->vendor_code) }}</option>
+                                                    <hr>
+                                                    @foreach($vendors as $vendor)
+                                                    <option value="{{ $vendor->vendor_code }}">{{ $vendor->vendor_code }} - {{ $vendor->vendor_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="vendor_name" class="form-label">Vendor Name <span class="text-danger">*</span></label>
@@ -159,18 +176,7 @@
                                                     required />
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="vendor_code" class="form-label">Vendor Code <span class="text-danger">*</span></label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="vendor_code"
-                                                    name="vendor_code"
-                                                    value="{{ old('vendor_code', $payment->vendor_code) }}"
-                                                    required />
-                                            </div>
-                                        </div>
+
                                     </div>
 
                                     <div class="row mb-4">
@@ -453,6 +459,28 @@
 
             if (successPopup) setTimeout(() => successPopup.remove(), 4000);
             if (errorPopup) setTimeout(() => errorPopup.remove(), 4000);
+        });
+    </script>
+
+    <script>
+        document.getElementById('vendor_code').addEventListener('change', function() {
+            let vendorCode = this.value;
+            if (vendorCode) {
+                fetch(`/staff/get-vendor-details/${vendorCode}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('vendor_name').value = data.data.vendor_name;
+                            document.getElementById('party_account_number').value = data.data.vendor_account_number;
+                            document.getElementById('party_ifsc_code').value = data.data.vendor_ifsc_code;
+                            document.getElementById('party_bank_name').value = data.data.vendor_bank_name;
+                            document.getElementById('party_bank_branch_name').value = data.data.vendor_bank_branch_name;
+                        } else {
+                            alert('Vendor details not found');
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
         });
     </script>
 
