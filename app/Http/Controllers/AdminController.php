@@ -242,37 +242,212 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Payment request rejected successfully.');
     }
-    public function paymentStatus(Request $request, $id)
-    {
-        $request->validate([
-            'payment_status' => 'required|in:Pending,Done',
-        ]);
 
-        $payment = PaymentApproval::findOrFail($id);
+    // public function paymentStatus(Request $request, $id)
+    // {
+    //     $request->validate([
+    //         'payment_status' => 'required|in:Pending,Done',
+    //     ]);
 
-        $payment->update([
-            'payment_status' => $request->payment_status,
-        ]);
+    //     $payment = PaymentApproval::findOrFail($id);
 
-        Mail::to('ranihati.construction@gmail.com')
-            ->cc('karmakarnetai866@gmail.com')
-            ->send(new AdminPaymentStatusMail($payment, $request->payment_status));
+    //     $payment->update([
+    //         'payment_status' => $request->payment_status,
+    //     ]);
 
-        return redirect()->back()->with('success', 'Payment status updated successfully.');
-    }
+    //     Mail::to('ranihati.construction@gmail.com')
+    //         ->cc('karmakarnetai866@gmail.com')
+    //         ->send(new AdminPaymentStatusMail($payment, $request->payment_status));
+
+    //     return redirect()->back()->with('success', 'Payment status updated successfully.');
+    // }
 
     public function editAmount(Request $request, $id)
     {
         $request->validate([
             'amount' => 'required|numeric',
+            'amount_in_words' => 'required',
         ]);
 
         $payment = PaymentApproval::findOrFail($id);
 
         $payment->update([
             'amount' => $request->amount,
+            'amount_in_words' => $request->amount_in_words
         ]);
 
         return redirect()->back()->with('success', 'Amount updated successfully.');
+    }
+
+    // Pending Requests
+    public function adminPendingRequestsView(Request $request)
+    {
+        $query = PaymentApproval::with('user')
+            ->where('status', 'pending');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('vendor_name', 'like', "%{$search}%")
+                    ->orWhere('vendor_code', 'like', "%{$search}%")
+                    ->orWhere('remarks', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhere('site_name', 'like', "%{$search}%")
+                    ->orWhere('amount', 'like', "%{$search}%")
+                    ->orWhere('payment_status', 'like', "%{$search}%")
+                    ->orWhereJsonContains('request_for', $search)
+                    ->orWhereHas('user', function ($uq) use ($search) {
+                        $uq->where('name', 'like', "%{$search}%")
+                            ->orWhere('staff_code', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('mobile', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
+        return view('admin.admin-pending-requests', compact('paymentRequestDetails'));
+    }
+
+    // Approved Requests
+    public function adminApprovedRequestsView(Request $request)
+    {
+        $query = PaymentApproval::with('user')
+            ->where('status', 'approved')
+            ->where('payment_status', 'Pending');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('vendor_name', 'like', "%{$search}%")
+                    ->orWhere('vendor_code', 'like', "%{$search}%")
+                    ->orWhere('remarks', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhere('site_name', 'like', "%{$search}%")
+                    ->orWhere('amount', 'like', "%{$search}%")
+                    ->orWhere('payment_status', 'like', "%{$search}%")
+                    ->orWhereJsonContains('request_for', $search)
+                    ->orWhereHas('user', function ($uq) use ($search) {
+                        $uq->where('name', 'like', "%{$search}%")
+                            ->orWhere('staff_code', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('mobile', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
+        return view('admin.admin-approved-requests', compact('paymentRequestDetails'));
+    }
+
+    // Rejected Requests
+    public function adminRejectedRequestsView(Request $request)
+    {
+
+        $query = PaymentApproval::with('user')
+            ->where('status', 'rejected');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('vendor_name', 'like', "%{$search}%")
+                    ->orWhere('vendor_code', 'like', "%{$search}%")
+                    ->orWhere('remarks', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhere('site_name', 'like', "%{$search}%")
+                    ->orWhere('amount', 'like', "%{$search}%")
+                    ->orWhere('payment_status', 'like', "%{$search}%")
+                    ->orWhereJsonContains('request_for', $search)
+                    ->orWhereHas('user', function ($uq) use ($search) {
+                        $uq->where('name', 'like', "%{$search}%")
+                            ->orWhere('staff_code', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('mobile', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
+        return view('admin.admin-rejected-requests', compact('paymentRequestDetails'));
+    }
+
+    // All Requests
+    public function adminAllRequestsView(Request $request)
+    {
+        $query = PaymentApproval::with('user');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('vendor_name', 'like', "%{$search}%")
+                    ->orWhere('vendor_code', 'like', "%{$search}%")
+                    ->orWhere('remarks', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhere('site_name', 'like', "%{$search}%")
+                    ->orWhere('amount', 'like', "%{$search}%")
+                    ->orWhere('payment_status', 'like', "%{$search}%")
+                    ->orWhereJsonContains('request_for', $search)
+                    ->orWhereHas('user', function ($uq) use ($search) {
+                        $uq->where('name', 'like', "%{$search}%")
+                            ->orWhere('staff_code', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('mobile', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
+        return view('admin.admin-all-requests', compact('paymentRequestDetails'));
+    }
+
+    // All Requests
+    public function adminPaymentsDoneView(Request $request)
+    {
+        $query = PaymentApproval::with('user')
+            ->where('payment_status', 'Done')
+            ->where('status', 'approved');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('vendor_name', 'like', "%{$search}%")
+                    ->orWhere('vendor_code', 'like', "%{$search}%")
+                    ->orWhere('remarks', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhere('site_name', 'like', "%{$search}%")
+                    ->orWhere('amount', 'like', "%{$search}%")
+                    ->orWhere('payment_status', 'like', "%{$search}%")
+                    ->orWhereJsonContains('request_for', $search)
+                    ->orWhereHas('user', function ($uq) use ($search) {
+                        $uq->where('name', 'like', "%{$search}%")
+                            ->orWhere('staff_code', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('mobile', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
+        return view('admin.admin-payment-done', compact('paymentRequestDetails'));
     }
 }

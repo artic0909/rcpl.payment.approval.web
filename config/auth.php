@@ -46,9 +46,14 @@ return [
             'provider' => 'staff',
         ],
 
+        'account' => [
+            'driver' => 'session',
+            'provider' => 'account',
+        ],
+
         'admin' => [
             'driver' => 'session',
-            'provider' => 'admins',
+            'provider' => 'admin',
         ],
     ],
 
@@ -80,7 +85,12 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        'admins' => [
+        'account' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Account::class,
+        ],
+
+        'admin' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
@@ -125,8 +135,15 @@ return [
             'throttle' => 60,
         ],
 
-        'admins' => [
-            'provider' => 'admins',
+        'account' => [
+            'provider' => 'account',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'admin' => [
+            'provider' => 'admin',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
