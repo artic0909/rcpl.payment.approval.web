@@ -85,6 +85,47 @@
                 transform: translateY(-10px);
             }
         }
+
+        /* CSS */
+        .fab {
+            position: fixed;
+            right: max(30px, env(safe-area-inset-right));
+            bottom: max(30px, env(safe-area-inset-bottom));
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #6366F1;
+            /* indigo-500 */
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, .15), 0 6px 6px rgba(0, 0, 0, .10);
+            text-decoration: none;
+            z-index: 9999;
+            transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+        }
+
+        .fab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 24px rgba(0, 0, 0, .18), 0 8px 8px rgba(0, 0, 0, .12);
+        }
+
+        .fab:active {
+            transform: translateY(0);
+        }
+
+        .fab:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, .35), 0 10px 20px rgba(0, 0, 0, .15);
+        }
+
+        @media (max-width: 480px) {
+            .fab {
+                width: 52px;
+                height: 52px;
+            }
+        }
     </style>
 </head>
 
@@ -174,17 +215,22 @@
                         <!-- Search -->
                         <div class="navbar-nav align-items-center">
 
-                            <div class="nav-item d-flex align-items-center">
-                                <i class="bx bx-search fs-4 lh-0"></i>
-                                <input
-                                    type="text"
-                                    class="form-control border shadow-none"
-                                    placeholder="Search..."
-                                    aria-label="Search..." />
-                            </div>&nbsp;&nbsp;
+                         
+                                <form method="GET" action="{{ route('creator.vendor-create') }}" class="nav-item d-flex align-items-center">
+                                    <i class="bx bx-search fs-4 lh-0"></i>
+                                    <input
+                                        type="text"
+                                        name="search"
+                                        value="{{ request('search') }}"
+                                        class="form-control border shadow-none"
+                                        placeholder="Search..."
+                                        aria-label="Search..." />
+                                </form>&nbsp;&nbsp;
 
-                            <button class="btn btn-primary" type="submit">Search</button>&nbsp;&nbsp;
-                            <button class="btn btn-secondary" type="submit">Reset</button>
+                                <button class="btn btn-primary" type="submit">Search</button>&nbsp;&nbsp;
+                                <a href="{{ route('creator.vendor-create') }}" class="btn btn-secondary">Reset</a>
+                          
+
                         </div>
                         <!-- /Search -->
 
@@ -271,10 +317,130 @@
                                                     height="80"
                                                     alt="View Badge User" />
                                             </div>
+
+                                            <a href="" class="btn btn-info">Export As Excel</a>
                                         </div>
 
                                         <div class="col-12">
                                             <div class="card-footer text-end">
+                                                <table class="table responsive table-bordered table-hover" style="text-align: left;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SL.</th>
+                                                            <th>Vendor Code</th>
+                                                            <th>Vendor Name</th>
+                                                            <th>Category</th>
+                                                            <th>Address</th>
+                                                            <th>Bank Details</th>
+                                                            <th>Contact Person</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @forelse($vendors as $index => $vendor)
+                                                        <tr>
+                                                            <td>{{ $vendors->firstItem() + $index }}</td>
+                                                            <td>
+                                                                <p class="m-0 badge bg-primary">{{ $vendor->vendor_code }}</p>
+                                                            </td>
+
+                                                            <td>{{ $vendor->vendor_name }}</td>
+
+                                                            <!-- Category as list -->
+                                                            <td>
+                                                                @if(is_array($vendor->vendor_category))
+                                                                <ul class="mb-0 ps-3">
+                                                                    @foreach($vendor->vendor_category as $cat)
+                                                                    <li>{{ $cat }}</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                                @else
+                                                                <span>-</span>
+                                                                @endif
+                                                            </td>
+
+                                                            <!-- Address -->
+                                                            <td>{{ $vendor->vendor_address ?? '-' }}</td>
+
+                                                            <!-- Bank Details line by line -->
+                                                            <td>
+                                                                @if($vendor->vendor_account_number || $vendor->vendor_ifsc_code || $vendor->vendor_bank_name || $vendor->vendor_bank_branch_name)
+                                                                {{ $vendor->vendor_account_number ?? '-' }}<br>
+                                                                {{ $vendor->vendor_ifsc_code ?? '-' }}<br>
+                                                                {{ $vendor->vendor_bank_name ?? '-' }}<br>
+                                                                {{ $vendor->vendor_bank_branch_name ?? '-' }}
+                                                                @else
+                                                                <span>-</span>
+                                                                @endif
+                                                            </td>
+
+                                                            <!-- Contact Person line by line -->
+                                                            <td>
+                                                                {{ $vendor->contact_person_name ?? '-' }}<br>
+                                                                {{ $vendor->contact_person_mobile ?? '-' }}<br>
+                                                                {{ $vendor->contact_person_email ?? '-' }}
+                                                            </td>
+
+                                                            <!-- Actions -->
+                                                            <td>
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#edit" data-bs-backdrop="static" class="btn btn-sm btn-warning"><i class='bx  bx-edit'></i></button>
+                                                                <form action="{{route('creator.vendor-create.delete', $vendor->id)}}" method="POST" style="display:inline-block;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                                        onclick="return confirm('Are you sure you want to delete this vendor?')"><i class='bx  bx-trash'></i></button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                        @empty
+                                                        <tr>
+                                                            <td colspan="8" class="text-center">No vendors found</td>
+                                                        </tr>
+                                                        @endforelse
+                                                    </tbody>
+
+                                                </table>
+
+
+
+                                                <!-- Pagination Controls -->
+                                                @if ($vendors->hasPages())
+                                                <nav aria-label="Vendor pagination">
+                                                    <ul class="pagination justify-content-center mt-4 align-items-center">
+
+                                                        <!-- Prev Button -->
+                                                        <li class="page-item {{ $vendors->onFirstPage() ? 'disabled' : '' }}">
+                                                            <a class="page-link btn btn-primary"
+                                                                href="{{ $vendors->previousPageUrl() }}">Prev</a>
+                                                        </li>
+                                                        &nbsp;
+
+                                                        <!-- Page Input + Total -->
+                                                        <li class="page-item d-flex align-items-center" style="margin: 0 2px;">
+                                                            <form action="" method="GET" class="d-flex align-items-center" style="margin:0; padding:0;">
+                                                                <input type="number" name="page"
+                                                                    value="{{ $vendors->currentPage() }}"
+                                                                    min="1"
+                                                                    max="{{ $vendors->lastPage() }}"
+                                                                    readonly
+                                                                    class="form-control" style="width: 60px; text-align: center;">
+                                                                <input type="text"
+                                                                    value="/ {{ $vendors->lastPage() }}"
+                                                                    readonly
+                                                                    class="form-control" style="width: 60px; text-align: center;">
+                                                            </form>
+                                                        </li>
+                                                        &nbsp;
+
+                                                        <!-- Next Button -->
+                                                        <li class="page-item {{ !$vendors->hasMorePages() ? 'disabled' : '' }}">
+                                                            <a class="page-link btn btn-primary"
+                                                                href="{{ $vendors->nextPageUrl() }}">Next</a>
+                                                        </li>
+
+                                                    </ul>
+                                                </nav>
+                                                @endif
 
                                             </div>
                                         </div>
@@ -284,6 +450,143 @@
                         </div>
                     </div>
                     <!-- / Content -->
+
+
+                    <!-- HTML -->
+                    <a data-bs-toggle="modal" data-bs-target="#add" data-bs-backdrop="static" class="fab" aria-label="Add new item" title="Add" style="color: white; cursor: pointer;">
+                        <!-- plus icon -->
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </a>
+
+                    <!-- Add Modal -->
+                    <div class="modal fade" id="add" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+                            <form class="modal-content" action="{{route('creator.vendor-create.store')}}" method="POST">
+                                @csrf
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="addLabel">Add Vendor</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <!-- State Code Dropdown -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="state_code" class="form-label">State Code<span class="text-danger">*</span></label>
+                                            <select class="form-select" id="state_code" name="state_code" required>
+                                                <option value="">Select State</option>
+                                                @php
+                                                $states = [
+                                                "01" => "Jammu & Kashmir", "02" => "Himachal Pradesh", "03" => "Punjab", "04" => "Chandigarh",
+                                                "05" => "Uttarakhand", "06" => "Haryana", "07" => "Delhi", "08" => "Rajasthan",
+                                                "09" => "Uttar Pradesh", "10" => "Bihar", "11" => "Sikkim", "12" => "Arunachal Pradesh",
+                                                "13" => "Nagaland", "14" => "Manipur", "15" => "Mizoram", "16" => "Tripura",
+                                                "17" => "Meghalaya", "18" => "Assam", "19" => "West Bengal", "20" => "Jharkhand",
+                                                "21" => "Odisha", "22" => "Chhattisgarh", "23" => "Madhya Pradesh", "24" => "Gujarat",
+                                                "25" => "Daman & Diu", "26" => "Dadra & Nagar Haveli", "27" => "Maharashtra",
+                                                "28" => "Andhra Pradesh", "29" => "Karnataka", "30" => "Goa", "31" => "Lakshadweep",
+                                                "32" => "Kerala", "33" => "Tamil Nadu", "34" => "Puducherry", "35" => "Andaman & Nicobar Islands",
+                                                "36" => "Telangana", "37" => "Andhra Pradesh (New)"
+                                                ];
+                                                @endphp
+
+                                                @foreach($states as $code => $state)
+                                                <option value="{{ $code }}" {{ old('state_code', '01') == $code ? 'selected' : '' }}>
+                                                    {{ $code }} - {{ $state }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <!-- Vendor Name -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="vendor_name" class="form-label">Vendor Name<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="vendor_name" name="vendor_name" value="{{ old('vendor_name') }}" required>
+                                        </div>
+
+                                        <!-- Vendor Code -->
+                                        <div class="col-md-12 mb-3">
+                                            <label for="vendor_code" class="form-label">Vendor Code<span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="vendor_code" name="vendor_code" value="{{ old('vendor_code') }}" required>
+                                                <button type="button" class="btn btn-primary" id="generateCode">Generate</button>
+
+                                            </div>
+                                            {{-- Validation Errors for Vendor Code --}}
+                                            @error('vendor_code')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+
+                                        <!-- Vendor Category (Multi Checkbox) -->
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label d-block">Vendor Category<span class="text-danger">*</span></label>
+                                            @php
+                                            $categories = ['Product sales', 'Service sales', 'Tools & machinary sales', 'Rent - plant & machine', 'Miscellaneous'];
+                                            @endphp
+
+                                            @foreach($categories as $category)
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="vendor_category[]" value="{{ $category }}"
+                                                    {{ (is_array(old('vendor_category')) && in_array($category, old('vendor_category'))) ? 'checked' : '' }}>
+                                                {{ $category }}
+                                            </div>
+                                            @endforeach
+                                        </div>
+
+                                        <!-- Optional fields with old values -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="vendor_address" class="form-label">Vendor Address<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="vendor_address" name="vendor_address" value="{{ old('vendor_address') }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="vendor_account_number" class="form-label">Vendor Account Number</label>
+                                            <input type="text" class="form-control" id="vendor_account_number" name="vendor_account_number" value="{{ old('vendor_account_number') }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="vendor_ifsc_code" class="form-label">Vendor IFSC Code</label>
+                                            <input type="text" class="form-control" id="vendor_ifsc_code" name="vendor_ifsc_code" value="{{ old('vendor_ifsc_code') }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="vendor_bank_name" class="form-label">Vendor Bank Name</label>
+                                            <input type="text" class="form-control" id="vendor_bank_name" name="vendor_bank_name" value="{{ old('vendor_bank_name') }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="vendor_bank_branch_name" class="form-label">Vendor Bank Branch</label>
+                                            <input type="text" class="form-control" id="vendor_bank_branch_name" name="vendor_bank_branch_name" value="{{ old('vendor_bank_branch_name') }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="contact_person_name" class="form-label">Contact Person Name<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="contact_person_name" name="contact_person_name" value="{{ old('contact_person_name') }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="contact_person_mobile" class="form-label">Contact Person Mobile<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="contact_person_mobile" name="contact_person_mobile" value="{{ old('contact_person_mobile') }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="contact_person_email" class="form-label">Contact Person Email</label>
+                                            <input type="email" class="form-control" id="contact_person_email" name="contact_person_email" value="{{ old('contact_person_email') }}">
+                                        </div>
+                                        <div class="col-md-12 mb-3">
+                                            <label for="related_product_service" class="form-label">Related Product/Service</label>
+                                            <input type="text" class="form-control" id="related_product_service" name="related_product_service" value="{{ old('related_product_service') }}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Add Vendor</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+
 
                     <!-- Footer -->
                     <footer class="content-footer footer bg-footer-theme">
@@ -353,6 +656,37 @@
     <script src="{{ asset('./admin/assets/js/main.js') }}"></script>
 
     <!-- Page JS -->
+    <!-- JS for Vendor Code -->
+    <script>
+        document.getElementById('generateCode').addEventListener('click', function() {
+            const stateCode = document.getElementById('state_code').value;
+            const vendorName = document.getElementById('vendor_name').value.trim();
+
+            if (!stateCode || !vendorName) {
+                alert("Please select state & enter vendor name first!");
+                return;
+            }
+
+            const firstFour = vendorName.substring(0, 4).toLowerCase().replace(/\s+/g, '');
+            const now = new Date();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = String(now.getFullYear()).slice(-2);
+
+            const code = `${stateCode}-${firstFour}-${month}${year}`;
+            document.getElementById('vendor_code').value = code;
+        });
+    </script>
+
+    @if($errors->any())
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var myModal = new bootstrap.Modal(document.getElementById('add'));
+            myModal.show();
+        });
+    </script>
+    @endif
+
+
 </body>
 
 </html>

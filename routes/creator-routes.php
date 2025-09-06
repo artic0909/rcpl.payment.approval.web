@@ -15,7 +15,14 @@ Route::middleware(['auth:creator'])->group(function () {
     Route::get('/creator/logout', [CreatorController::class, 'creatorLogout'])->name('creator.logout');
 
     Route::get('/creator/vendor-create', [CreatorController::class, 'creatorVendorCreateView'])->name('creator.vendor-create');
+    Route::post('/creator/vendor-create', [CreatorController::class, 'creatorVendorStore'])->name('creator.vendor-create.store');
+    Route::delete('/creator/vendor-create/{id}', [CreatorController::class, 'creatorDeleteVendor'])->name('creator.vendor-create.delete');
+
+    
     Route::get('/creator/profile', [CreatorController::class, 'creatorProfileView'])->name('creator.profile');
     Route::post('/creator/profile', [CreatorController::class, 'creatorUpdateProfile'])->name('creator.profile.update');
+    
+
+
 
 });

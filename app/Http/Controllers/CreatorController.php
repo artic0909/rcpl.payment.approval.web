@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Creator;
 use Illuminate\Http\Request;
 use App\Models\PaymentApproval;
+use App\Models\Vendor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -131,10 +132,33 @@ class CreatorController extends Controller
     }
 
     // Vendor Create View
-    public function creatorVendorCreateView()
+    public function creatorVendorCreateView(Request $request)
     {
-        return view('creator.creator-vendors');
+        $search = $request->input('search');
+
+        $vendors = Vendor::query()
+            ->when($search, function ($query, $search) {
+                $query->where('vendor_code', 'like', "%{$search}%")
+                    ->orWhere('vendor_name', 'like', "%{$search}%")
+                    ->orWhere('vendor_address', 'like', "%{$search}%")
+                    ->orWhere('vendor_account_number', 'like', "%{$search}%")
+                    ->orWhere('vendor_ifsc_code', 'like', "%{$search}%")
+                    ->orWhere('vendor_bank_name', 'like', "%{$search}%")
+                    ->orWhere('vendor_bank_branch_name', 'like', "%{$search}%")
+                    ->orWhere('contact_person_name', 'like', "%{$search}%")
+                    ->orWhere('contact_person_mobile', 'like', "%{$search}%")
+                    ->orWhere('contact_person_email', 'like', "%{$search}%")
+                    ->orWhere('related_product_service', 'like', "%{$search}%");
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(8);
+
+        // Keep search term in pagination links
+        $vendors->appends(['search' => $search]);
+
+        return view('creator.creator-vendors', compact('vendors'));
     }
+
 
     public function creatorProfileView()
     {
@@ -163,5 +187,67 @@ class CreatorController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Profile Updated Successfully');
+    }
+
+    // Vendor Create
+    public function creatorVendorStore(Request $request)
+    {
+        $validatedData = $request->validate([
+            'state_code' => 'required|string',
+            'vendor_name' => 'required|string|max:255',
+            'vendor_code' => 'required|string|unique:vendors,vendor_code',
+            'vendor_category' => 'required|array|min:1',
+            'vendor_category.*' => 'string',
+            'vendor_address' => 'nullable|string',
+            'vendor_account_number' => 'nullable|string',
+            'vendor_ifsc_code' => 'nullable|string',
+            'vendor_bank_name' => 'nullable|string',
+            'vendor_bank_branch_name' => 'nullable|string',
+            'contact_person_name' => 'required|string|max:255',
+            'contact_person_mobile' => 'required|string|max:15',
+            'contact_person_email' => 'nullable|email',
+            'related_product_service' => 'nullable|string',
+        ], [
+            'vendor_code.unique' => 'This Vendor Code already exists. Please generate a new one.',
+            'vendor_category.required' => 'Please select at least one category.',
+        ]);
+
+        try {
+            $vendor = Vendor::create([
+                'state_code' => $validatedData['state_code'],
+                'vendor_name' => $validatedData['vendor_name'],
+                'vendor_code' => $validatedData['vendor_code'],
+                'vendor_category' => $validatedData['vendor_category'],
+                'vendor_address' => $request->vendor_address,
+                'vendor_account_number' => $request->vendor_account_number,
+                'vendor_ifsc_code' => $request->vendor_ifsc_code,
+                'vendor_bank_name' => $request->vendor_bank_name,
+                'vendor_bank_branch_name' => $request->vendor_bank_branch_name,
+                'contact_person_name' => $validatedData['contact_person_name'],
+                'contact_person_mobile' => $validatedData['contact_person_mobile'],
+                'contact_person_email' => $request->contact_person_email,
+                'related_product_service' => $request->related_product_service,
+            ]);
+
+            return redirect()->back()->with('success', 'Vendor added successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
+    }
+
+    public function creatorDeleteVendor($id)
+    {
+        $vendor = Vendor::find($id);
+
+        if (!$vendor) {
+            return redirect()->back()->with('error', 'Vendor not found.');
+        }
+
+        try {
+            $vendor->delete();
+            return redirect()->back()->with('success', 'Vendor deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
     }
 }

@@ -138,7 +138,7 @@
 
 
                             <div class="mb-3">
-                                <a href="{{route('creator.login')}}" class="btn btn-success d-grid w-100" type="submit">Creator Login</a>
+                                <a href="{{route('creator.login')}}" class="btn btn-success d-grid w-100" type="submit">Vendor Creator Login</a>
                             </div>
                         </form>
 
