@@ -12,7 +12,8 @@ Route::get('/staff-register', [FrontController::class, 'signupView'])->name('sta
 Route::post('/staff-register', [FrontController::class, 'staffRegister'])->name('staff.register');
 Route::get('/staff-forget-password', [FrontController::class, 'forgetPasswordView'])->name('staff.forget-password');
 
-
+Route::view('user', 'button-redirect')
+    ->name('button-redirect');
 
 
 Route::view('dashboard', 'dashboard')
@@ -20,7 +21,7 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
-    
+
     Route::redirect('settings', 'settings/profile');
 
     Route::get('settings/profile', Profile::class)->name('settings.profile');

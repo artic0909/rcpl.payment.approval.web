@@ -8,7 +8,7 @@
     <title>Profile Manage | RCPL</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('./img/rupee.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('./img/vendor.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -100,7 +100,7 @@
                 <div class="app-brand demo">
                     <a href="admin-dashboard.html" class="app-brand-link">
                         <span class="app-brand-logo demo">
-                            <img src="{{ asset('./img/rupee.png') }}" width="50px" alt="" />
+                            <img src="{{ asset('./img/vendor.png') }}" width="50px" alt="" />
                         </span>
                         <span
                             class="app-brand-text demo menu-text fw-bolder ms-2"
@@ -184,16 +184,6 @@
                                         class="form-control border shadow-none"
                                         placeholder="Search..."
                                         aria-label="Search..." />
-                                </div>
-
-                                &nbsp;&nbsp;&nbsp;&nbsp;<p class="m-0">Search By Date:</p> &nbsp;&nbsp;
-
-                                <div class="nav-item d-flex align-items-center">
-                                    <input
-                                        type="date"
-                                        name="date"
-                                        value="{{ request('date') }}"
-                                        class="form-control border shadow-none" />
                                 </div>&nbsp;&nbsp;
 
                                 <button class="btn btn-primary" type="submit">Search</button>&nbsp;&nbsp;

@@ -111,9 +111,9 @@
                     <div class="card-body">
                         <!-- Logo -->
                         <div class="app-brand justify-content-center">
-                            <a href="#" class="app-brand-link gap-2">
+                            <a href="/user" class="app-brand-link gap-2">
                                 <span class="app-brand-logo demo">
-                                    <img src="{{ asset('./img/RCPL.png') }}" width="50px" alt="" />
+                                    <img src="{{ asset('./img/RCPL.png') }}" width="60px" alt="" />
                                 </span>
                                 <span
                                     class="app-brand-text demo text-body fw-bolder"

@@ -8,7 +8,7 @@
     <title>Create Vendors | RCPL</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('./img/rupee.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('./img/vendor.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -100,7 +100,7 @@
                 <div class="app-brand demo">
                     <a href="admin-dashboard.html" class="app-brand-link">
                         <span class="app-brand-logo demo">
-                            <img src="{{ asset('./img/rupee.png') }}" width="50px" alt="" />
+                            <img src="{{ asset('./img/vendor.png') }}" width="50px" alt="" />
                         </span>
                         <span
                             class="app-brand-text demo menu-text fw-bolder ms-2"
