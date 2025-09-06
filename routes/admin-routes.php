@@ -34,5 +34,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/profile', [AdminController::class, 'adminProfileView'])->name('admin.profile');
     Route::post('/admin/profile', [AdminController::class, 'adminUpdateProfile'])->name('admin.profile.update');
 
+    
+
 
 });

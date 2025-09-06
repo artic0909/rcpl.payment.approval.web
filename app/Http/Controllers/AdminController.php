@@ -154,6 +154,7 @@ class AdminController extends Controller
                     ->orWhere('vendor_code', 'like', "%{$search}%")
                     ->orWhere('remarks', 'like', "%{$search}%")
                     ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhere('site_name', 'like', "%{$search}%")
                     ->orWhere('amount', 'like', "%{$search}%")
                     ->orWhere('payment_status', 'like', "%{$search}%")
                     ->orWhereJsonContains('request_for', $search)
@@ -449,5 +450,36 @@ class AdminController extends Controller
 
         $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
         return view('admin.admin-payment-done', compact('paymentRequestDetails'));
+    }
+
+
+    // Profile
+    public function adminProfileView()
+    {
+        return view('admin.admin-profile');
+    }
+
+    public function adminUpdateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'nullable|string|max:255',
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        $user = Auth::guard('admin')->user();
+
+        // Update name if provided
+        if ($request->filled('name')) {
+            $user->name = $request->name;
+        }
+
+        // Update password if provided
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile Updated Successfully');
     }
 }

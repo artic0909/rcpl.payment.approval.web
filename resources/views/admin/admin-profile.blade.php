@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>All Rejected Requests | RCPL</title>
+    <title>Profile Manage | RCPL</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('./img/rupee.png') }}" />
@@ -43,6 +43,7 @@
                 font-size: 11px !important;
             }
         }
+
         .custom-success-popup,
         .custom-error-popup {
             position: fixed;
@@ -92,6 +93,7 @@
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
+
             <aside
                 id="layout-menu"
                 class="layout-menu menu-vertical menu bg-menu-theme">
@@ -150,7 +152,7 @@
                         </a>
                     </li>
 
-                    <li class="menu-item active">
+                    <li class="menu-item">
                         <a href="{{ route('admin.rejected-requests') }}" class="menu-link">
                             <i class='menu-icon tf-icons bx  bx-trash'></i>
                             <div data-i18n="Subjects">Rejected Requests</div>
@@ -168,7 +170,7 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Profile</span>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item active">
                         <a href="{{ route('admin.profile') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-user"></i>
                             <div data-i18n="Enquiry">Profile Details</div>
@@ -200,7 +202,7 @@
 
                         <!-- Search -->
                         <div class="navbar-nav align-items-center">
-                            <form action="{{ route('admin.rejected-requests') }}" method="GET" class="d-flex align-items-center">
+                            <form action="#" method="GET" class="d-flex align-items-center">
                                 <div class="nav-item d-flex align-items-center">
                                     <i class="bx bx-search fs-4 lh-0"></i>
                                     <input
@@ -224,7 +226,7 @@
 
                                 <button class="btn btn-primary" type="submit">Search</button>&nbsp;&nbsp;
 
-                                <a href="{{ route('admin.rejected-requests') }}" class="btn btn-secondary">Reset</a>
+                                <a href="#" class="btn btn-secondary">Reset</a>
                             </form>
                         </div>
                         <!-- /Search -->
@@ -288,136 +290,83 @@
                     </div>
                 </nav>
 
-
                 <!-- / Navbar -->
 
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
+                        <h4 class="fw-bold py-3 mb-4">Account Settings</h4>
+
                         <div class="row">
-                            <div class="col-lg-12 mb-4 order-0">
-                                <div class="card">
-                                    <div class="d-flex align-items-end row">
-                                        <div class="col-sm-7">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-primary">
-                                                    All Rejected Payment Requests
-                                                </h5>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-5 text-center text-sm-left">
-                                            <div class="card-body pb-0 px-0 px-md-4">
-                                                <img
-                                                    src="{{ asset('./img/reject.png') }}"
-                                                    height="80"
-                                                    alt="View Badge Get Money" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="card-footer text-end">
-                                                <table class="table responsive table-bordered table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">Date</th>
-                                                            <th scope="col">Reason</th>
-                                                            <th scope="col">Approval Status</th>
-                                                            <th scope="col">Payment Status</th>
-                                                            <th scope="col">Site Name</th>
-                                                            <th scope="col">Request For</th>
-                                                            <th scope="col">Item Description</th>
-                                                            <th scope="col">Amount</th>
-                                                            <th scope="col">Vendor Details</th>
-                                                            <th scope="col">Staff Details</th>
-                                                            <th scope="col">Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($paymentRequestDetails as $request)
-                                                        <tr style="text-align: left;">
-                                                            <td><strong>{{ $request->date?->format('d M Y') }}</strong></td>
-                                                            <td><strong class="text-danger" style="white-space: normal; word-wrap: break-word; max-width: 130px; line-height: 1.2;">{{ $request->remarks }}</strong></td>
-                                                            <td><span class="badge rounded bg-label-danger fw-bold">{{ $request->status }}</span></td>
-                                                            <td><span class="badge rounded bg-label-warning fw-bold">{{ $request->payment_status }}</span></td>
-                                                            <td><span class="badge rounded bg-label-primary  fw-bold" style="white-space: normal; word-wrap: break-word; max-width: 130px; line-height: 1.2;">{{ $request->site_name }}</span></td>
-                                                            <td>
-                                                                @if(!empty($request->request_for))
-                                                                <ul style="text-align: left; list-style-type: decimal;">
-                                                                    @foreach($request->request_for as $req)
-                                                                    <li>{{ $req }}</li>
-                                                                    @endforeach
-                                                                </ul>
-                                                                @else
-                                                                <span>No Request Found</span>
-                                                                @endif
-                                                            </td>
-                                                            <td>
-                                                                <p class="m-0" style="white-space: normal; word-wrap: break-word; max-width: 130px;">
-                                                                    <small>{{ $request->item_description }}</small>
-                                                                </p>
-                                                            </td>
-                                                            <td><span class="badge rounded bg-label-danger  fw-bold">₹ {{ number_format($request->amount, 2) }}</span></td>
-                                                            <td>
-                                                                <p class="m-0"><strong>{{ $request->vendor_name }}</strong></p>
-                                                                <p class="m-0">CD: <strong>{{ $request->vendor_code }}</strong></p>
-                                                                <!-- <p class="m-0">Acc: <strong>{{ $request->party_account_number }}</strong></p>
-                                                                <p class="m-0">IFSC: <strong>{{ $request->party_ifsc_code }}</strong></p>
-                                                                <p class="m-0">Bank: <strong>{{ $request->party_bank_name }}</strong></p>
-                                                                <p class="m-0">Branch: <strong>{{ $request->party_bank_branch_name }}</strong></p> -->
-                                                            </td>
-                                                            <td>
-                                                                <p class="m-0">{{ $request->user->name }}</p>
-                                                                <p class="m-0">CD: {{ $request->user->staff_code }}</p>
-                                                            </td>
-                                                            <td>
-                                                                <a href="{{ route('admin.payment.pdf.view', $request->id) }}" class="btn btn-danger mb-2"><i class='bx bx-file'></i></a>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-
-
-                                                <!-- {{-- Pagination --}} -->
-                                                @if ($paymentRequestDetails->hasPages())
-                                                <nav aria-label="Page navigation">
-                                                    <ul class="pagination justify-content-center mt-4 align-items-center">
-
-                                                        <!-- {{-- Prev Button --}} -->
-                                                        <li class="page-item {{ $paymentRequestDetails->onFirstPage() ? 'disabled' : '' }}">
-                                                            <a class="page-link btn btn-primary"
-                                                                href="{{ $paymentRequestDetails->previousPageUrl() }}">Prev</a>
-                                                        </li>
-                                                        &nbsp;
-                                                        <!-- {{-- Page Input + Total --}} -->
-                                                        <li class="page-item d-flex align-items-center" style="margin: 0 2px;">
-                                                            <form action="" method="GET" class="d-flex align-items-center" style="margin:0; padding:0;">
-                                                                <input type="number" name="page"
-                                                                    value="{{ $paymentRequestDetails->currentPage() }}"
-                                                                    min="1"
-                                                                    max="{{ $paymentRequestDetails->lastPage() }}"
-                                                                    readonly
-                                                                    class="form-control">
-                                                                <input type="text"
-                                                                    value="/ {{ $paymentRequestDetails->lastPage() }}"
-                                                                    readonly
-                                                                    class="form-control">
-                                                            </form>
-                                                        </li>
-                                                        &nbsp;
-                                                        <!-- {{-- Next Button --}} -->
-                                                        <li class="page-item {{ !$paymentRequestDetails->hasMorePages() ? 'disabled' : '' }}">
-                                                            <a class="page-link btn btn-primary"
-                                                                href="{{ $paymentRequestDetails->nextPageUrl() }}">Next</a>
-                                                        </li>
-
-                                                    </ul>
-                                                </nav>
-                                                @endif
-                                            </div>
+                            <div class="col-md-12">
+                                <div class="card mb-4">
+                                    <h5 class="card-header">Profile Details</h5>
+                                    <!-- Account -->
+                                    <div class="card-body">
+                                        <div
+                                            class="d-flex align-items-start align-items-sm-center gap-4">
+                                            <img
+                                                src="{{ asset('./admin/assets/img/avatars/1.png') }}"
+                                                alt="user-avatar"
+                                                class="d-block rounded"
+                                                height="100"
+                                                width="100"
+                                                id="uploadedAvatar" />
                                         </div>
                                     </div>
+                                    <hr class="my-0" />
+                                    <div class="card-body">
+                                        <form action="{{ route('admin.profile.update') }}" method="POST" id="formAccountSettings">
+                                            @csrf
+                                            <div class="row">
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="firstName" class="form-label">Admin Name</label>
+                                                    <input
+                                                        class="form-control"
+                                                        type="text"
+                                                        name="name"
+                                                        value="{{ Auth::guard('admin')->user()->name }}" />
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="email" class="form-label">Email Address</label>
+                                                    <input
+                                                        class="form-control"
+                                                        type="email"
+                                                        name="email"
+                                                        readonly
+                                                        value="{{ Auth::guard('admin')->user()->email }}" />
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="password" class="form-label">New Password</label>
+                                                    <input
+                                                        class="form-control"
+                                                        type="password"
+                                                        name="password"
+                                                        autocomplete="new-password"
+                                                        placeholder="Enter new password" />
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="password_confirmation" class="form-label">Confirm Password</label>
+                                                    <input
+                                                        type="password"
+                                                        class="form-control"
+                                                        name="password_confirmation"
+                                                        placeholder="Confirm password" />
+                                                </div>
+                                            </div>
+                                            <div class="mt-2">
+                                                <button type="submit" class="btn btn-primary me-2">
+                                                    Save changes
+                                                </button>
+                                                <button type="reset" class="btn btn-outline-secondary">
+                                                    Reset
+                                                </button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                    <!-- /Account -->
                                 </div>
                             </div>
                         </div>
