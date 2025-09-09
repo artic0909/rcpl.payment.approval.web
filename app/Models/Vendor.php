@@ -24,9 +24,4 @@ class Vendor extends Model
         'contact_person_email',
         'related_product_service',
     ];
-
-    // Automatically cast vendor_category to array
-    protected $casts = [
-        'vendor_category' => 'array',
-    ];
 }

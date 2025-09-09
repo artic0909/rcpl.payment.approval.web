@@ -130,6 +130,15 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Create</span>
                     </li>
+                    
+                    <!-- Cards -->
+                    <li class="menu-item">
+                        <a href="{{ route('creator.site-code-create') }}" class="menu-link">
+                            <i class='menu-icon tf-icons bx  bx-building-house'></i>
+                            <div data-i18n="Classewes">Add Site Code</div>
+                        </a>
+                    </li>
+
                     <!-- Cards -->
                     <li class="menu-item">
                         <a href="{{ route('creator.vendor-create') }}" class="menu-link">

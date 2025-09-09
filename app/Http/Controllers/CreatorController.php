@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SiteCodeExport;
 use App\Models\Creator;
 use Illuminate\Http\Request;
 use App\Models\PaymentApproval;
+use App\Models\SiteCode;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CreatorController extends Controller
 {
@@ -134,6 +137,7 @@ class CreatorController extends Controller
     // Vendor Create View
     public function creatorVendorCreateView(Request $request)
     {
+        $sites = SiteCode::all();
         $search = $request->input('search');
 
         $vendors = Vendor::query()
@@ -156,7 +160,7 @@ class CreatorController extends Controller
         // Keep search term in pagination links
         $vendors->appends(['search' => $search]);
 
-        return view('creator.creator-vendors', compact('vendors'));
+        return view('creator.creator-vendors', compact('vendors', 'sites'));
     }
 
 
@@ -214,10 +218,10 @@ class CreatorController extends Controller
 
         try {
             $vendor = Vendor::create([
-                'state_code' => $validatedData['state_code'],
+                'state_code' => $validatedData['state_code'],  // stores site_code into state_code column
                 'vendor_name' => $validatedData['vendor_name'],
                 'vendor_code' => $validatedData['vendor_code'],
-                'vendor_category' => $validatedData['vendor_category'],
+                'vendor_category' => json_encode($validatedData['vendor_category']), // ✅ fixed
                 'vendor_address' => $request->vendor_address,
                 'vendor_account_number' => $request->vendor_account_number,
                 'vendor_ifsc_code' => $request->vendor_ifsc_code,
@@ -235,6 +239,18 @@ class CreatorController extends Controller
         }
     }
 
+    public function creatorEditVendorView($id)
+    {
+        $sites = SiteCode::all();
+        $vendor = Vendor::find($id);
+
+        return view('creator.creator-vendor-edit', compact('vendor', 'sites'));
+    }
+
+    public function creatorUpdateVendor(Request $request, $id) {}
+
+
+
     public function creatorDeleteVendor($id)
     {
         $vendor = Vendor::find($id);
@@ -249,5 +265,91 @@ class CreatorController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
+    }
+
+    public function creatorSiteCodeView(Request $request)
+    {
+        $sites = SiteCode::orderby('id', 'desc')->paginate(8);
+
+        $search = $request->input('search');
+
+        $sites = SiteCode::query()
+            ->when($search, function ($query, $search) {
+                $query->where('site_code', 'like', "%{$search}%")
+                    ->orWhere('site_name', 'like', "%{$search}%")
+                    ->orWhere('location', 'like', "%{$search}%");
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(8);
+
+        // Keep search term in pagination links
+        $sites->appends(['search' => $search]);
+
+        return view('creator.creator-site-code', compact('sites'));
+    }
+
+    public function creatorSiteCode(Request $request)
+    {
+        $validatedData = $request->validate([
+            'site_code' => 'required|string|unique:site_codes,site_code',
+            'site_name' => 'required|string',
+            'location' => 'nullable|string',
+        ], [
+            'site_code.unique' => 'This Site Code already exists. Please generate a new one.',
+        ]);
+
+        try {
+            $site = SiteCode::create([
+                'site_code' => $validatedData['site_code'],
+                'site_name' => $validatedData['site_name'],
+                'location' => $validatedData['location'],
+            ]);
+
+            return redirect()->back()->with('success', 'Site code added successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
+    }
+
+    public function creatorUpdateSiteCode(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'site_code' => 'required|string|unique:site_codes,site_code,' . $id,
+            'site_name' => 'required|string',
+            'location' => 'nullable|string',
+        ]);
+
+        try {
+            $site = SiteCode::find($id);
+            $site->site_code = $validatedData['site_code'];
+            $site->site_name = $validatedData['site_name'];
+            $site->location = $validatedData['location'];
+            $site->save();
+
+            return redirect()->back()->with('success', 'Site code updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
+    }
+
+    public function creatorDeleteSiteCode($id)
+    {
+        $site = SiteCode::find($id);
+
+        if (!$site) {
+            return redirect()->back()->with('error', 'Site code not found.');
+        }
+
+        try {
+            $site->delete();
+            return redirect()->back()->with('success', 'Site code deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
+    }
+
+    public function siteCodesExportAsExcel()
+    {
+        return Excel::download(new SiteCodeExport, 'site_codes.xlsx');
     }
 }

@@ -171,6 +171,15 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Create</span>
                     </li>
+
+                    <!-- Cards -->
+                    <li class="menu-item">
+                        <a href="{{ route('creator.site-code-create') }}" class="menu-link">
+                            <i class='menu-icon tf-icons bx  bx-building-house'></i>
+                            <div data-i18n="Classewes">Add Site Code</div>
+                        </a>
+                    </li>
+
                     <!-- Cards -->
                     <li class="menu-item active">
                         <a href="{{ route('creator.vendor-create') }}" class="menu-link">
@@ -215,21 +224,22 @@
                         <!-- Search -->
                         <div class="navbar-nav align-items-center">
 
-                         
-                                <form method="GET" action="{{ route('creator.vendor-create') }}" class="nav-item d-flex align-items-center">
-                                    <i class="bx bx-search fs-4 lh-0"></i>
-                                    <input
-                                        type="text"
-                                        name="search"
-                                        value="{{ request('search') }}"
-                                        class="form-control border shadow-none"
-                                        placeholder="Search..."
-                                        aria-label="Search..." />
-                                </form>&nbsp;&nbsp;
+
+                            <form method="GET" action="{{ route('creator.vendor-create') }}" class="nav-item d-flex align-items-center">
+                                <i class="bx bx-search fs-4 lh-0"></i>
+                                <input
+                                    type="text"
+                                    name="search"
+                                    value="{{ request('search') }}"
+                                    class="form-control border shadow-none"
+                                    placeholder="Search..."
+                                    aria-label="Search..." />
+                                &nbsp;&nbsp;
 
                                 <button class="btn btn-primary" type="submit">Search</button>&nbsp;&nbsp;
                                 <a href="{{ route('creator.vendor-create') }}" class="btn btn-secondary">Reset</a>
-                          
+                            </form>
+
 
                         </div>
                         <!-- /Search -->
@@ -331,7 +341,7 @@
                                                             <th>Vendor Name</th>
                                                             <th>Category</th>
                                                             <th>Address</th>
-                                                            <th>Bank Details</th>
+                                                            <th>Bank/ Related Service</th>
                                                             <th>Contact Person</th>
                                                             <th>Actions</th>
                                                         </tr>
@@ -346,11 +356,16 @@
 
                                                             <td>{{ $vendor->vendor_name }}</td>
 
-                                                            <!-- Category as list -->
                                                             <td>
-                                                                @if(is_array($vendor->vendor_category))
+                                                                @php
+                                                                $categories = is_string($vendor->vendor_category)
+                                                                ? json_decode($vendor->vendor_category, true)
+                                                                : $vendor->vendor_category;
+                                                                @endphp
+
+                                                                @if(!empty($categories) && is_array($categories))
                                                                 <ul class="mb-0 ps-3">
-                                                                    @foreach($vendor->vendor_category as $cat)
+                                                                    @foreach($categories as $cat)
                                                                     <li>{{ $cat }}</li>
                                                                     @endforeach
                                                                 </ul>
@@ -359,19 +374,13 @@
                                                                 @endif
                                                             </td>
 
+
                                                             <!-- Address -->
                                                             <td>{{ $vendor->vendor_address ?? '-' }}</td>
 
                                                             <!-- Bank Details line by line -->
                                                             <td>
-                                                                @if($vendor->vendor_account_number || $vendor->vendor_ifsc_code || $vendor->vendor_bank_name || $vendor->vendor_bank_branch_name)
-                                                                {{ $vendor->vendor_account_number ?? '-' }}<br>
-                                                                {{ $vendor->vendor_ifsc_code ?? '-' }}<br>
-                                                                {{ $vendor->vendor_bank_name ?? '-' }}<br>
-                                                                {{ $vendor->vendor_bank_branch_name ?? '-' }}
-                                                                @else
-                                                                <span>-</span>
-                                                                @endif
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#bank{{ $vendor->id }}" data-bs-backdrop="static" class="btn btn-sm btn-success"><i class='bx  bx-building'></i></button>
                                                             </td>
 
                                                             <!-- Contact Person line by line -->
@@ -383,13 +392,9 @@
 
                                                             <!-- Actions -->
                                                             <td>
-                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#edit" data-bs-backdrop="static" class="btn btn-sm btn-warning"><i class='bx  bx-edit'></i></button>
-                                                                <form action="{{route('creator.vendor-create.delete', $vendor->id)}}" method="POST" style="display:inline-block;">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" class="btn btn-sm btn-danger"
-                                                                        onclick="return confirm('Are you sure you want to delete this vendor?')"><i class='bx  bx-trash'></i></button>
-                                                                </form>
+                                                                <a type="button" href="{{ route('creator.vendor-create.edit', $vendor->id) }}" class="btn btn-sm btn-warning mb-2"><i class='bx  bx-edit'></i></a>
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#delete{{ $vendor->id }}" data-bs-backdrop="static" class="btn btn-sm btn-danger"><i class='bx  bx-trash'></i></button>
+
                                                             </td>
                                                         </tr>
                                                         @empty
@@ -474,28 +479,12 @@
                                     <div class="row">
                                         <!-- State Code Dropdown -->
                                         <div class="col-md-6 mb-3">
-                                            <label for="state_code" class="form-label">State Code<span class="text-danger">*</span></label>
-                                            <select class="form-select" id="state_code" name="state_code" required>
-                                                <option value="">Select State</option>
-                                                @php
-                                                $states = [
-                                                "01" => "Jammu & Kashmir", "02" => "Himachal Pradesh", "03" => "Punjab", "04" => "Chandigarh",
-                                                "05" => "Uttarakhand", "06" => "Haryana", "07" => "Delhi", "08" => "Rajasthan",
-                                                "09" => "Uttar Pradesh", "10" => "Bihar", "11" => "Sikkim", "12" => "Arunachal Pradesh",
-                                                "13" => "Nagaland", "14" => "Manipur", "15" => "Mizoram", "16" => "Tripura",
-                                                "17" => "Meghalaya", "18" => "Assam", "19" => "West Bengal", "20" => "Jharkhand",
-                                                "21" => "Odisha", "22" => "Chhattisgarh", "23" => "Madhya Pradesh", "24" => "Gujarat",
-                                                "25" => "Daman & Diu", "26" => "Dadra & Nagar Haveli", "27" => "Maharashtra",
-                                                "28" => "Andhra Pradesh", "29" => "Karnataka", "30" => "Goa", "31" => "Lakshadweep",
-                                                "32" => "Kerala", "33" => "Tamil Nadu", "34" => "Puducherry", "35" => "Andaman & Nicobar Islands",
-                                                "36" => "Telangana", "37" => "Andhra Pradesh (New)"
-                                                ];
-                                                @endphp
+                                            <label for="state_code" class="form-label">Choose Site Code<span class="text-danger">*</span></label>
+                                            <select class="form-select" id="state_code" name="state_code" required style="text-transform: uppercase;">
+                                                <option value="">Select Site Code</option>
 
-                                                @foreach($states as $code => $state)
-                                                <option value="{{ $code }}" {{ old('state_code', '01') == $code ? 'selected' : '' }}>
-                                                    {{ $code }} - {{ $state }}
-                                                </option>
+                                                @foreach($sites as $site)
+                                                <option value="{{ $site->site_code }}" style="text-transform: uppercase;">{{ $site->site_code }} - {{ $site->site_name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -510,7 +499,7 @@
                                         <div class="col-md-12 mb-3">
                                             <label for="vendor_code" class="form-label">Vendor Code<span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="vendor_code" name="vendor_code" value="{{ old('vendor_code') }}" required>
+                                                <input type="text" class="form-control" id="vendor_code" name="vendor_code" value="{{ old('vendor_code') }}" required style="text-transform: uppercase;">
                                                 <button type="button" class="btn btn-primary" id="generateCode">Generate</button>
 
                                             </div>
@@ -584,6 +573,178 @@
                         </div>
                     </div>
 
+                    <!-- Edit Modal -->
+                    @foreach($vendors as $vendor)
+                    <div class="modal fade" id="edit{{ $vendor->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="editLabel{{ $vendor->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+                            <form class="modal-content" action="{{ route('creator.vendor-create.update', $vendor->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="editLabel{{ $vendor->id }}">Edit Vendor</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <!-- State Code Dropdown -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="state_code{{ $vendor->id }}" class="form-label">Choose Site Code<span class="text-danger">*</span></label>
+                                            <select class="form-select" id="state_code{{ $vendor->id }}" name="state_code" style="text-transform: uppercase;">
+                                                <!-- <option value="{{ $vendor->state_code }}" selected>{{ $vendor->state_code }}</option> -->
+                                                @foreach($sites as $site)
+                                                <option value="{{ $site->site_code }}" {{ $vendor->state_code == $site->site_code ? 'selected' : '' }}>
+                                                    {{ $site->site_code }} - {{ $site->site_name }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <!-- Vendor Name -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="vendor_name{{ $vendor->id }}" class="form-label">Vendor Name<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="vendor_name{{ $vendor->id }}" name="vendor_name" value="{{ $vendor->vendor_name }}">
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label for="vendor_code{{ $vendor->id }}" class="form-label">Vendor Code<span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="vendor_code{{ $vendor->id }}" name="vendor_code"
+                                                    value="{{ $vendor->vendor_code }}" style="text-transform: uppercase;">
+                                                <button type="button" class="btn btn-primary generateCodeBtn" data-target="vendor_code{{ $vendor->id }}">
+                                                    Generate
+                                                </button>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Vendor Category -->
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label d-block">Vendor Category<span class="text-danger">*</span></label>
+                                            @php
+                                            $savedCategories = is_string($vendor->vendor_category)
+                                            ? json_decode($vendor->vendor_category, true)
+                                            : $vendor->vendor_category;
+                                            @endphp
+
+                                            @foreach($categories as $category)
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox"
+                                                    name="vendor_category[]"
+                                                    value="{{ $category }}"
+                                                    {{ is_array($savedCategories) && in_array($category, $savedCategories) ? 'checked' : '' }}>
+                                                {{ $category }}
+                                            </div>
+                                            @endforeach
+
+                                        </div>
+
+                                        <!-- Optional fields -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="vendor_address{{ $vendor->id }}" class="form-label">Vendor Address</label>
+                                            <input type="text" class="form-control" id="vendor_address{{ $vendor->id }}" name="vendor_address" value="{{ $vendor->vendor_address }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="vendor_account_number{{ $vendor->id }}" class="form-label">Vendor Account Number</label>
+                                            <input type="text" class="form-control" id="vendor_account_number{{ $vendor->id }}" name="vendor_account_number" value="{{ $vendor->vendor_account_number }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="vendor_ifsc_code{{ $vendor->id }}" class="form-label">Vendor IFSC Code</label>
+                                            <input type="text" class="form-control" id="vendor_ifsc_code{{ $vendor->id }}" name="vendor_ifsc_code" value="{{ $vendor->vendor_ifsc_code }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="vendor_bank_name{{ $vendor->id }}" class="form-label">Vendor Bank Name</label>
+                                            <input type="text" class="form-control" id="vendor_bank_name{{ $vendor->id }}" name="vendor_bank_name" value="{{ $vendor->vendor_bank_name }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="vendor_bank_branch_name{{ $vendor->id }}" class="form-label">Vendor Bank Branch</label>
+                                            <input type="text" class="form-control" id="vendor_bank_branch_name{{ $vendor->id }}" name="vendor_bank_branch_name" value="{{ $vendor->vendor_bank_branch_name }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="contact_person_name{{ $vendor->id }}" class="form-label">Contact Person Name<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="contact_person_name{{ $vendor->id }}" name="contact_person_name" value="{{ $vendor->contact_person_name }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="contact_person_mobile{{ $vendor->id }}" class="form-label">Contact Person Mobile<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="contact_person_mobile{{ $vendor->id }}" name="contact_person_mobile" value="{{ $vendor->contact_person_mobile }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="contact_person_email{{ $vendor->id }}" class="form-label">Contact Person Email</label>
+                                            <input type="email" class="form-control" id="contact_person_email{{ $vendor->id }}" name="contact_person_email" value="{{ $vendor->contact_person_email }}">
+                                        </div>
+                                        <div class="col-md-12 mb-3">
+                                            <label for="related_product_service{{ $vendor->id }}" class="form-label">Related Product/Service</label>
+                                            <input type="text" class="form-control" id="related_product_service{{ $vendor->id }}" name="related_product_service" value="{{ $vendor->related_product_service }}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Update Vendor</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    @endforeach
+
+
+
+                    <!-- Bank Modal -->
+                    @foreach($vendors as $vendor)
+                    <div class="modal fade" id="bank{{ $vendor->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <form class="modal-content" action="#" method="POST">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="addLabel">Bank/ Related Service</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <p><strong class="badge bg-primary">Bank Details:</strong></p>
+                                    <p class="m-0">Bank Name: {{ $vendor->vendor_bank_name? $vendor->vendor_bank_name : 'N/A' }}</p>
+                                    <p class="m-0">Bank Branch: {{ $vendor->vendor_bank_branch_name? $vendor->vendor_bank_branch_name : 'N/A' }}</p>
+                                    <p class="m-0">Account Number: {{ $vendor->vendor_account_number? $vendor->vendor_account_number : 'N/A' }}</p>
+                                    <p>IFSC Code:{{ $vendor->vendor_ifsc_code? $vendor->vendor_ifsc_code : 'N/A' }}</p>
+                                    <p><strong class="badge bg-success">Related Product/Service:</strong></p>
+                                    <p class="m-0">{{ $vendor->related_product_service? $vendor->related_product_service : 'N/A' }}</p>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    @endforeach
+
+                    <!-- Delete Modal -->
+                    @foreach($vendors as $vendor)
+                    <div class="modal fade" id="delete{{ $vendor->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <form class="modal-content" action="{{ route('creator.vendor-create.delete', $vendor->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="addLabel">Delete Vendo Code</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete this vendor code?</p>
+                                    <p class="text-danger" style="text-transform: uppercase; font-size: 1.1rem; font-weight: bold;">{{ $vendor->vendor_code }}</p>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-danger">Delete Vendor Code</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    @endforeach
+
 
 
 
@@ -656,31 +817,72 @@
     <script src="{{ asset('./admin/assets/js/main.js') }}"></script>
 
     <!-- Page JS -->
+
     <!-- JS for Vendor Code -->
     <script>
-        document.getElementById('generateCode').addEventListener('click', function() {
-            const stateCode = document.getElementById('state_code').value;
-            const vendorName = document.getElementById('vendor_name').value.trim();
+        document.addEventListener("DOMContentLoaded", function() {
+            // Add modal generator
+            const addBtn = document.getElementById('generateCode');
+            if (addBtn) {
+                addBtn.addEventListener('click', function() {
+                    const stateCode = document.getElementById('state_code').value;
+                    const vendorName = document.getElementById('vendor_name').value.trim();
 
-            if (!stateCode || !vendorName) {
-                alert("Please select state & enter vendor name first!");
-                return;
+                    if (!stateCode || !vendorName) {
+                        alert("Please select state & enter vendor name first!");
+                        return;
+                    }
+
+                    const firstFour = vendorName.substring(0, 4).toLowerCase().replace(/\s+/g, '');
+                    const now = new Date();
+                    const month = String(now.getMonth() + 1).padStart(2, '0');
+                    const year = String(now.getFullYear()).slice(-2);
+
+                    const code = `${firstFour}-${stateCode}-${month}${year}`;
+                    document.getElementById('vendor_code').value = code;
+                });
             }
 
-            const firstFour = vendorName.substring(0, 4).toLowerCase().replace(/\s+/g, '');
-            const now = new Date();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const year = String(now.getFullYear()).slice(-2);
+            // Edit modals generator
+            document.querySelectorAll(".generateCodeBtn").forEach(function(btn) {
+                btn.addEventListener("click", function() {
+                    const targetId = this.dataset.target;
+                    const vendorId = targetId.replace("vendor_code", "");
 
-            const code = `${stateCode}-${firstFour}-${month}${year}`;
-            document.getElementById('vendor_code').value = code;
+                    const stateCode = document.getElementById("state_code" + vendorId).value;
+                    const vendorName = document.getElementById("vendor_name" + vendorId).value.trim();
+
+                    if (!stateCode || !vendorName) {
+                        alert("Please select state & enter vendor name first!");
+                        return;
+                    }
+
+                    const firstFour = vendorName.substring(0, 4).toLowerCase().replace(/\s+/g, '');
+                    const now = new Date();
+                    const month = String(now.getMonth() + 1).padStart(2, '0');
+                    const year = String(now.getFullYear()).slice(-2);
+
+                    const code = `${firstFour}-${stateCode}-${month}${year}`;
+                    document.getElementById(targetId).value = code;
+                });
+            });
         });
     </script>
+
 
     @if($errors->any())
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var myModal = new bootstrap.Modal(document.getElementById('add'));
+            myModal.show();
+        });
+    </script>
+    @endif
+
+    @if($errors->any())
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var myModal = new bootstrap.Modal(document.getElementById('edit'));
             myModal.show();
         });
     </script>
