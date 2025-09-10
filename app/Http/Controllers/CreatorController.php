@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\SiteCodeExport;
+use App\Exports\VendorCodeExport;
 use App\Models\Creator;
 use Illuminate\Http\Request;
 use App\Models\PaymentApproval;
@@ -392,5 +393,10 @@ class CreatorController extends Controller
     public function siteCodesExportAsExcel()
     {
         return Excel::download(new SiteCodeExport, 'site_codes.xlsx');
+    }
+
+    public function vendorCodesExportAsExcel()
+    {
+        return Excel::download(new VendorCodeExport, 'vendor_codes.xlsx');
     }
 }

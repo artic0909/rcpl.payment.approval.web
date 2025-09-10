@@ -328,7 +328,7 @@
                                                     alt="View Badge User" />
                                             </div>
 
-                                            <a href="" class="btn btn-info">Export As Excel</a>
+                                            <a href="{{ route('creator.vendor-codes-export') }}" class="btn btn-info">Export As Excel</a>
                                         </div>
 
                                         <div class="col-12">

@@ -19,6 +19,7 @@ Route::middleware(['auth:creator'])->group(function () {
     Route::put('/creator/vendor-create/{id}', [CreatorController::class, 'creatorUpdateVendor'])->name('creator.vendor-create.update');
     Route::post('/creator/vendor-create', [CreatorController::class, 'creatorVendorStore'])->name('creator.vendor-create.store');
     Route::delete('/creator/vendor-create/{id}', [CreatorController::class, 'creatorDeleteVendor'])->name('creator.vendor-create.delete');
+    Route::get('/creator/vendor-codes-export', [CreatorController::class, 'vendorCodesExportAsExcel'])->name('creator.vendor-codes-export');
     
     Route::get('/creator/site-code-create', [CreatorController::class, 'creatorSiteCodeView'])->name('creator.site-code-create');
     Route::post('/creator/site-code-create', [CreatorController::class, 'creatorSiteCode'])->name('creator.site-code-create.store');
