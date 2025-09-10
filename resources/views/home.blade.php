@@ -101,6 +101,12 @@
                       <a href="/staff-register">Register</a>
                     </p>
                   </div>
+                  <div class="text-center">
+                    <p class="mb-0">
+                      Show me all users
+                      <a href="/user">All Users</a>
+                    </p>
+                  </div>
                 </form>
               </div>
 
