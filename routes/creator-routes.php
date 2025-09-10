@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/creator/login', [CreatorController::class, 'creatorLoginView'])->name('creator.login');
-Route::get('/creator/register', [CreatorController::class, 'creatorRegisterView'])->name('creator.register');
-Route::post('/creator/register', [CreatorController::class, 'creatorRegister'])->name('creator.register.store');
+// Route::get('/creator/register', [CreatorController::class, 'creatorRegisterView'])->name('creator.register');
+// Route::post('/creator/register', [CreatorController::class, 'creatorRegister'])->name('creator.register.store');
 Route::post('/creator/login', [CreatorController::class, 'creatorLogin'])->name('creator.login.verify');
 
 
