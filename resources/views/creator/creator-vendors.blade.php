@@ -392,7 +392,7 @@
 
                                                             <!-- Actions -->
                                                             <td>
-                                                                <a type="button" href="{{ route('creator.vendor-create.edit', $vendor->id) }}" class="btn btn-sm btn-warning mb-2"><i class='bx  bx-edit'></i></a>
+                                                                <a type="button" target="_blank" href="/creator/vendor-create/{{$vendor->id}}/edit" class="btn btn-sm btn-warning mb-2"><i class='bx  bx-edit'></i></a>
                                                                 <button type="button" data-bs-toggle="modal" data-bs-target="#delete{{ $vendor->id }}" data-bs-backdrop="static" class="btn btn-sm btn-danger"><i class='bx  bx-trash'></i></button>
 
                                                             </td>

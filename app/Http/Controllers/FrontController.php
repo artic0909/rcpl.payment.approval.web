@@ -140,7 +140,7 @@ class FrontController extends Controller
         PaymentApproval::create([
             'user_id' => $validated['user_id'],
             'date' => $validated['date'],
-            'request_for' => $validated['request_for'], // store as JSON
+            'request_for' => $validated['request_for'],
             'vendor_name' => $validated['vendor_name'],
             'vendor_code' => $validated['vendor_code'] ?? null,
             'site_name' => $validated['site_name'] ?? null,
@@ -152,6 +152,20 @@ class FrontController extends Controller
             'party_bank_name' => $validated['party_bank_name'],
             'party_bank_branch_name' => $validated['party_bank_branch_name'] ?? null,
         ]);
+
+        // Update Vendor banking details if vendor exists
+        if (!empty($validated['vendor_code'])) {
+            $vendor = Vendor::where('vendor_code', $validated['vendor_code'])->first();
+
+            if ($vendor) {
+                $vendor->update([
+                    'vendor_account_number' => $validated['party_account_number'],
+                    'vendor_ifsc_code' => $validated['party_ifsc_code'],
+                    'vendor_bank_name' => $validated['party_bank_name'],
+                    'vendor_bank_branch_name' => $validated['party_bank_branch_name'] ?? null,
+                ]);
+            }
+        }
 
         return redirect()->back()->with('success', 'Payment approval form submitted successfully!');
     }

@@ -137,8 +137,8 @@
 
                                                 
                                                 <td class="td">
-                                                    <p class="m-0">{{ $payment->vendor_name }}</p>
-                                                    <p class="m-0">Code: {{ $payment->vendor_code }}</p>
+                                                    <p class="m-0" style="text-transform: uppercase;">{{ $payment->vendor_name }}</p>
+                                                    <p class="m-0" style="text-transform: uppercase;">Code: {{ $payment->vendor_code }}</p>
                                                 </td>
 
                                                 <td>

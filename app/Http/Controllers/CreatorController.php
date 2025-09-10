@@ -218,10 +218,10 @@ class CreatorController extends Controller
 
         try {
             $vendor = Vendor::create([
-                'state_code' => $validatedData['state_code'],  // stores site_code into state_code column
+                'state_code' => $validatedData['state_code'],
                 'vendor_name' => $validatedData['vendor_name'],
                 'vendor_code' => $validatedData['vendor_code'],
-                'vendor_category' => json_encode($validatedData['vendor_category']), // ✅ fixed
+                'vendor_category' => json_encode($validatedData['vendor_category']),
                 'vendor_address' => $request->vendor_address,
                 'vendor_account_number' => $request->vendor_account_number,
                 'vendor_ifsc_code' => $request->vendor_ifsc_code,
@@ -247,7 +247,48 @@ class CreatorController extends Controller
         return view('creator.creator-vendor-edit', compact('vendor', 'sites'));
     }
 
-    public function creatorUpdateVendor(Request $request, $id) {}
+    public function creatorUpdateVendor(Request $request, $id)
+    {
+        $vendor = Vendor::findOrFail($id);
+
+
+        $validated = $request->validate([
+            'state_code' => 'required|string|max:10',
+            'vendor_name' => 'required|string|max:255',
+            'vendor_code' => 'required|string|max:50|unique:vendors,vendor_code,' . $vendor->id,
+            'vendor_category' => 'required|array',
+            'vendor_category.*' => 'string',
+            'vendor_address' => 'nullable|string|max:255',
+            'vendor_account_number' => 'nullable|string|max:50',
+            'vendor_ifsc_code' => 'nullable|string|max:50',
+            'vendor_bank_name' => 'nullable|string|max:100',
+            'vendor_bank_branch_name' => 'nullable|string|max:100',
+            'contact_person_name' => 'required|string|max:100',
+            'contact_person_mobile' => 'required|string|max:20',
+            'contact_person_email' => 'nullable|email|max:100',
+            'related_product_service' => 'nullable|string|max:255',
+        ]);
+
+     
+        $vendor->update([
+            'state_code' => strtoupper($validated['state_code']),
+            'vendor_name' => $validated['vendor_name'],
+            'vendor_code' => strtoupper($validated['vendor_code']),
+            'vendor_category' => json_encode($validated['vendor_category']),
+            'vendor_address' => $validated['vendor_address'] ?? null,
+            'vendor_account_number' => $validated['vendor_account_number'] ?? null,
+            'vendor_ifsc_code' => strtoupper($validated['vendor_ifsc_code'] ?? ''),
+            'vendor_bank_name' => $validated['vendor_bank_name'] ?? null,
+            'vendor_bank_branch_name' => $validated['vendor_bank_branch_name'] ?? null,
+            'contact_person_name' => $validated['contact_person_name'],
+            'contact_person_mobile' => $validated['contact_person_mobile'],
+            'contact_person_email' => $validated['contact_person_email'] ?? null,
+            'related_product_service' => $validated['related_product_service'] ?? null,
+        ]);
+
+        return redirect()->route('creator.vendor-create.edit', $vendor->id)
+            ->with('success', 'Vendor updated successfully!');
+    }
 
 
 

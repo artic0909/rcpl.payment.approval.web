@@ -15,8 +15,8 @@ Route::middleware(['auth:creator'])->group(function () {
     Route::get('/creator/logout', [CreatorController::class, 'creatorLogout'])->name('creator.logout');
 
     Route::get('/creator/vendor-create', [CreatorController::class, 'creatorVendorCreateView'])->name('creator.vendor-create');
-    Route::get('/creator/vendor-create/edit/{id}', [CreatorController::class, 'creatorEditVendorView'])->name('creator.vendor-create.edit');
-    Route::put('/creator/vendor-create/edit/{id}', [CreatorController::class, 'creatorVendorStore'])->name('creator.vendor-create.update');
+    Route::get('/creator/vendor-create/{id}/edit', [CreatorController::class, 'creatorEditVendorView'])->name('creator.vendor-create.edit');
+    Route::put('/creator/vendor-create/{id}', [CreatorController::class, 'creatorUpdateVendor'])->name('creator.vendor-create.update');
     Route::post('/creator/vendor-create', [CreatorController::class, 'creatorVendorStore'])->name('creator.vendor-create.store');
     Route::delete('/creator/vendor-create/{id}', [CreatorController::class, 'creatorDeleteVendor'])->name('creator.vendor-create.delete');
     

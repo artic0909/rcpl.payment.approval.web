@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>Create Vendors | RCPL</title>
+    <title>{{$vendor-> vendor_name}} | Edit Vendor</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('./img/vendor.png') }}" />
@@ -320,8 +320,8 @@
                             <h4>Edit Vendor</h4>
                             <!-- State Code Dropdown -->
                             <div class="col-md-6 mb-3">
-                                <label for="state_code{{ $vendor->id }}" class="form-label">Choose Site Code</label>
-                                <select class="form-select" id="state_code{{ $vendor->id }}" name="state_code" style="text-transform: uppercase;">
+                                <label for="state_code" class="form-label">Choose Site Code</label>
+                                <select class="form-select" id="state_code" name="state_code" style="text-transform: uppercase;">
                                     <!-- <option value="{{ $vendor->state_code }}" selected>{{ $vendor->state_code }}</option> -->
                                     @foreach($sites as $site)
                                     <option value="{{ $site->site_code }}" {{ $vendor->state_code == $site->site_code ? 'selected' : '' }}>
@@ -333,16 +333,16 @@
 
                             <!-- Vendor Name -->
                             <div class="col-md-6 mb-3">
-                                <label for="vendor_name{{ $vendor->id }}" class="form-label">Vendor Name</label>
-                                <input type="text" class="form-control" id="vendor_name{{ $vendor->id }}" name="vendor_name" value="{{ $vendor->vendor_name }}">
+                                <label for="vendor_name" class="form-label">Vendor Name</label>
+                                <input type="text" class="form-control" id="vendor_name" name="vendor_name" value="{{ $vendor->vendor_name }}">
                             </div>
 
                             <div class="col-md-12 mb-3">
-                                <label for="vendor_code{{ $vendor->id }}" class="form-label">Vendor Code</label>
+                                <label for="vendor_code" class="form-label">Vendor Code</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="vendor_code{{ $vendor->id }}" name="vendor_code"
+                                    <input type="text" class="form-control" id="vendor_code" name="vendor_code"
                                         value="{{ $vendor->vendor_code }}" style="text-transform: uppercase;">
-                                    <button type="button" class="btn btn-primary generateCodeBtn" data-target="vendor_code{{ $vendor->id }}">
+                                    <button type="button" class="btn btn-primary generateCodeBtn" data-target="vendor_code">
                                         Generate
                                     </button>
                                 </div>
@@ -372,40 +372,40 @@
 
                             <!-- Optional fields -->
                             <div class="col-md-6 mb-3">
-                                <label for="vendor_address{{ $vendor->id }}" class="form-label">Vendor Address</label>
-                                <input type="text" class="form-control" id="vendor_address{{ $vendor->id }}" name="vendor_address" value="{{ $vendor->vendor_address }}">
+                                <label for="vendor_address" class="form-label">Vendor Address</label>
+                                <input type="text" class="form-control" id="vendor_address" name="vendor_address" value="{{ $vendor->vendor_address }}">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="vendor_account_number{{ $vendor->id }}" class="form-label">Vendor Account Number</label>
-                                <input type="text" class="form-control" id="vendor_account_number{{ $vendor->id }}" name="vendor_account_number" value="{{ $vendor->vendor_account_number }}">
+                                <label for="vendor_account_number" class="form-label">Vendor Account Number</label>
+                                <input type="text" class="form-control" id="vendor_account_number" name="vendor_account_number" value="{{ $vendor->vendor_account_number }}">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="vendor_ifsc_code{{ $vendor->id }}" class="form-label">Vendor IFSC Code</label>
-                                <input type="text" class="form-control" id="vendor_ifsc_code{{ $vendor->id }}" name="vendor_ifsc_code" value="{{ $vendor->vendor_ifsc_code }}">
+                                <label for="vendor_ifsc_code" class="form-label">Vendor IFSC Code</label>
+                                <input type="text" class="form-control" id="vendor_ifsc_code" name="vendor_ifsc_code" value="{{ $vendor->vendor_ifsc_code }}">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="vendor_bank_name{{ $vendor->id }}" class="form-label">Vendor Bank Name</label>
-                                <input type="text" class="form-control" id="vendor_bank_name{{ $vendor->id }}" name="vendor_bank_name" value="{{ $vendor->vendor_bank_name }}">
+                                <label for="vendor_bank_name" class="form-label">Vendor Bank Name</label>
+                                <input type="text" class="form-control" id="vendor_bank_name" name="vendor_bank_name" value="{{ $vendor->vendor_bank_name }}">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="vendor_bank_branch_name{{ $vendor->id }}" class="form-label">Vendor Bank Branch</label>
-                                <input type="text" class="form-control" id="vendor_bank_branch_name{{ $vendor->id }}" name="vendor_bank_branch_name" value="{{ $vendor->vendor_bank_branch_name }}">
+                                <label for="vendor_bank_branch_name" class="form-label">Vendor Bank Branch</label>
+                                <input type="text" class="form-control" id="vendor_bank_branch_name" name="vendor_bank_branch_name" value="{{ $vendor->vendor_bank_branch_name }}">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="contact_person_name{{ $vendor->id }}" class="form-label">Contact Person Name<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="contact_person_name{{ $vendor->id }}" name="contact_person_name" value="{{ $vendor->contact_person_name }}" required>
+                                <label for="contact_person_name" class="form-label">Contact Person Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="contact_person_name" name="contact_person_name" value="{{ $vendor->contact_person_name }}" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="contact_person_mobile{{ $vendor->id }}" class="form-label">Contact Person Mobile<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="contact_person_mobile{{ $vendor->id }}" name="contact_person_mobile" value="{{ $vendor->contact_person_mobile }}" required>
+                                <label for="contact_person_mobile" class="form-label">Contact Person Mobile<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="contact_person_mobile" name="contact_person_mobile" value="{{ $vendor->contact_person_mobile }}" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="contact_person_email{{ $vendor->id }}" class="form-label">Contact Person Email</label>
-                                <input type="email" class="form-control" id="contact_person_email{{ $vendor->id }}" name="contact_person_email" value="{{ $vendor->contact_person_email }}">
+                                <label for="contact_person_email" class="form-label">Contact Person Email</label>
+                                <input type="email" class="form-control" id="contact_person_email" name="contact_person_email" value="{{ $vendor->contact_person_email }}">
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label for="related_product_service{{ $vendor->id }}" class="form-label">Related Product/Service</label>
-                                <input type="text" class="form-control" id="related_product_service{{ $vendor->id }}" name="related_product_service" value="{{ $vendor->related_product_service }}">
+                                <label for="related_product_service" class="form-label">Related Product/Service</label>
+                                <input type="text" class="form-control" id="related_product_service" name="related_product_service" value="{{ $vendor->related_product_service }}">
                             </div>
 
                             <div class="d-flex justify-content-center mt-2">

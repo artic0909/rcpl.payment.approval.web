@@ -146,23 +146,40 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-md-12 mb-4">
+                                        <div class="form-group">
+                                            <label for="" class="form-label">Search Vendors</label>
+
+                                            <div class="d-flex align-items-stretch">
+                                                <input type="text" class="form-control" id="search" placeholder="Search vendors by name or code">
+                                                &nbsp;
+                                                &nbsp;
+                                                <button type="button" id="searchBtn" style="background-color: #2D5BFF;" class="btn btn-primary d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="row mb-4">
 
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="vendor_code" class="form-label">Vendor Code
-                                                    <span class="text-danger">*</span></label>
+                                                    <span class="text-danger">*</span>
+                                                </label>
 
-                                                <select name="vendor_code" id="vendor_code" class="form-select" required>
-                                                    <option value="{{ old('vendor_code', $payment->vendor_code) }}" selected>{{ old('vendor_code', $payment->vendor_code) }}</option>
-                                                    <hr>
+                                                <select name="vendor_code" id="vendor_code" class="form-select" required style="text-transform: uppercase;">
+                                                    <option value="">Select Vendor Code</option>
                                                     @foreach($vendors as $vendor)
-                                                    <option value="{{ $vendor->vendor_code }}">{{ $vendor->vendor_code }} - {{ $vendor->vendor_name }}</option>
+                                                    <option value="{{ $vendor->vendor_code }}" data-name="{{ $vendor->vendor_name }}"
+                                                        {{ old('vendor_code', $payment->vendor_code) == $vendor->vendor_code ? 'selected' : '' }}>
+                                                        {{ $vendor->vendor_code }} - {{ $vendor->vendor_name }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
-
 
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -463,7 +480,34 @@
     </script>
 
     <script>
-        document.getElementById('vendor_code').addEventListener('change', function() {
+        const searchInput = document.getElementById('search');
+        const searchBtn = document.getElementById('searchBtn');
+        const vendorSelect = document.getElementById('vendor_code');
+
+        // Filter vendors by search text
+        function filterVendors() {
+            const query = searchInput.value.toLowerCase();
+
+            for (let option of vendorSelect.options) {
+                if (option.value === "") continue; // Skip default
+
+                const code = option.value.toLowerCase();
+                const name = option.dataset.name?.toLowerCase() || "";
+
+                if (code.includes(query) || name.includes(query)) {
+                    option.style.display = "block";
+                } else {
+                    option.style.display = "none";
+                }
+            }
+        }
+
+        // Live search
+        searchInput.addEventListener("keyup", filterVendors);
+        searchBtn.addEventListener("click", filterVendors);
+
+        // Auto fetch vendor details when a vendor is selected
+        vendorSelect.addEventListener('change', function() {
             let vendorCode = this.value;
             if (vendorCode) {
                 fetch(`/staff/get-vendor-details/${vendorCode}`)
@@ -482,7 +526,27 @@
                     .catch(err => console.error(err));
             }
         });
+
+        // 🔄 Auto-fill details if editing existing vendor
+        window.addEventListener("DOMContentLoaded", function() {
+            const selectedVendor = vendorSelect.value;
+            if (selectedVendor) {
+                fetch(`/staff/get-vendor-details/${selectedVendor}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('vendor_name').value = data.data.vendor_name;
+                            document.getElementById('party_account_number').value = data.data.vendor_account_number;
+                            document.getElementById('party_ifsc_code').value = data.data.vendor_ifsc_code;
+                            document.getElementById('party_bank_name').value = data.data.vendor_bank_name;
+                            document.getElementById('party_bank_branch_name').value = data.data.vendor_bank_branch_name;
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+        });
     </script>
+
 
 </body>
 

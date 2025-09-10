@@ -135,18 +135,36 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-md-12 mb-4">
+                                        <div class="form-group">
+                                            <label for="" class="form-label">Search Vendors</label>
+
+                                            <div class="d-flex align-items-stretch">
+                                                <input type="text" class="form-control" id="search" placeholder="Search vendors by name or code">
+                                                &nbsp;
+                                                &nbsp;
+                                                <button type="button" id="searchBtn" style="background-color: #2D5BFF;" class="btn btn-primary d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                     <div class="row mb-4">
 
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="vendor_code" class="form-label">Vendor Code
-                                                    <span class="text-danger">*</span></label>
+                                                    <span class="text-danger">*</span>
+                                                </label>
 
-                                                <select name="vendor_code" id="vendor_code" class="form-select" required>
+                                                <select name="vendor_code" id="vendor_code" class="form-select" required style="text-transform: uppercase;">
                                                     <option value="" selected>Select Vendor Code</option>
                                                     @foreach($vendors as $vendor)
-                                                    <option value="{{ $vendor->vendor_code }}">{{ $vendor->vendor_code }} - {{ $vendor->vendor_name }}</option>
+                                                    <option value="{{ $vendor->vendor_code }}" data-name="{{ $vendor->vendor_name }}">
+                                                        {{ $vendor->vendor_code }} - {{ $vendor->vendor_name }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -456,7 +474,37 @@
     </script>
 
     <script>
-        document.getElementById('vendor_code').addEventListener('change', function() {
+        const searchInput = document.getElementById('search');
+        const searchBtn = document.getElementById('searchBtn');
+        const vendorSelect = document.getElementById('vendor_code');
+
+        // Search filter function
+        function filterVendors() {
+            const query = searchInput.value.toLowerCase();
+
+            for (let option of vendorSelect.options) {
+                if (option.value === "") continue; // Skip default option
+
+                const code = option.value.toLowerCase();
+                const name = option.dataset.name.toLowerCase();
+
+                // Show only those matching name OR code
+                if (code.includes(query) || name.includes(query)) {
+                    option.style.display = "block";
+                } else {
+                    option.style.display = "none";
+                }
+            }
+        }
+
+        // Trigger search when typing
+        searchInput.addEventListener("keyup", filterVendors);
+
+        // Trigger search when clicking search button
+        searchBtn.addEventListener("click", filterVendors);
+
+        // When vendor is chosen, fetch details
+        vendorSelect.addEventListener('change', function() {
             let vendorCode = this.value;
             if (vendorCode) {
                 fetch(`/staff/get-vendor-details/${vendorCode}`)
@@ -476,6 +524,7 @@
             }
         });
     </script>
+
 
 
 </body>
