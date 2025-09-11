@@ -202,7 +202,18 @@ class AdminController extends Controller
         ]);
 
         Mail::to('ranihati.construction@gmail.com')
-            ->cc('karmakarnetai866@gmail.com')
+            ->cc([
+                'karmakarnetai866@gmail.com',
+                'sayek@rconpl.in',
+                'azaharuddin@rconpl.in',
+                'rakibul@rconpl.in',
+                'rubina.yashmin@rconpl.in',
+                'payel.pal@rconpl.in',
+                'sandip.das@rconpl.in',
+                'soumen.singharoy@rconpl.in',
+                'arindam.rcpl05@gmail.com',
+                'subratadey.rcpl@gmail.com',
+            ])
             ->send(new AdminStatusMail($payment, 'remarked'));
 
         return redirect()->back()->with('success', 'Remarks added successfully.');
@@ -217,7 +228,18 @@ class AdminController extends Controller
         ]);
 
         Mail::to('ranihati.construction@gmail.com')
-            ->cc('karmakarnetai866@gmail.com')
+            ->cc([
+                'karmakarnetai866@gmail.com',
+                'sayek@rconpl.in',
+                'azaharuddin@rconpl.in',
+                'rakibul@rconpl.in',
+                'rubina.yashmin@rconpl.in',
+                'payel.pal@rconpl.in',
+                'sandip.das@rconpl.in',
+                'soumen.singharoy@rconpl.in',
+                'arindam.rcpl05@gmail.com',
+                'subratadey.rcpl@gmail.com',
+            ])
             ->send(new AdminStatusMail($payment, 'approved'));
 
         return redirect()->back()->with('success', 'Payment request approved successfully.');
@@ -238,7 +260,18 @@ class AdminController extends Controller
         ]);
 
         Mail::to('ranihati.construction@gmail.com')
-            ->cc('karmakarnetai866@gmail.com')
+            ->cc([
+                'karmakarnetai866@gmail.com',
+                'sayek@rconpl.in',
+                'azaharuddin@rconpl.in',
+                'rakibul@rconpl.in',
+                'rubina.yashmin@rconpl.in',
+                'payel.pal@rconpl.in',
+                'sandip.das@rconpl.in',
+                'soumen.singharoy@rconpl.in',
+                'arindam.rcpl05@gmail.com',
+                'subratadey.rcpl@gmail.com',
+            ])
             ->send(new AdminStatusMail($payment, 'rejected'));
 
         return redirect()->back()->with('success', 'Payment request rejected successfully.');

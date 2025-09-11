@@ -358,7 +358,7 @@
                                                             <td><span class="badge rounded bg-label-primary  fw-bold">₹ {{ number_format($request->amount, 2) }}</span></td>
                                                             <td>
                                                                 <p class="m-0"><strong>{{ $request->vendor_name }}</strong></p>
-                                                                <p class="m-0">CD: <strong>{{ $request->vendor_code }}</strong></p>
+                                                                <p class="m-0" style="text-transform: uppercase;">CD: <strong>{{ $request->vendor_code }}</strong></p>
                                                                 <!-- <p class="m-0">Acc: <strong>{{ $request->party_account_number }}</strong></p>
                                                                 <p class="m-0">IFSC: <strong>{{ $request->party_ifsc_code }}</strong></p>
                                                                 <p class="m-0">Bank: <strong>{{ $request->party_bank_name }}</strong></p>
@@ -366,7 +366,7 @@
                                                             </td>
                                                             <td>
                                                                 <p class="m-0">{{ $request->user->name }}</p>
-                                                                <p class="m-0">CD: {{ $request->user->staff_code }}</p>
+                                                                <p class="m-0" style="text-transform: uppercase;">CD: {{ $request->user->staff_code }}</p>
                                                             </td>
                                                             <td>
                                                                 <a href="{{ route('admin.payment.pdf.view', $request->id) }}" class="btn btn-warning mb-2"><i class='bx bx-file'></i></a>

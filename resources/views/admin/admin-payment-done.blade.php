@@ -378,7 +378,7 @@
                                                             </td>
                                                             <td>
                                                                 <p class="m-0"><strong>{{ $request->vendor_name }}</strong></p>
-                                                                <p class="m-0">CD: <strong>{{ $request->vendor_code }}</strong></p>
+                                                                <p class="m-0" style="text-transform: uppercase;">CD: <strong>{{ $request->vendor_code }}</strong></p>
                                                                 <!-- <p class="m-0">Acc: <strong>{{ $request->party_account_number }}</strong></p>
                                                                 <p class="m-0">IFSC: <strong>{{ $request->party_ifsc_code }}</strong></p>
                                                                 <p class="m-0">Bank: <strong>{{ $request->party_bank_name }}</strong></p>

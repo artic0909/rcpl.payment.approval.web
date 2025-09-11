@@ -346,9 +346,9 @@
                                                         @foreach($sites as $site)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
-                                                            <td>{{ $site->site_code }}</td>
-                                                            <td>{{ $site->site_name }}</td>
-                                                            <td>{{ $site->location }}</td>
+                                                            <td style="text-transform: uppercase;">{{ $site->site_code }}</td>
+                                                            <td style="text-transform: uppercase;">{{ $site->site_name }}</td>
+                                                            <td style="text-transform: uppercase;">{{ $site->location }}</td>
                                                             <td>
                                                                 <button type="button" data-bs-toggle="modal" data-bs-target="#edit{{ $site->id }}" data-bs-backdrop="static" class="btn btn-sm btn-warning"><i class='bx  bx-edit'></i></button>
                                                                 <button type="button" data-bs-toggle="modal" data-bs-target="#delete{{ $site->id }}" data-bs-backdrop="static" class="btn btn-sm btn-danger"><i class='bx  bx-trash'></i></button>
@@ -524,7 +524,7 @@
 
                                 <div class="modal-body">
                                     <p>Are you sure you want to delete this site code?</p>
-                                    <p class="text-danger">{{ $site->site_code }}</p>
+                                    <p class="text-danger" style="text-transform: uppercase;">{{ $site->site_code }}</p>
                                 </div>
 
                                 <div class="modal-footer">

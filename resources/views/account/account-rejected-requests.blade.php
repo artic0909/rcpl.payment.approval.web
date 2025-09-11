@@ -43,6 +43,7 @@
                 font-size: 11px !important;
             }
         }
+
         .custom-success-popup,
         .custom-error-popup {
             position: fixed;
@@ -330,7 +331,7 @@
                                                         @foreach ($paymentRequestDetails as $request)
                                                         <tr style="text-align: left;">
                                                             <td><strong>{{ $request->date?->format('d M Y') }}</strong></td>
-                                                            <td><strong class="text-danger" style="white-space: normal; word-wrap: break-word; max-width: 130px; line-height: 1.2;">{{ $request->remarks }}</strong></td>
+                                                            <td><strong class="text-danger" style="white-space: normal; word-wrap: break-word; max-width: 130px; line-height: 1.2;">{{ $request->remarks?? 'No Reason' }}</strong></td>
                                                             <td><span class="badge rounded bg-label-danger fw-bold">{{ $request->status }}</span></td>
                                                             <td><span class="badge rounded bg-label-warning fw-bold">{{ $request->payment_status }}</span></td>
                                                             <td><span class="badge rounded bg-label-primary  fw-bold" style="white-space: normal; word-wrap: break-word; max-width: 130px; line-height: 1.2;">{{ $request->site_name }}</span></td>
@@ -353,7 +354,7 @@
                                                             <td><span class="badge rounded bg-label-danger  fw-bold">₹ {{ number_format($request->amount, 2) }}</span></td>
                                                             <td>
                                                                 <p class="m-0"><strong>{{ $request->vendor_name }}</strong></p>
-                                                                <p class="m-0">CD: <strong>{{ $request->vendor_code }}</strong></p>
+                                                                <p class="m-0" style="text-transform: uppercase;">CD: <strong>{{ $request->vendor_code }}</strong></p>
                                                                 <!-- <p class="m-0">Acc: <strong>{{ $request->party_account_number }}</strong></p>
                                                                 <p class="m-0">IFSC: <strong>{{ $request->party_ifsc_code }}</strong></p>
                                                                 <p class="m-0">Bank: <strong>{{ $request->party_bank_name }}</strong></p>
@@ -361,7 +362,7 @@
                                                             </td>
                                                             <td>
                                                                 <p class="m-0">{{ $request->user->name }}</p>
-                                                                <p class="m-0">CD: {{ $request->user->staff_code }}</p>
+                                                                <p class="m-0" style="text-transform: uppercase;">CD: {{ $request->user->staff_code }}</p>
                                                             </td>
                                                             <td>
                                                                 <a href="{{ route('account.payment.pdf.view', $request->id) }}" class="btn btn-danger mb-2"><i class='bx bx-file'></i></a>

@@ -351,10 +351,10 @@
                                                         <tr>
                                                             <td>{{ $vendors->firstItem() + $index }}</td>
                                                             <td>
-                                                                <p class="m-0 badge bg-primary">{{ $vendor->vendor_code }}</p>
+                                                                <p class="m-0 badge bg-primary" style="text-transform: uppercase;">{{ $vendor->vendor_code }}</p>
                                                             </td>
 
-                                                            <td>{{ $vendor->vendor_name }}</td>
+                                                            <td style="text-transform: uppercase;">{{ $vendor->vendor_name }}</td>
 
                                                             <td>
                                                                 @php
