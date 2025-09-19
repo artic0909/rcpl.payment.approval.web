@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Mail\AdminPaymentStatusMail;
 use Illuminate\Http\Request;
 use App\Models\Account;
+use App\Models\CommercialRequest;
 use App\Models\PaymentApproval;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
 {
@@ -334,5 +336,126 @@ class AccountController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Profile Updated Successfully');
+    }
+
+    // My Request View
+    public function accountMyRequestView(Request $request)
+    {
+        $query = CommercialRequest::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('approval_status', 'like', "%{$search}%")
+                    ->orWhere('payment_status', 'like', "%{$search}%")
+                    ->orWhere('payment_type', 'like', "%{$search}%")
+                    ->orWhere('amount', 'like', "%{$search}%")
+                    ->orWhere('amount_in_words', 'like', "%{$search}%")
+                    ->orWhere('remarks', 'like', "%{$search}%")
+                    ->orWhere('reject_remarks', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $myRequests = $query->orderBy('id', 'desc')
+            ->paginate(10)
+            ->appends($request->all());
+
+        return view('account.account-my-request', compact('myRequests'));
+    }
+
+
+    public function accountMyRequestStore(Request $request)
+    {
+        try {
+            // Validate request
+            $validator = Validator::make($request->all(), [
+                'date'            => 'required|date',
+                'payment_type'    => 'required|string',
+                'amount'          => 'required|numeric',
+                'amount_in_words' => 'required|string',
+                'remarks'         => 'nullable|string',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput()
+                    ->with('error', 'Validation failed. Please check the inputs.');
+            }
+
+            // Create CommercialRequest
+            CommercialRequest::create([
+                'date'            => $request->date,
+                'approval_status' => 'pending',
+                'payment_status'  => 'pending',
+                'payment_type'    => $request->payment_type,
+                'amount'          => $request->amount,
+                'amount_in_words' => $request->amount_in_words,
+                'remarks'         => $request->remarks,
+            ]);
+
+            return redirect()->back()->with('success', 'Request submitted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
+    }
+
+    public function accountMyRequestPaymentStatusUpdate($id)
+    {
+        $payment = CommercialRequest::findOrFail($id);
+
+        $payment->update([
+            'payment_status' => 'done',
+        ]);
+
+        // Mail::to('ranihati.construction@gmail.com')
+        //     ->cc([
+        //         'karmakarnetai866@gmail.com',
+        //         'sayek@rconpl.in',
+        //         'azaharuddin@rconpl.in',
+        //         'rakibul@rconpl.in',
+        //         'rubina.yashmin@rconpl.in',
+        //         'payel.pal@rconpl.in',
+        //         'sandip.das@rconpl.in',
+        //         'soumen.singharoy@rconpl.in',
+        //         'arindam.rcpl05@gmail.com',
+        //         'subratadey.rcpl@gmail.com',
+        //     ])
+        //     ->send(new AdminPaymentStatusMail($payment, 'Done'));
+
+        return redirect()->back()->with('success', 'Payment status updated to Done successfully.');
+    }
+
+    public function accountMyRequestUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'date'            => 'date',
+            'payment_type'    => 'string',
+            'amount'          => 'numeric',
+            'amount_in_words' => 'string',
+            'remarks'         => 'nullable|string',
+        ]);
+
+        $payment = CommercialRequest::findOrFail($id);
+
+        $payment->update([
+            'date'            => $request->date,
+            'payment_type'    => $request->payment_type,
+            'amount'          => $request->amount,
+            'amount_in_words' => $request->amount_in_words,
+            'remarks'         => $request->remarks,
+        ]);
+
+        return redirect()->back()->with('success', 'Request updated successfully!');
+    }
+
+    public function accountMyRequestDelete($id)
+    {
+        CommercialRequest::findOrFail($id)->delete();
+        return redirect()->back()->with('success', 'Request deleted successfully!');
     }
 }

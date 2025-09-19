@@ -24,4 +24,12 @@ Route::middleware(['auth:account'])->group(function () {
     Route::post('/account/profile', [AccountController::class, 'accountUpdateProfile'])->name('account.profile.update');
 
     Route::get('/account/payment-pdf-view/{id}', [AccountController::class, 'acoountPdfView'])->name('account.payment.pdf.view');
+
+
+    // My Request
+    Route::get('/account/my-request', [AccountController::class, 'accountMyRequestView'])->name('account.my-request');
+    Route::post('/account/my-request', [AccountController::class, 'accountMyRequestStore'])->name('account.my-request.store');
+    Route::put('/account/my-request/payment/{id}', [AccountController::class, 'accountMyRequestUpdate'])->name('account.my-request.update');
+    Route::delete('/account/my-request/{id}', [AccountController::class, 'accountMyRequestDelete'])->name('account.my-request.delete');
+    Route::put('/account/my-request/{id}', [AccountController::class, 'accountMyRequestPaymentStatusUpdate'])->name('account.my-request.status');
 });

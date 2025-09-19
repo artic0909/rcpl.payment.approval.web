@@ -43,6 +43,7 @@
                 font-size: 11px !important;
             }
         }
+
         .custom-success-popup,
         .custom-error-popup {
             position: fixed;
@@ -155,6 +156,13 @@
                         <a href="{{ route('account.all-requests') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-list-ul"></i>
                             <div data-i18n="Chapters">All Requests</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="{{ route('account.my-request') }}" class="menu-link">
+                            <i class='menu-icon tf-icons bx  bx-rupee'  ></i> 
+                            <div data-i18n="Chapters">My Payment Requests</div>
                         </a>
                     </li>
 
@@ -304,7 +312,7 @@
 
                                         <div class="col-12">
                                             <div class="card-footer text-end">
-                                                
+
                                             </div>
                                         </div>
                                     </div>
