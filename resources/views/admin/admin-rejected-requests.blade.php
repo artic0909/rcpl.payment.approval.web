@@ -43,6 +43,7 @@
                 font-size: 11px !important;
             }
         }
+
         .custom-success-popup,
         .custom-error-popup {
             position: fixed;
@@ -161,6 +162,18 @@
                         <a href="{{ route('admin.all-requests') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-list-ul"></i>
                             <div data-i18n="Chapters">All Requests</div>
+                        </a>
+                    </li>
+
+                    <!-- Commercial -->
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Commercial</span>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="{{ route('admin.commercial-requests') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-rupee"></i>
+                            <div data-i18n="Chapters">Commercial Requests</div>
                         </a>
                     </li>
 

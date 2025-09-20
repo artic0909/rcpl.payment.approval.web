@@ -160,7 +160,7 @@
                 <!-- Sidebar -->
                 <ul class="menu-inner py-1">
                     <!-- Dashboard -->
-                    <li class="menu-item active">
+                    <li class="menu-item">
                         <a href="{{ route('admin.dashboard') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Dashboard">Dashboard</div>
@@ -213,7 +213,7 @@
                         <span class="menu-header-text">Commercial</span>
                     </li>
 
-                    <li class="menu-item">
+                    <li class="menu-item active">
                         <a href="{{ route('admin.commercial-requests') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-rupee"></i>
                             <div data-i18n="Chapters">Commercial Requests</div>

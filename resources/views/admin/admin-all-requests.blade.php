@@ -165,6 +165,18 @@
                         </a>
                     </li>
 
+                    <!-- Commercial -->
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Commercial</span>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="{{ route('admin.commercial-requests') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-rupee"></i>
+                            <div data-i18n="Chapters">Commercial Requests</div>
+                        </a>
+                    </li>
+
                     <!-- Setting -->
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Profile</span>
