@@ -401,7 +401,7 @@ class AccountController extends Controller
             ]);
 
             // Send Mail with data
-            Mail::to('arif424@gmail.com')
+            Mail::to('arif@rconpl.in')
                 ->cc([
                     'karmakarnetai866@gmail.com',
                     'sayek@rconpl.in',
