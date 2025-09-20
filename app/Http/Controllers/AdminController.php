@@ -12,6 +12,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminStatusMail;
 use App\Mail\AdminPaymentStatusMail;
+use App\Mail\CommercialRequestApprovalStatusMail;
+use App\Models\CommercialRequest;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -514,5 +516,90 @@ class AdminController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Profile Updated Successfully');
+    }
+
+    // Commercial(My) Request View
+    public function adminMyRequestView(Request $request)
+    {
+        $query = CommercialRequest::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('approval_status', 'like', "%{$search}%")
+                    ->orWhere('payment_status', 'like', "%{$search}%")
+                    ->orWhere('payment_type', 'like', "%{$search}%")
+                    ->orWhere('amount', 'like', "%{$search}%")
+                    ->orWhere('amount_in_words', 'like', "%{$search}%")
+                    ->orWhere('remarks', 'like', "%{$search}%")
+                    ->orWhere('reject_remarks', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $myRequests = $query->orderBy('id', 'desc')
+            ->paginate(10)
+            ->appends($request->all());
+
+        return view('admin.admin-commercial-requests', compact('myRequests'));
+    }
+
+    public function adminMyRequestApprove($id)
+    {
+        $request = CommercialRequest::findOrFail($id);
+        $request->approval_status = 'approved';
+        $request->save();
+
+        // Send mail with request data
+        Mail::to('sayek@rconpl.in')
+        ->cc([
+            'karmakarnetai866@gmail.com',
+        ])
+        ->send(new CommercialRequestApprovalStatusMail($request));
+
+        return redirect()->back()->with('success', 'Request Approved Successfully');
+    }
+
+    public function adminMyAmountRequestUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'amount'          => 'numeric',
+            'amount_in_words' => 'string',
+        ]);
+
+        $payment = CommercialRequest::findOrFail($id);
+
+        $payment->update([
+            'amount'          => $request->amount,
+            'amount_in_words' => $request->amount_in_words,
+        ]);
+
+        return redirect()->back()->with('success', 'Amount updated successfully!');
+    }
+
+    public function adminMyRequestReject(Request $request, $id)
+    {
+
+        $request->validate([
+            'reject_remarks' => 'nullable|string',
+        ]);
+
+        $payment = CommercialRequest::findOrFail($id);
+
+        $payment->update([
+            'reject_remarks' => $request->reject_remarks,
+            'approval_status'  => 'rejected',
+        ]);
+
+        return redirect()->back()->with('success', 'Payment request rejected successfully.');
+    }
+
+    public function adminShowMyRequestPdf($id)
+    {
+        $payment = CommercialRequest::findOrFail($id);
+        return view('account.account-my-request-pdf-view', compact('payment'));
     }
 }

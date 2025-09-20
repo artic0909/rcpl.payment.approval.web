@@ -337,6 +337,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>SL.</th>
+                                                            <th>Site Name</th>
                                                             <th>Vendor Code</th>
                                                             <th>Vendor Name</th>
                                                             <th>Category</th>
@@ -350,6 +351,11 @@
                                                         @forelse($vendors as $index => $vendor)
                                                         <tr>
                                                             <td>{{ $vendors->firstItem() + $index }}</td>
+                                                            <td style="text-transform: uppercase;">
+                                                                <span style="display: none;">{{ $vendor->state_code }}</span>
+                                                                {{ \App\Models\SiteCode::where('site_code', $vendor->state_code)->value('site_name') ?? 'N/A' }}
+                                                            </td>
+
                                                             <td>
                                                                 <p class="m-0 badge bg-primary" style="text-transform: uppercase;">{{ $vendor->vendor_code }}</p>
                                                             </td>

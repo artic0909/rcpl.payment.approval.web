@@ -32,4 +32,6 @@ Route::middleware(['auth:account'])->group(function () {
     Route::put('/account/my-request/payment/{id}', [AccountController::class, 'accountMyRequestUpdate'])->name('account.my-request.update');
     Route::delete('/account/my-request/{id}', [AccountController::class, 'accountMyRequestDelete'])->name('account.my-request.delete');
     Route::put('/account/my-request/{id}', [AccountController::class, 'accountMyRequestPaymentStatusUpdate'])->name('account.my-request.status');
+
+    Route::get('/account/my-request/pdf/{id}', [AccountController::class, 'showMyRequestPdf'])->name('account.my-request.pdf');
 });

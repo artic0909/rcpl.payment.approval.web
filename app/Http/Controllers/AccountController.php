@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AdminPaymentStatusMail;
+use App\Mail\CommercialRequestApprovalStatusMail;
+use App\Mail\CommercialRequestMail;
 use Illuminate\Http\Request;
 use App\Models\Account;
 use App\Models\CommercialRequest;
@@ -388,7 +390,7 @@ class AccountController extends Controller
             }
 
             // Create CommercialRequest
-            CommercialRequest::create([
+            $commercialRequest = CommercialRequest::create([
                 'date'            => $request->date,
                 'approval_status' => 'pending',
                 'payment_status'  => 'pending',
@@ -397,6 +399,14 @@ class AccountController extends Controller
                 'amount_in_words' => $request->amount_in_words,
                 'remarks'         => $request->remarks,
             ]);
+
+            // Send Mail with data
+            Mail::to('arif424@gmail.com')
+                ->cc([
+                    'karmakarnetai866@gmail.com',
+                    'sayek@rconpl.in',
+                ])
+                ->send(new CommercialRequestMail($commercialRequest));
 
             return redirect()->back()->with('success', 'Request submitted successfully!');
         } catch (\Exception $e) {
@@ -411,21 +421,6 @@ class AccountController extends Controller
         $payment->update([
             'payment_status' => 'done',
         ]);
-
-        // Mail::to('ranihati.construction@gmail.com')
-        //     ->cc([
-        //         'karmakarnetai866@gmail.com',
-        //         'sayek@rconpl.in',
-        //         'azaharuddin@rconpl.in',
-        //         'rakibul@rconpl.in',
-        //         'rubina.yashmin@rconpl.in',
-        //         'payel.pal@rconpl.in',
-        //         'sandip.das@rconpl.in',
-        //         'soumen.singharoy@rconpl.in',
-        //         'arindam.rcpl05@gmail.com',
-        //         'subratadey.rcpl@gmail.com',
-        //     ])
-        //     ->send(new AdminPaymentStatusMail($payment, 'Done'));
 
         return redirect()->back()->with('success', 'Payment status updated to Done successfully.');
     }
@@ -457,5 +452,11 @@ class AccountController extends Controller
     {
         CommercialRequest::findOrFail($id)->delete();
         return redirect()->back()->with('success', 'Request deleted successfully!');
+    }
+
+    public function showMyRequestPdf($id)
+    {
+        $payment = CommercialRequest::findOrFail($id);
+        return view('account.account-my-request-pdf-view', compact('payment'));
     }
 }

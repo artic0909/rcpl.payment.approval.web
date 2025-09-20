@@ -34,4 +34,16 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/profile', [AdminController::class, 'adminProfileView'])->name('admin.profile');
     Route::post('/admin/profile', [AdminController::class, 'adminUpdateProfile'])->name('admin.profile.update');
 
+    // Commercial Requests
+    Route::get('/admin/commercial-requests', [AdminController::class, 'adminMyRequestView'])->name('admin.commercial-requests');
+    Route::post('/admin/commercial-requests/approve/{id}', [AdminController::class, 'adminMyRequestApprove'])->name('admin.commercial-requests.approve');
+    Route::post('/admin/commercial-requests/reject/{id}', [AdminController::class, 'adminMyRequestReject'])->name('admin.commercial-requests.reject');
+    Route::get('/admin/commercial-requests/pdf/{id}', [AdminController::class, 'adminShowMyRequestPdf'])->name('admin.commercial-requests.pdf.show');
+    Route::put('/admin/commercial-requests/payment/{id}', [AdminController::class, 'adminMyAmountRequestUpdate'])->name('admin.my-request.amount.update');
+
+
+    // Route::get('/admin/commercial-requests/{id}', [AdminController::class, 'adminCommercialRequestsDetailsView'])->name('admin.commercial-requests.details');
+    // Route::get('/admin/commercial-requests/{id}/edit', [AdminController::class, 'adminCommercialRequestsEditView'])->name('admin.commercial-requests.edit');
+    // Route::post('/admin/commercial-requests/{id}', [AdminController::class, 'adminCommercialRequestsUpdate'])->name('admin.commercial-requests.update');
+
 });

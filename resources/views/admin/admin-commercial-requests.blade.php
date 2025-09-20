@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>My Payment Requests | RCPL</title>
+    <title>commercial Payment Requests | RCPL</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('./img/rupee.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('./img/RCPL.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -135,13 +135,14 @@
         <div class="layout-container">
             <!-- Menu -->
 
+
             <aside
                 id="layout-menu"
                 class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo">
                     <a href="admin-dashboard.html" class="app-brand-link">
                         <span class="app-brand-logo demo">
-                            <img src="{{ asset('./img/rupee.png') }}" width="50px" alt="" />
+                            <img src="{{ asset('./img/RCPL.png') }}" width="50px" alt="" />
                         </span>
                         <span
                             class="app-brand-text demo menu-text fw-bolder ms-2"
@@ -159,60 +160,73 @@
                 <!-- Sidebar -->
                 <ul class="menu-inner py-1">
                     <!-- Dashboard -->
-                    <li class="menu-item">
-                        <a href="{{ route('account.dashboard') }}" class="menu-link">
+                    <li class="menu-item active">
+                        <a href="{{ route('admin.dashboard') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Dashboard">Dashboard</div>
                         </a>
                     </li>
 
 
-                    <!-- Accounts -->
+                    <!-- Admin -->
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Requests</span>
                     </li>
                     <!-- Cards -->
                     <li class="menu-item">
-                        <a href="{{ route('account.pending-requests') }}" class="menu-link">
+                        <a href="{{ route('admin.pending-requests') }}" class="menu-link">
                             <i class='menu-icon tf-icons bx  bx-timer'></i>
                             <div data-i18n="Classes">Pending Requests</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="{{ route('account.approved-requests') }}" class="menu-link">
+                        <a href="{{ route('admin.approved-requests') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-list-check"></i>
                             <div data-i18n="Class FAQs">Approved Requests</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="{{ route('account.rejected-requests') }}" class="menu-link">
+                        <a href="{{ route('admin.done-requests') }}" class="menu-link">
+                            <i class='menu-icon tf-icons bx  bx-list-check'></i>
+                            <div data-i18n="Subjects">Payments Done</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="{{ route('admin.rejected-requests') }}" class="menu-link">
                             <i class='menu-icon tf-icons bx  bx-trash'></i>
                             <div data-i18n="Subjects">Rejected Requests</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="{{ route('account.all-requests') }}" class="menu-link">
+                        <a href="{{ route('admin.all-requests') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-list-ul"></i>
                             <div data-i18n="Chapters">All Requests</div>
                         </a>
                     </li>
 
-                    <li class="menu-item active">
-                        <a href="{{ route('account.my-request') }}" class="menu-link">
-                            <i class='menu-icon tf-icons bx  bx-rupee'></i>
-                            <div data-i18n="Chapters">My Payment Requests</div>
+                    <!-- Commercial -->
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Commercial</span>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="{{ route('admin.commercial-requests') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-rupee"></i>
+                            <div data-i18n="Chapters">Commercial Requests</div>
                         </a>
                     </li>
+
 
                     <!-- Setting -->
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Profile</span>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('account.profile') }}" class="menu-link">
+                        <a href="{{ route('admin.profile') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-user"></i>
                             <div data-i18n="Enquiry">Profile Details</div>
                         </a>
@@ -224,6 +238,7 @@
             <!-- Layout container -->
             <div class="layout-page">
                 <!-- Navbar -->
+
 
                 <nav
                     class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
@@ -241,7 +256,7 @@
                         class="navbar-nav-right d-flex align-items-center"
                         id="navbar-collapse">
                         <!-- Search -->
-                        <form action="{{ route('account.my-request') }}" method="GET" class="d-flex align-items-center">
+                        <form action="{{ route('admin.commercial-requests') }}" method="GET" class="d-flex align-items-center">
 
                             <!-- Search -->
                             <div class="nav-item d-flex align-items-center me-3">
@@ -267,7 +282,7 @@
 
                             <!-- Buttons -->
                             <button class="btn btn-primary me-2" type="submit">Search</button>
-                            <a href="{{ route('account.my-request') }}" class="btn btn-secondary">Reset</a>
+                            <a href="{{ route('admin.commercial-requests') }}" class="btn btn-secondary">Reset</a>
                         </form>
                         <!-- /Search -->
 
@@ -299,7 +314,7 @@
                                                 </div>
                                                 <div class="flex-grow-1">
                                                     <span class="fw-semibold d-block">{{ auth()->user()->name }}</span>
-                                                    <small class="text-muted">Accounts</small>
+                                                    <small class="text-muted">Admin</small>
                                                 </div>
                                             </div>
                                         </a>
@@ -308,7 +323,7 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('account.profile') }}">
+                                        <a class="dropdown-item" href="{{ route('admin.profile') }}">
                                             <i class="bx bx-user me-2"></i>
                                             <span class="align-middle">My Profile</span>
                                         </a>
@@ -317,7 +332,7 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('account.logout') }}">
+                                        <a class="dropdown-item" href="{{ route('admin.logout') }}">
                                             <i class="bx bx-power-off me-2"></i>
                                             <span class="align-middle">Log Out</span>
                                         </a>
@@ -343,14 +358,14 @@
                                         <div class="col-sm-7">
                                             <div class="card-body">
                                                 <h5 class="card-title text-primary">
-                                                    Your All Requests
+                                                    Commercial All payment Requests
                                                 </h5>
                                             </div>
                                         </div>
                                         <div class="col-sm-5 text-center text-sm-left">
                                             <div class="card-body pb-0 px-0 px-md-4">
                                                 <img
-                                                    src="{{ asset('./admin/assets/img/illustrations/man-with-laptop-light.png') }}"
+                                                    src="{{ asset('./img/rupee.png') }}"
                                                     height="80"
                                                     alt="View Badge User" />
                                             </div>
@@ -413,21 +428,23 @@
 
                                                             <td>
                                                                 <div class="d-flex flex-column gap-2">
-                                                                    @if ($request->approval_status == 'approved' && $request->payment_status == 'pending')
-                                                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#done{{ $request->id }}" data-bs-backdrop="static"><i class='bx bx-check-circle'></i></button>
+                                                                    @if ($request->approval_status == 'pending' && $request->payment_status == 'pending')
+                                                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#approve{{ $request->id }}" data-bs-backdrop="static"><i class='bx bx-check-circle'></i></button>
+                                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $request->id }}" data-bs-backdrop="static"><i class='bx bx-edit'></i></button>
+                                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#remark{{ $request->id }}" data-bs-backdrop="static"><i class='bx bx-user-x'></i></button>
                                                                     @endif
 
-                                                                    @if ($request->approval_status == 'pending' && $request->payment_status == 'pending')
-                                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $request->id }}" data-bs-backdrop="static"><i class='bx bx-edit'></i></button>
-                                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $request->id }}" data-bs-backdrop="static"><i class='bx bx-trash'></i></button>
+                                                                    @if ($request->approval_status == 'approved' && $request->payment_status == 'pending')
+                                                                    <a href="{{ route('admin.commercial-requests.pdf.show', $request->id) }}" class="btn btn-info" target="_blank"><i class='bx bx-file'></i></a>
                                                                     @endif
 
                                                                     @if ($request->approval_status == 'approved' && $request->payment_status == 'done')
-                                                                    <a href="{{ route('account.my-request.pdf', $request->id) }}" class="btn btn-info" target="_blank"><i class='bx bx-file'></i></a>
+                                                                    <a href="{{ route('admin.commercial-requests.pdf.show', $request->id) }}" class="btn btn-success" target="_blank"><i class='bx bx-file'></i></a>
                                                                     @endif
 
+
                                                                     @if ($request->approval_status == 'rejected' && $request->payment_status == 'pending')
-                                                                    <a href="{{ route('account.my-request.pdf', $request->id) }}" class="btn btn-danger" target="_blank"><i class='bx bx-file'></i></a>
+                                                                    <a href="{{ route('admin.commercial-requests.pdf.show', $request->id) }}" class="btn btn-danger" target="_blank"><i class='bx bx-file'></i></a>
                                                                     @endif
 
                                                                 </div>
@@ -488,106 +505,50 @@
                     <!-- / Content -->
 
 
-                    <!-- HTML -->
-                    <a data-bs-toggle="modal" data-bs-target="#add" data-bs-backdrop="static" class="fab" aria-label="Add new item" title="Add" style="color: white; cursor: pointer;">
-                        <!-- plus icon -->
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                        </svg>
-                    </a>
-
-                    <!-- Add Modal -->
-                    <div class="modal fade" id="add" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <form class="modal-content" action="{{ route('account.my-request.store') }}" method="POST">
+                    <!-- Approve Modal -->
+                    @foreach($myRequests as $request)
+                    <div class="modal fade" id="approve{{ $request->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="approve" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <form class="modal-content" action="{{ route('admin.commercial-requests.approve', $request->id) }}" method="POST">
                                 @csrf
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="addLabel">Make New Payment Request</h1>
+                                    <h1 class="modal-title fs-5" id="approve">Approved Confirmation</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-
                                 <div class="modal-body">
-                                    <div class="row">
-
-
-                                        <!-- Date -->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="date" class="form-label">Date<span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control" id="date" name="date" value="{{ old('date') }}" required>
-                                        </div>
-
-                                        <!-- Payment Type -->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="payment_type" class="form-label">Payment Type<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="payment_type" name="payment_type" value="{{ old('payment_type') }}" required>
-                                        </div>
-
-                                        <!-- Amount -->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="amount" class="form-label">Amount<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="amount" name="amount" value="{{ old('amount') }}" required>
-                                        </div>
-
-                                        <!-- Amount in Words -->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="amount_in_words" class="form-label">Amount in Words</label>
-                                            <!-- Hidden input to submit actual words -->
-                                            <input type="hidden" id="amount_in_words" name="amount_in_words" value="{{ old('amount_in_words') }}">
-                                            <!-- Visible preview -->
-                                            <div id="amountWords" class="form-control bg-light" style="min-height: 40px; padding: .5rem;">
-                                                {{ old('amount_in_words') ?? 'Amount will appear here...' }}
-                                            </div>
-                                        </div>
-
-
-                                        <!-- Remarks -->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="remarks" class="form-label">Remarks<span class="text-danger">*</span></label>
-                                            <textarea name="remarks" class="form-control" id="remarks" rows="5"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-warning">Send Request</button>
-                                    </div>
+                                    <h4>Are you sure you want to <span class="text-success fw-bold">approve</span> this payment request?</h4>
+                                    <p class="m-0 fw-bold fs-5">Requested amount: <span class="text-success">₹ {{ number_format($request->amount, 2) }}</span></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Approved</button>
                                 </div>
                             </form>
                         </div>
                     </div>
+                    @endforeach
 
 
-                    <!-- Edit Modal -->
+
+                    <!-- Edit Amount Modal -->
                     @foreach($myRequests as $request)
                     <div class="modal fade" id="edit{{ $request->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="editLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                            <form class="modal-content" id="editForm" action="{{ route('account.my-request.update', $request->id) }}" method="POST">
+                            <form class="modal-content" id="editForm" action="{{ route('admin.my-request.amount.update', $request->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
 
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="editLabel">Edit Payment Request</h1>
+                                    <h1 class="modal-title fs-5" id="editLabel">Set Amount</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
 
                                 <div class="modal-body">
                                     <div class="row">
 
-                                        <!-- Date -->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="edit_date" class="form-label">Date<span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control" id="edit_date" name="date" value="{{ \Carbon\Carbon::parse($request->date)->format('Y-m-d') }}">
-                                        </div>
-
-                                        <!-- Payment Type -->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="edit_payment_type" class="form-label">Payment Type<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="edit_payment_type" name="payment_type" value="{{ $request->payment_type }}">
-                                        </div>
-
                                         <!-- Amount -->
                                         <div class="col-md-12 mb-3">
-                                            <label for="edit_amount{{ $request->id }}" class="form-label">Amount<span class="text-danger">*</span></label>
+                                            <label for="edit_amount{{ $request->id }}" class="form-label">Requested Amount<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control"
                                                 id="edit_amount{{ $request->id }}"
                                                 name="amount"
@@ -609,18 +570,11 @@
                                                 {{ $request->amount_in_words ?? 'Amount will appear here...' }}
                                             </div>
                                         </div>
-
-
-                                        <!-- Remarks -->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="edit_remarks" class="form-label">Remarks<span class="text-danger">*</span></label>
-                                            <textarea name="remarks" class="form-control" id="edit_remarks" rows="5">{{ $request->remarks }}</textarea>
-                                        </div>
                                     </div>
 
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-warning">Update Request</button>
+                                        <button type="submit" class="btn btn-warning">Save</button>
                                     </div>
                                 </div>
                             </form>
@@ -630,51 +584,23 @@
 
 
 
-                    <!-- Payment Done Modal -->
+                    <!-- Reject Modal -->
                     @foreach($myRequests as $request)
-                    <div class="modal fade" id="done{{ $request->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="done" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <form class="modal-content" action="{{ route('account.my-request.status', $request->id) }}" method="POST">
+                    <div class="modal fade" id="remark{{ $request->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="remark" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <form class="modal-content" action="{{ route('admin.commercial-requests.reject', $request->id) }}" method="POST">
                                 @csrf
-                                @method('PUT')
-
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="done">Payment Request Confirmation</h1>
+                                    <h1 class="modal-title fs-5" id="remark">Give A Reason</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <h4>Are you sure you want to <span class="text-success fw-bold">done</span> this payment request?</h4>
-                                    <p class="m-0 fw-bold fs-5">Payment amount: <span class="text-success">₹ {{ number_format($request->amount, 2) }}</span></p>
+                                    <label for="reject_remarks" class="form-check-label mb-2">Give a reason why you want to <span class="text-danger fw-bold">reject</span> this payment request<span class="text-danger">*</span></label>
+                                    <textarea name="reject_remarks" class="form-control" id="reject_remarks" rows="5" required></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Payment Done</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    @endforeach
-
-
-                    <!-- Delete Modal -->
-                    @foreach($myRequests as $request)
-                    <div class="modal fade" id="delete{{ $request->id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="done" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <form class="modal-content" action="{{ route('account.my-request.delete', $request->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="done">Payment Request Delete</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <h4>Are you sure you want to <span class="text-danger fw-bold">delete</span> this payment request?</h4>
-                                    <p class="m-0 fw-bold fs-5">Payment amount: <span class="text-danger">₹ {{ number_format($request->amount, 2) }}</span></p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Delete</button>
+                                    <button type="submit" class="btn btn-danger">Reject</button>
                                 </div>
                             </form>
                         </div>
