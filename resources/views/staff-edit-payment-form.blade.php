@@ -479,7 +479,7 @@
         });
     </script>
 
-    <script>
+    <!-- <script>
         const searchInput = document.getElementById('search');
         const searchBtn = document.getElementById('searchBtn');
         const vendorSelect = document.getElementById('vendor_code');
@@ -527,7 +527,7 @@
             }
         });
 
-        // 🔄 Auto-fill details if editing existing vendor
+        // Auto-fill details if editing existing vendor
         window.addEventListener("DOMContentLoaded", function() {
             const selectedVendor = vendorSelect.value;
             if (selectedVendor) {
@@ -545,8 +545,88 @@
                     .catch(err => console.error(err));
             }
         });
-    </script>
+    </script> -->
 
+
+    <script>
+        const searchInput = document.getElementById('search');
+        const searchBtn = document.getElementById('searchBtn');
+        const vendorSelect = document.getElementById('vendor_code');
+
+        // Filter vendors by search text
+        function filterVendors() {
+            const query = searchInput.value.toLowerCase();
+
+            for (let option of vendorSelect.options) {
+                if (option.value === "") continue; // Skip default
+
+                const code = option.value.toLowerCase();
+                const name = option.dataset.name?.toLowerCase() || "";
+
+                if (code.includes(query) || name.includes(query)) {
+                    option.style.display = "block";
+                } else {
+                    option.style.display = "none";
+                }
+            }
+        }
+
+        // Function to fetch and populate vendor details including site name
+        function fetchVendorAndSiteDetails(vendorCode) {
+            if (!vendorCode) return;
+
+            // Extract site code from vendor code (e.g., 'kurk-10122-1125' -> '10122')
+            let parts = vendorCode.split('-');
+            let siteCode = parts.length >= 2 ? parts[1] : null;
+
+            // Fetch vendor details
+            fetch(`/staff/get-vendor-details/${vendorCode}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('vendor_name').value = data.data.vendor_name;
+                        document.getElementById('party_account_number').value = data.data.vendor_account_number || '';
+                        document.getElementById('party_ifsc_code').value = data.data.vendor_ifsc_code || '';
+                        document.getElementById('party_bank_name').value = data.data.vendor_bank_name || '';
+                        document.getElementById('party_bank_branch_name').value = data.data.vendor_bank_branch_name || '';
+                    } else {
+                        console.log('Vendor details not found');
+                    }
+                })
+                .catch(err => console.error('Error fetching vendor details:', err));
+
+            // Fetch site details if site code exists
+            if (siteCode) {
+                fetch(`/staff/get-site-details/${siteCode}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('site_name').value = data.data.site_name;
+                        } else {
+                            console.log('Site not found for code:', siteCode);
+                        }
+                    })
+                    .catch(err => console.error('Error fetching site details:', err));
+            }
+        }
+
+        // Live search
+        searchInput.addEventListener("keyup", filterVendors);
+        searchBtn.addEventListener("click", filterVendors);
+
+        // Auto fetch vendor and site details when a vendor is selected
+        vendorSelect.addEventListener('change', function() {
+            fetchVendorAndSiteDetails(this.value);
+        });
+
+        // Auto-fill details if editing existing vendor (on page load)
+        window.addEventListener("DOMContentLoaded", function() {
+            const selectedVendor = vendorSelect.value;
+            if (selectedVendor) {
+                fetchVendorAndSiteDetails(selectedVendor);
+            }
+        });
+    </script>
 
 </body>
 

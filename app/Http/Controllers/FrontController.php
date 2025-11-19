@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PaymentApproval;
+use App\Models\SiteCode;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Auth;
@@ -168,6 +169,26 @@ class FrontController extends Controller
         }
 
         return redirect()->back()->with('success', 'Payment approval form submitted successfully!');
+    }
+
+    // get site code
+    public function getSiteDetails($siteCode)
+    {
+        $site = SiteCode::where('site_code', $siteCode)->first();
+
+        if ($site) {
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'site_name' => $site->site_name
+                ]
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Site not found'
+        ]);
     }
 
     // Show edit form

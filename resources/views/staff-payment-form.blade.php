@@ -502,11 +502,16 @@
 
         // Trigger search when clicking search button
         searchBtn.addEventListener("click", filterVendors);
-
+        
         // When vendor is chosen, fetch details
         vendorSelect.addEventListener('change', function() {
             let vendorCode = this.value;
             if (vendorCode) {
+                // Extract site code from vendor code (e.g., 'kurk-10122-1125' -> '10122')
+                let parts = vendorCode.split('-');
+                let siteCode = parts.length >= 2 ? parts[1] : null;
+
+                // Fetch vendor details
                 fetch(`/staff/get-vendor-details/${vendorCode}`)
                     .then(response => response.json())
                     .then(data => {
@@ -520,7 +525,23 @@
                             alert('Vendor details not found');
                         }
                     })
-                    .catch(err => console.error(err));
+                    .catch(err => console.error('Error fetching vendor details:', err));
+
+                // Fetch site details if site code exists
+                if (siteCode) {
+                    fetch(`/staff/get-site-details/${siteCode}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                document.getElementById('site_name').value = data.data.site_name;
+                            } else {
+                                console.log('Site not found for code:', siteCode);
+                                // Optionally clear the site_name field if not found
+                                // document.getElementById('site_name').value = '';
+                            }
+                        })
+                        .catch(err => console.error('Error fetching site details:', err));
+                }
             }
         });
     </script>
