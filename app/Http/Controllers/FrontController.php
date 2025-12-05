@@ -286,7 +286,8 @@ class FrontController extends Controller
                         'Labour Cont. Payment',
                         'Labour Cont. Due Payment',
                         'Advance for Tools',
-                        'Establish'
+                        'Establish',
+                        'Service Provider'
                     ];
 
                     foreach ($options as $option) {

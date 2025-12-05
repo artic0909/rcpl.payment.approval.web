@@ -217,7 +217,8 @@
         'Labour Cont. Payment',
         'Labour Cont. Due Payment',
         'Advance for Tools',
-        'Establish'
+        'Establish',
+        'Service Provider'
         ];
 
         foreach ($options as $option) {
@@ -272,6 +273,10 @@
                     <div class="checkbox-item">
                         <input type="checkbox" {{ in_array('Establish (room rent, cooking utensils)', $selectedOptions) ? 'checked' : '' }}>
                         <span>Establish (room rent, cooking utensils)</span>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" {{ in_array('Service Provider', $selectedOptions) ? 'checked' : '' }}>
+                        <span>Service Provider</span>
                     </div>
                 </td>
             </tr>

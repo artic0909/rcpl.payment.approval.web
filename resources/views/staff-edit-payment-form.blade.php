@@ -142,6 +142,12 @@
                                                         {{ in_array('Establish (room rent, cooking utensils)', (array) $payment->request_for) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="establishment">Establish (room rent, cooking utensils)</label>
                                                 </div>
+
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Service Provider" id="serviceProvider"
+                                                        {{ in_array('Service Provider', (array) $payment->request_for) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="serviceProvider">Service Provider</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

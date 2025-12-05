@@ -131,6 +131,10 @@
                                                     <input class="form-check-input" type="checkbox" name="request_for[]" value="Establish (room rent, cooking utensils)" id="establishment">
                                                     <label class="form-check-label" for="establishment">Establish (room rent, cooking utensils)</label>
                                                 </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Service Provider" id="serviceProvider">
+                                                    <label class="form-check-label" for="serviceProvider">Service Provider</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
