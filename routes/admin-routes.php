@@ -28,7 +28,10 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/pending-requests', [AdminController::class, 'adminPendingRequestsView'])->name('admin.pending-requests');
     Route::get('/admin/pending-requests/export', [AdminController::class, 'exportPendingRequests'])->name('admin.pending.requests.export');
 
+    Route::get('/admin/approved-requests/export', [AdminController::class, 'exportApprovedRequests'])->name('admin.approved.requests.export');
     Route::get('/admin/approved-requests', [AdminController::class, 'adminApprovedRequestsView'])->name('admin.approved-requests');
+
+
     Route::get('/admin/rejected-requests', [AdminController::class, 'adminRejectedRequestsView'])->name('admin.rejected-requests');
     Route::get('/admin/all-requests', [AdminController::class, 'adminAllRequestsView'])->name('admin.all-requests');
     Route::get('/admin/payments-done', [AdminController::class, 'adminPaymentsDoneView'])->name('admin.done-requests');

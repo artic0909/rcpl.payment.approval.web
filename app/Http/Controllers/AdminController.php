@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\PaymentRequestExport;
 use App\Exports\PendingPaymentRequestsExport;
+use App\Exports\ApprovedPaymentRequestsExport;
 use App\Models\Admin;
 use App\Models\PaymentApproval;
 use Illuminate\Support\Facades\Auth;
@@ -408,6 +409,20 @@ class AdminController extends Controller
         return Excel::download(new PendingPaymentRequestsExport($filters), $fileName);
     }
 
+    // Export Approved Requests
+    public function exportApprovedRequests(Request $request)
+    {
+        $filters = [
+            'search' => $request->input('search'),
+            'date' => $request->input('date'),
+            'from_date' => $request->input('from_date'),
+            'to_date' => $request->input('to_date'),
+        ];
+
+        $fileName = 'approved_payment_requests_' . date('Y-m-d_His') . '.xlsx';
+        return Excel::download(new ApprovedPaymentRequestsExport($filters), $fileName);
+    }
+
     // Approved Requests
     public function adminApprovedRequestsView(Request $request)
     {
@@ -437,6 +452,15 @@ class AdminController extends Controller
 
         if ($request->filled('date')) {
             $query->whereDate('date', $request->date);
+        }
+
+        // Add date range filter
+        if ($request->filled('from_date') && $request->filled('to_date')) {
+            $query->whereBetween('date', [$request->from_date, $request->to_date]);
+        } elseif ($request->filled('from_date')) {
+            $query->whereDate('date', '>=', $request->from_date);
+        } elseif ($request->filled('to_date')) {
+            $query->whereDate('date', '<=', $request->to_date);
         }
 
         $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
