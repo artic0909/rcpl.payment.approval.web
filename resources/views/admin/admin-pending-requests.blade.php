@@ -354,7 +354,6 @@
                                             </div>
                                         </div>
 
-                                        @push('scripts')
                                         <script>
                                             function exportData() {
                                                 const form = document.getElementById('filterForm');
@@ -376,7 +375,6 @@
                                                 window.location.href = exportUrl;
                                             }
                                         </script>
-                                        @endpush
 
                                         <div class="col-12">
                                             <div class="card-footer text-end" style="overflow-x: auto;">

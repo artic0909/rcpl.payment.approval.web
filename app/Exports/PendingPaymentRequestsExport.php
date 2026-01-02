@@ -12,11 +12,11 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class PendingPaymentRequestsExport implements FromQuery, WithHeadings, WithMapping, WithStyles, ShouldAutoSize
 {
-    protected $request;
+    protected $filters;
 
-    public function __construct($request)
+    public function __construct($filters)
     {
-        $this->request = $request;
+        $this->filters = $filters;
     }
 
     public function query()
@@ -25,8 +25,8 @@ class PendingPaymentRequestsExport implements FromQuery, WithHeadings, WithMappi
             ->where('status', 'pending');
 
         // Apply search filter
-        if ($this->request->filled('search')) {
-            $search = $this->request->search;
+        if (!empty($this->filters['search'])) {
+            $search = $this->filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('vendor_name', 'like', "%{$search}%")
                     ->orWhere('vendor_code', 'like', "%{$search}%")
@@ -46,17 +46,17 @@ class PendingPaymentRequestsExport implements FromQuery, WithHeadings, WithMappi
         }
 
         // Apply date filter
-        if ($this->request->filled('date')) {
-            $query->whereDate('date', $this->request->date);
+        if (!empty($this->filters['date'])) {
+            $query->whereDate('date', $this->filters['date']);
         }
 
         // Apply date range filter (from_date and to_date)
-        if ($this->request->filled('from_date') && $this->request->filled('to_date')) {
-            $query->whereBetween('date', [$this->request->from_date, $this->request->to_date]);
-        } elseif ($this->request->filled('from_date')) {
-            $query->whereDate('date', '>=', $this->request->from_date);
-        } elseif ($this->request->filled('to_date')) {
-            $query->whereDate('date', '<=', $this->request->to_date);
+        if (!empty($this->filters['from_date']) && !empty($this->filters['to_date'])) {
+            $query->whereBetween('date', [$this->filters['from_date'], $this->filters['to_date']]);
+        } elseif (!empty($this->filters['from_date'])) {
+            $query->whereDate('date', '>=', $this->filters['from_date']);
+        } elseif (!empty($this->filters['to_date'])) {
+            $query->whereDate('date', '<=', $this->filters['to_date']);
         }
 
         return $query->orderBy('id', 'desc');

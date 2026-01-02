@@ -34,23 +34,23 @@ class AdminController extends Controller
     {
         try {
             $validated = $request->validate([
-                'name'     => 'required|string|max:255',
-                'email'    => 'required|string|email|max:255|unique:admins,email',
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:admins,email',
                 'password' => 'required|string|min:8|confirmed',
             ], [
-                'name.required'     => 'Name is required.',
-                'email.required'    => 'Email is required.',
-                'email.email'       => 'Please enter a valid email address.',
-                'email.unique'      => 'This email is already registered.',
+                'name.required' => 'Name is required.',
+                'email.required' => 'Email is required.',
+                'email.email' => 'Please enter a valid email address.',
+                'email.unique' => 'This email is already registered.',
                 'password.required' => 'Password is required.',
-                'password.min'      => 'Password must be at least 8 characters.',
+                'password.min' => 'Password must be at least 8 characters.',
                 'password.confirmed' => 'Password confirmation does not match.',
             ]);
 
             // Create admin
             Admin::create([
-                'name'     => $validated['name'],
-                'email'    => $validated['email'],
+                'name' => $validated['name'],
+                'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
             ]);
 
@@ -72,14 +72,16 @@ class AdminController extends Controller
     public function adminLogin(Request $request)
     {
         $validated = $request->validate([
-            'email'    => 'required|string|email',
+            'email' => 'required|string|email',
             'password' => 'required|string|min:8',
         ]);
 
-        if (Auth::guard('admin')->attempt([
-            'email'    => $validated['email'],
-            'password' => $validated['password'],
-        ])) {
+        if (
+            Auth::guard('admin')->attempt([
+                'email' => $validated['email'],
+                'password' => $validated['password'],
+            ])
+        ) {
             $request->session()->regenerate();
             return redirect()->route('admin.dashboard')
                 ->with('success', 'Welcome Admin!');
@@ -201,7 +203,7 @@ class AdminController extends Controller
 
         $payment->update([
             'remarks' => $request->remarks,
-            'status'  => 'remarked',
+            'status' => 'remarked',
         ]);
 
         Mail::to('ranihati.construction@gmail.com')
@@ -259,7 +261,7 @@ class AdminController extends Controller
 
         $payment->update([
             'remarks' => $request->remarks,
-            'status'  => 'rejected',
+            'status' => 'rejected',
         ]);
 
         Mail::to('ranihati.construction@gmail.com')
@@ -395,8 +397,15 @@ class AdminController extends Controller
     // Export to Excel
     public function exportPendingRequests(Request $request)
     {
+        $filters = [
+            'search' => $request->input('search'),
+            'date' => $request->input('date'),
+            'from_date' => $request->input('from_date'),
+            'to_date' => $request->input('to_date'),
+        ];
+
         $fileName = 'pending_payment_requests_' . date('Y-m-d_His') . '.xlsx';
-        return Excel::download(new PendingPaymentRequestsExport($request), $fileName);
+        return Excel::download(new PendingPaymentRequestsExport($filters), $fileName);
     }
 
     // Approved Requests
@@ -616,14 +625,14 @@ class AdminController extends Controller
     public function adminMyAmountRequestUpdate(Request $request, $id)
     {
         $request->validate([
-            'amount'          => 'numeric',
+            'amount' => 'numeric',
             'amount_in_words' => 'string',
         ]);
 
         $payment = CommercialRequest::findOrFail($id);
 
         $payment->update([
-            'amount'          => $request->amount,
+            'amount' => $request->amount,
             'amount_in_words' => $request->amount_in_words,
         ]);
 
@@ -641,7 +650,7 @@ class AdminController extends Controller
 
         $payment->update([
             'reject_remarks' => $request->reject_remarks,
-            'approval_status'  => 'rejected',
+            'approval_status' => 'rejected',
         ]);
 
         return redirect()->back()->with('success', 'Payment request rejected successfully.');
