@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\PaymentRequestExport;
+use App\Exports\PendingPaymentRequestsExport;
 use App\Models\Admin;
 use App\Models\PaymentApproval;
 use Illuminate\Support\Facades\Auth;
@@ -316,6 +317,39 @@ class AdminController extends Controller
     }
 
     // Pending Requests
+    // public function adminPendingRequestsView(Request $request)
+    // {
+    //     $query = PaymentApproval::with('user')
+    //         ->where('status', 'pending');
+
+    //     if ($request->filled('search')) {
+    //         $search = $request->search;
+    //         $query->where(function ($q) use ($search) {
+    //             $q->where('vendor_name', 'like', "%{$search}%")
+    //                 ->orWhere('vendor_code', 'like', "%{$search}%")
+    //                 ->orWhere('remarks', 'like', "%{$search}%")
+    //                 ->orWhere('status', 'like', "%{$search}%")
+    //                 ->orWhere('site_name', 'like', "%{$search}%")
+    //                 ->orWhere('amount', 'like', "%{$search}%")
+    //                 ->orWhere('payment_status', 'like', "%{$search}%")
+    //                 ->orWhereJsonContains('request_for', $search)
+    //                 ->orWhereHas('user', function ($uq) use ($search) {
+    //                     $uq->where('name', 'like', "%{$search}%")
+    //                         ->orWhere('staff_code', 'like', "%{$search}%")
+    //                         ->orWhere('email', 'like', "%{$search}%")
+    //                         ->orWhere('mobile', 'like', "%{$search}%");
+    //                 });
+    //         });
+    //     }
+
+    //     if ($request->filled('date')) {
+    //         $query->whereDate('date', $request->date);
+    //     }
+
+    //     $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
+    //     return view('admin.admin-pending-requests', compact('paymentRequestDetails'));
+    // }
+
     public function adminPendingRequestsView(Request $request)
     {
         $query = PaymentApproval::with('user')
@@ -345,8 +379,24 @@ class AdminController extends Controller
             $query->whereDate('date', $request->date);
         }
 
+        // Add date range filter
+        if ($request->filled('from_date') && $request->filled('to_date')) {
+            $query->whereBetween('date', [$request->from_date, $request->to_date]);
+        } elseif ($request->filled('from_date')) {
+            $query->whereDate('date', '>=', $request->from_date);
+        } elseif ($request->filled('to_date')) {
+            $query->whereDate('date', '<=', $request->to_date);
+        }
+
         $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
         return view('admin.admin-pending-requests', compact('paymentRequestDetails'));
+    }
+
+    // Export to Excel
+    public function exportPendingRequests(Request $request)
+    {
+        $fileName = 'pending_payment_requests_' . date('Y-m-d_His') . '.xlsx';
+        return Excel::download(new PendingPaymentRequestsExport($request), $fileName);
     }
 
     // Approved Requests
@@ -555,10 +605,10 @@ class AdminController extends Controller
 
         // Send mail with request data
         Mail::to('sayek@rconpl.in')
-        ->cc([
-            'karmakarnetai866@gmail.com',
-        ])
-        ->send(new CommercialRequestApprovalStatusMail($request));
+            ->cc([
+                'karmakarnetai866@gmail.com',
+            ])
+            ->send(new CommercialRequestApprovalStatusMail($request));
 
         return redirect()->back()->with('success', 'Request Approved Successfully');
     }

@@ -43,6 +43,7 @@
                 font-size: 11px !important;
             }
         }
+
         .custom-success-popup,
         .custom-error-popup {
             position: fixed;
@@ -317,14 +318,65 @@
                                                 </h5>
                                             </div>
                                         </div>
-                                        <div class="col-sm-5 text-center text-sm-left">
+                                        <div class="col-sm-5 text-center text-sm-right">
                                             <div class="card-body pb-0 px-0 px-md-4">
-                                                <img
-                                                    src="{{ asset('./img/get-money.png') }}"
-                                                    height="80"
-                                                    alt="View Badge Get Money" />
+                                                <form method="GET" action="{{ route('admin.pending-requests') }}" class="form-inline justify-content-end" style="display: flex; align-items: end;" id="filterForm">
+                                                    <div class="form-group mx-2 text-start">
+                                                        <label for="fromDate" class="sr-only">From Date</label>
+                                                        <input
+                                                            type="date"
+                                                            class="form-control form-control-sm"
+                                                            id="fromDate"
+                                                            name="from_date"
+                                                            value="{{ request('from_date') }}"
+                                                            placeholder="From Date">
+                                                    </div>
+                                                    <div class="form-group mx-2 text-start">
+                                                        <label for="toDate" class="sr-only">To Date</label>
+                                                        <input
+                                                            type="date"
+                                                            class="form-control form-control-sm"
+                                                            id="toDate"
+                                                            name="to_date"
+                                                            value="{{ request('to_date') }}"
+                                                            placeholder="To Date">
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary btn-sm mx-2">
+                                                        <i class="fas fa-filter"></i> Filter
+                                                    </button>
+                                                    <button type="button" class="btn btn-success btn-sm mx-2" onclick="exportData()">
+                                                        <i class="fas fa-file-excel"></i> Export
+                                                    </button>
+                                                    <a href="{{ route('admin.pending-requests') }}" class="btn btn-secondary btn-sm mx-2">
+                                                        <i class="fas fa-redo"></i> Reset
+                                                    </a>
+                                                </form>
                                             </div>
                                         </div>
+
+                                        @push('scripts')
+                                        <script>
+                                            function exportData() {
+                                                const form = document.getElementById('filterForm');
+                                                const fromDate = document.getElementById('fromDate').value;
+                                                const toDate = document.getElementById('toDate').value;
+                                                const search = '{{ request("search") }}';
+
+                                                // Build export URL with current filters
+                                                let exportUrl = '{{ route("admin.pending.requests.export") }}?';
+                                                const params = [];
+
+                                                if (fromDate) params.push(`from_date=${fromDate}`);
+                                                if (toDate) params.push(`to_date=${toDate}`);
+                                                if (search) params.push(`search=${search}`);
+
+                                                exportUrl += params.join('&');
+
+                                                // Redirect to export URL
+                                                window.location.href = exportUrl;
+                                            }
+                                        </script>
+                                        @endpush
 
                                         <div class="col-12">
                                             <div class="card-footer text-end" style="overflow-x: auto;">
