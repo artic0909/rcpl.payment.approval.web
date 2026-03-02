@@ -321,8 +321,8 @@
         {{-- Description --}}
         <table style="width:100%; border-collapse: collapse; margin-bottom:10px; font-size:12px;">
             <tr>
-                <td style="width:180px;"><strong>Item Description:</strong></td>
-                <td style="border-bottom:1px dotted #000;">&nbsp; {{ $payment->item_description ?? '' }}</td>
+                <td style="width:180px; color: red;"><strong>Item Description:</strong></td>
+                <td style="border-bottom:1px dotted red; color: red;">&nbsp; {{ $payment->item_description ?? '' }}</td>
             </tr>
             <tr>
                 <td></td>
