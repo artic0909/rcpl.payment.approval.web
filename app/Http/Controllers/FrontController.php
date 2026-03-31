@@ -251,13 +251,33 @@ class FrontController extends Controller
 
 
 
-    public function staffProfileView()
+    public function staffProfileView(Request $request)
     {
         $user = Auth::guard('staff')->user();
+        $search = $request->input('search');
+        $date = $request->input('date');
+        $status = $request->input('status');
 
-        $paymentRequestDetails = PaymentApproval::where('user_id', $user->id)
-            ->orderBy('id', 'desc')
-            ->paginate(5);
+        $query = PaymentApproval::where('user_id', $user->id);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('vendor_name', 'LIKE', "%{$search}%")
+                    ->orWhere('vendor_code', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if ($date) {
+            $query->whereDate('date', $date);
+        }
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        $paymentRequestDetails = $query->orderBy('id', 'desc')
+            ->paginate(10)
+            ->appends(['search' => $search, 'date' => $date, 'status' => $status]);
 
         return view('staff-profile', compact('user', 'paymentRequestDetails'));
     }
