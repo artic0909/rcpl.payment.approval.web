@@ -138,6 +138,25 @@ class FrontController extends Controller
             'party_bank_branch_name' => 'nullable|string|max:255',
         ]);
 
+        // Check if there is already a pending request for this vendor
+        if (!empty($validated['vendor_code'])) {
+            $pendingRequest = PaymentApproval::where('vendor_code', $validated['vendor_code'])
+                ->where('status', 'pending')
+                ->latest()
+                ->first();
+
+            if ($pendingRequest) {
+                $details = "User: " . ($pendingRequest->user->name ?? 'Unknown') .
+                           ", Date: " . $pendingRequest->date->format('d M Y') . 
+                           ", Amount: ₹" . number_format($pendingRequest->amount, 2) . 
+                           ", Site: " . ($pendingRequest->site_name ?? 'N/A');
+                
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', "A pending payment request already exists for this vendor ($validated[vendor_code]). Details: $details");
+            }
+        }
+
         PaymentApproval::create([
             'user_id' => $validated['user_id'],
             'date' => $validated['date'],
@@ -220,6 +239,26 @@ class FrontController extends Controller
         ]);
 
         $payment = PaymentApproval::findOrFail($id);
+
+        // Check if there is already another pending request for this vendor (excluding this one)
+        if (!empty($validated['vendor_code'])) {
+            $pendingRequest = PaymentApproval::where('vendor_code', $validated['vendor_code'])
+                ->where('status', 'pending')
+                ->where('id', '!=', $id)
+                ->latest()
+                ->first();
+
+            if ($pendingRequest) {
+                $details = "User: " . ($pendingRequest->user->name ?? 'Unknown') .
+                           ", Date: " . $pendingRequest->date->format('d M Y') . 
+                           ", Amount: ₹" . number_format($pendingRequest->amount, 2) . 
+                           ", Site: " . ($pendingRequest->site_name ?? 'N/A');
+                
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', "Another pending payment request already exists for this vendor ($validated[vendor_code]). Details: $details");
+            }
+        }
 
         $payment->update([
             'user_id' => $validated['user_id'],
