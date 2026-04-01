@@ -6,16 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Payment Approval Form | RCPL</title>
     <!-- Bootstrap 5 CSS -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
     <!-- css -->
     <link rel="stylesheet" href="{{ asset('./css/payment-approval-form.css') }}" />
@@ -34,10 +29,7 @@
                         <div class="d-flex justify-content-between align-items-center responsive-head">
                             <div class="">
                                 <div class="d-flex justify-content-start align-items-center">
-                                    <img
-                                        src="{{ asset('./img/RCPL.png') }}"
-                                        alt="RCPL LOGO"
-                                        class="bank-logo" />
+                                    <img src="{{ asset('./img/RCPL.png') }}" alt="RCPL LOGO" class="bank-logo" />
                                     <h2>Secure Payment Portal</h2>
                                 </div>
                                 <p class="mb-0 mt-2">
@@ -56,31 +48,25 @@
                         <div class="row">
                             <div class="col-lg-8">
                                 <div class="secure-badge" style="font-size: 15px; text-transform: capitalize;">
-                                    <i class="fas fa-user me-2"></i>Name: {{ $user->name }} &nbsp;<i class="fas fa-shield-alt"></i> Code: {{ $user->staff_code }}
+                                    <i class="fas fa-user me-2"></i>Name: {{ $user->name }} &nbsp;<i
+                                        class="fas fa-shield-alt"></i> Code: {{ $user->staff_code }}
                                 </div>
                                 <h4 class="mb-4">Payment Approval Slip</h4>
 
-                                <form method="POST" action="{{ route('staff.staff-payment-form.store') }}" enctype="multipart/form-data">
+                                <form method="POST" action="{{ route('staff.staff-payment-form.store') }}"
+                                    enctype="multipart/form-data">
                                     @csrf
 
                                     <div class="row mb-4">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="date" class="form-label">Date <span class="text-danger">*</span></label>
-                                                <input
-                                                    type="date"
-                                                    class="form-control"
-                                                    id="date"
-                                                    name="date"
+                                                <label for="date" class="form-label">Date <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="date" class="form-control" id="date" name="date"
                                                     required />
 
-                                                <input
-                                                    type="hidden"
-                                                    class="form-control"
-                                                    id="user_id"
-                                                    name="user_id"
-                                                    value="{{ Auth::id() }}"
-                                                    required />
+                                                <input type="hidden" class="form-control" id="user_id" name="user_id"
+                                                    value="{{ Auth::id() }}" required />
                                             </div>
                                         </div>
                                     </div>
@@ -90,24 +76,34 @@
                                             <div class="checkbox-group">
                                                 <h5 class="mb-3">Material Payments</h5>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Material Purchase" id="materialPurchase">
-                                                    <label class="form-check-label" for="materialPurchase">Material Purchase</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]"
+                                                        value="Material Purchase" id="materialPurchase">
+                                                    <label class="form-check-label" for="materialPurchase">Material
+                                                        Purchase</label>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Material Due Payment" id="materialDuePayment">
-                                                    <label class="form-check-label" for="materialDuePayment">Material Due Payment</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]"
+                                                        value="Material Due Payment" id="materialDuePayment">
+                                                    <label class="form-check-label" for="materialDuePayment">Material
+                                                        Due Payment</label>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Advance for Materials" id="advanceMaterials">
-                                                    <label class="form-check-label" for="advanceMaterials">Advance for Materials</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]"
+                                                        value="Advance for Materials" id="advanceMaterials">
+                                                    <label class="form-check-label" for="advanceMaterials">Advance for
+                                                        Materials</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Tools & Machinery Purchase" id="toolsPurchase">
-                                                    <label class="form-check-label" for="toolsPurchase">Tools & Machinery Purchase</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]"
+                                                        value="Tools & Machinery Purchase" id="toolsPurchase">
+                                                    <label class="form-check-label" for="toolsPurchase">Tools &
+                                                        Machinery Purchase</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Plant Machinery Rent" id="plantMachineryRent">
-                                                    <label class="form-check-label" for="plantMachineryRent">Plant Machinery Rent</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]"
+                                                        value="Plant Machinery Rent" id="plantMachineryRent">
+                                                    <label class="form-check-label" for="plantMachineryRent">Plant
+                                                        Machinery Rent</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -116,24 +112,35 @@
                                             <div class="checkbox-group">
                                                 <h5 class="mb-3">Labor & Other Payments</h5>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Labour Cont. Payment" id="labourPayment">
-                                                    <label class="form-check-label" for="labourPayment">Labour Cont. Payment</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]"
+                                                        value="Labour Cont. Payment" id="labourPayment">
+                                                    <label class="form-check-label" for="labourPayment">Labour Cont.
+                                                        Payment</label>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Labour Cont. Due Payment" id="labourDuePayment">
-                                                    <label class="form-check-label" for="labourDuePayment">Labour Cont. Due Payment</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]"
+                                                        value="Labour Cont. Due Payment" id="labourDuePayment">
+                                                    <label class="form-check-label" for="labourDuePayment">Labour Cont.
+                                                        Due Payment</label>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Advance for Tools" id="advanceTools">
-                                                    <label class="form-check-label" for="advanceTools">Advance for Tools</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]"
+                                                        value="Advance for Tools" id="advanceTools">
+                                                    <label class="form-check-label" for="advanceTools">Advance for
+                                                        Tools</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Establish (room rent, cooking utensils)" id="establishment">
-                                                    <label class="form-check-label" for="establishment">Establish (room rent, cooking utensils)</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]"
+                                                        value="Establish (room rent, cooking utensils)"
+                                                        id="establishment">
+                                                    <label class="form-check-label" for="establishment">Establish (room
+                                                        rent, cooking utensils)</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="request_for[]" value="Service Provider" id="serviceProvider">
-                                                    <label class="form-check-label" for="serviceProvider">Service Provider</label>
+                                                    <input class="form-check-input" type="checkbox" name="request_for[]"
+                                                        value="Service Provider" id="serviceProvider">
+                                                    <label class="form-check-label" for="serviceProvider">Service
+                                                        Provider</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -144,10 +151,12 @@
                                             <label for="" class="form-label">Search Vendors</label>
 
                                             <div class="d-flex align-items-stretch">
-                                                <input type="text" class="form-control" id="search" placeholder="Search vendors by name or code">
+                                                <input type="text" class="form-control" id="search"
+                                                    placeholder="Search vendors by name or code">
                                                 &nbsp;
                                                 &nbsp;
-                                                <button type="button" id="searchBtn" style="background-color: #2D5BFF;" class="btn btn-primary d-flex align-items-center justify-content-center">
+                                                <button type="button" id="searchBtn" style="background-color: #2D5BFF;"
+                                                    class="btn btn-primary d-flex align-items-center justify-content-center">
                                                     <i class="fas fa-search"></i>
                                                 </button>
                                             </div>
@@ -163,12 +172,14 @@
                                                     <span class="text-danger">*</span>
                                                 </label>
 
-                                                <select name="vendor_code" id="vendor_code" class="form-select" required style="text-transform: uppercase;">
+                                                <select name="vendor_code" id="vendor_code" class="form-select" required
+                                                    style="text-transform: uppercase;">
                                                     <option value="" selected>Select Vendor Code</option>
                                                     @foreach($vendors as $vendor)
-                                                    <option value="{{ $vendor->vendor_code }}" data-name="{{ $vendor->vendor_name }}">
-                                                        {{ $vendor->vendor_code }} - {{ $vendor->vendor_name }}
-                                                    </option>
+                                                        <option value="{{ $vendor->vendor_code }}"
+                                                            data-name="{{ $vendor->vendor_name }}">
+                                                            {{ $vendor->vendor_code }} - {{ $vendor->vendor_name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -179,13 +190,8 @@
                                             <div class="form-group">
                                                 <label for="vendor_name" class="form-label">Vendor Name
                                                     <span class="text-danger">*</span></label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="vendor_name"
-                                                    name="vendor_name"
-                                                    placeholder="Enter vendor name"
-                                                    required />
+                                                <input type="text" class="form-control" id="vendor_name"
+                                                    name="vendor_name" placeholder="Enter vendor name" required />
                                             </div>
                                         </div>
                                     </div>
@@ -193,14 +199,10 @@
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="site_name" class="form-label">Site Name <span class="text-danger">*</span></label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="site_name"
-                                                    name="site_name"
-                                                    placeholder="Enter site name"
-                                                    required />
+                                                <label for="site_name" class="form-label">Site Name <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="site_name" name="site_name"
+                                                    placeholder="Enter site name" required />
                                             </div>
                                         </div>
 
@@ -208,13 +210,8 @@
                                             <div class="form-group">
                                                 <label for="amount" class="form-label">Amount (₹)
                                                     <span class="text-danger">*</span></label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="amount"
-                                                    name="amount"
-                                                    placeholder="Enter amount"
-                                                    required />
+                                                <input type="text" class="form-control" id="amount" name="amount"
+                                                    placeholder="Enter amount" required />
                                             </div>
                                         </div>
                                         <div class="col-md-12 mt-2">
@@ -223,19 +220,15 @@
                                             <div class="amount-in-words" id="amountWords">
                                                 Amount will appear here...
                                             </div>
-                                            <input type="hidden" class="form-control" id="amount_in_words" name="amount_in_words" placeholder="Enter amount in words" readonly>
+                                            <input type="hidden" class="form-control" id="amount_in_words"
+                                                name="amount_in_words" placeholder="Enter amount in words" readonly>
                                         </div>
                                     </div>
 
                                     <div class="form-group mb-4">
                                         <label for="item_description" class="form-label">Item Description</label>
-                                        <textarea
-                                            class="form-control"
-                                            id="item_description"
-                                            name="item_description"
-                                            rows="3"
-                                            placeholder="Enter item description"
-                                            required></textarea>
+                                        <textarea class="form-control" id="item_description" name="item_description"
+                                            rows="3" placeholder="Enter item description" required></textarea>
                                     </div>
 
                                     <h4 class="mb-3">Party Bank Details</h4>
@@ -244,25 +237,17 @@
                                             <div class="form-group">
                                                 <label for="party_account_number" class="form-label">Account Number
                                                     <span class="text-danger">*</span></label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="party_account_number"
-                                                    name="party_account_number"
-                                                    placeholder="Enter account number"
+                                                <input type="text" class="form-control" id="party_account_number"
+                                                    name="party_account_number" placeholder="Enter account number"
                                                     required />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="party_ifsc_code" class="form-label">IFSC Code <span class="text-danger">*</span></label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="party_ifsc_code"
-                                                    name="party_ifsc_code"
-                                                    placeholder="Enter IFSC code"
-                                                    required />
+                                                <label for="party_ifsc_code" class="form-label">IFSC Code <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="party_ifsc_code"
+                                                    name="party_ifsc_code" placeholder="Enter IFSC code" required />
                                             </div>
                                         </div>
                                     </div>
@@ -270,26 +255,18 @@
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="party_bank_name" class="form-label">Bank Name <span class="text-danger">*</span></label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="party_bank_name"
-                                                    name="party_bank_name"
-                                                    placeholder="Enter bank name"
-                                                    required />
+                                                <label for="party_bank_name" class="form-label">Bank Name <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="party_bank_name"
+                                                    name="party_bank_name" placeholder="Enter bank name" required />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="party_bank_branch_name" class="form-label">Branch <span class="text-danger">*</span></label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="party_bank_branch_name"
-                                                    name="party_bank_branch_name"
-                                                    placeholder="Enter branch"
-                                                    required />
+                                                <label for="party_bank_branch_name" class="form-label">Branch <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="party_bank_branch_name"
+                                                    name="party_bank_branch_name" placeholder="Enter branch" required />
                                             </div>
                                         </div>
                                     </div>
@@ -392,17 +369,23 @@
         </div>
     </div>
 
-    @if (session('success'))
-    <div id="successPopup" class="custom-success-popup">
-        {{ session('success') }}
-    </div>
-    @endif
+@if (session('success'))
+<div id="successPopup" class="custom-success-popup">
+    <i class="fas fa-check-circle"></i>
+    <span>{{ session('success') }}</span>
+    <div class="popup-close" onclick="this.parentElement.remove()">&times;</div>
+</div>
+@endif
 
-    @if (session('error'))
-    <div id="errorPopup" class="custom-error-popup">
-        {{ session('error') }}
-    </div>
-    @endif
+@if (session('error'))
+<div id="errorPopup" class="custom-error-popup">
+    <i class="fas fa-exclamation-circle"></i>
+    <span>{{ session('error') }}</span>
+    <div class="popup-close" onclick="this.parentElement.remove()">&times;</div>
+</div>
+@endif
+
+
 
     <!-- Bootstrap 5 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -449,7 +432,7 @@
         }
 
         // Update amount in words when typing
-        document.getElementById("amount").addEventListener("input", function() {
+        document.getElementById("amount").addEventListener("input", function () {
             const amount = this.value;
             const amountWords = document.getElementById("amountWords");
             const wordsInput = document.getElementById("amount_in_words");
@@ -465,17 +448,11 @@
         });
     </script>
 
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const successPopup = document.getElementById('successPopup');
-            const errorPopup = document.getElementById('errorPopup');
-
-            if (successPopup) setTimeout(() => successPopup.remove(), 4000);
-            if (errorPopup) setTimeout(() => errorPopup.remove(), 4000);
-        });
-    </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Popups stay until manually closed via X
+    });
+</script>
 
     <script>
         const searchInput = document.getElementById('search');
@@ -506,9 +483,9 @@
 
         // Trigger search when clicking search button
         searchBtn.addEventListener("click", filterVendors);
-        
+
         // When vendor is chosen, fetch details
-        vendorSelect.addEventListener('change', function() {
+        vendorSelect.addEventListener('change', function () {
             let vendorCode = this.value;
             if (vendorCode) {
                 // Extract site code from vendor code (e.g., 'kurk-10122-1125' -> '10122')
