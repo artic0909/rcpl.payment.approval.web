@@ -357,7 +357,7 @@
                                                             </td>
 
                                                             <td>
-                                                                <p class="m-0 badge bg-primary" style="text-transform: uppercase;">{{ $vendor->vendor_code }}</p>
+                                                                <p class="m-0 badge" style="text-transform: uppercase; color:black">{{ $vendor->vendor_code }}</p>
                                                             </td>
 
                                                             <td style="text-transform: uppercase;">{{ $vendor->vendor_name }}</td>
