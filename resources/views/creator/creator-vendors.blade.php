@@ -351,7 +351,7 @@
                                                         @forelse($vendors as $index => $vendor)
                                                         <tr>
                                                             <td>{{ $vendors->firstItem() + $index }}</td>
-                                                            <td style="text-transform: uppercase;">
+                                                            <td style="text-transform: uppercase; color:black">
                                                                 <span style="display: none;">{{ $vendor->state_code }}</span>
                                                                 {{ \App\Models\SiteCode::where('site_code', $vendor->state_code)->value('site_name') ?? 'N/A' }}
                                                             </td>
@@ -360,7 +360,7 @@
                                                                 <p class="m-0 badge" style="text-transform: uppercase; color:black">{{ $vendor->vendor_code }}</p>
                                                             </td>
 
-                                                            <td style="text-transform: uppercase;">{{ $vendor->vendor_name }}</td>
+                                                            <td style="text-transform: uppercase; color:black">{{ $vendor->vendor_name }}</td>
 
                                                             <td>
                                                                 @php
@@ -382,7 +382,7 @@
 
 
                                                             <!-- Address -->
-                                                            <td>{{ $vendor->vendor_address ?? '-' }}</td>
+                                                            <td style="color:black">{{ $vendor->vendor_address ?? '-' }}</td>
 
                                                             <!-- Bank Details line by line -->
                                                             <td>
@@ -390,7 +390,7 @@
                                                             </td>
 
                                                             <!-- Contact Person line by line -->
-                                                            <td>
+                                                            <td style="color:black">
                                                                 {{ $vendor->contact_person_name ?? '-' }}<br>
                                                                 {{ $vendor->contact_person_mobile ?? '-' }}<br>
                                                                 {{ $vendor->contact_person_email ?? '-' }}
