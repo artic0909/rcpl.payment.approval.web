@@ -338,8 +338,8 @@
                                                         <tr>
                                                             <th>SL.</th>
                                                             <th>Site Name</th>
-                                                            <th>Vendor Code</th>
                                                             <th>Vendor Name</th>
+                                                            <th>Vendor Code</th>
                                                             <th>Category</th>
                                                             <th>Address</th>
                                                             <th>Bank/ Related Service</th>
@@ -356,11 +356,13 @@
                                                                 {{ \App\Models\SiteCode::where('site_code', $vendor->state_code)->value('site_name') ?? 'N/A' }}
                                                             </td>
 
+                                                            <td style="text-transform: uppercase; color:black">{{ $vendor->vendor_name }}</td>
+
                                                             <td>
                                                                 <p class="m-0 badge" style="text-transform: uppercase; color:black">{{ $vendor->vendor_code }}</p>
                                                             </td>
 
-                                                            <td style="text-transform: uppercase; color:black">{{ $vendor->vendor_name }}</td>
+                                                            
 
                                                             <td>
                                                                 @php
