@@ -132,8 +132,18 @@ class AccountController extends Controller
 
         $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
 
+        $pendingRequests = PaymentApproval::where('status', 'approved')->where('payment_status', 'Pending')->count();
+        $paymentDone = PaymentApproval::where('status', 'approved')->where('payment_status', 'Done')->count();
+        $myPendingRequests = \App\Models\CommercialRequest::where('approval_status', 'pending')->count();
+        $myApprovedRequests = \App\Models\CommercialRequest::where('approval_status', 'approved')->count();
 
-        return view('account.account-dashboard', compact('paymentRequestDetails'));
+        return view('account.account-dashboard', compact(
+            'paymentRequestDetails',
+            'pendingRequests',
+            'paymentDone',
+            'myPendingRequests',
+            'myApprovedRequests'
+        ));
     }
 
     // Pending Requests

@@ -299,6 +299,53 @@
                                                     Welcome Back {{ auth()->user()->name }}! 🎉
                                                 </h5>
                                                 <p class="mb-4">It's your space.</p>
+
+                                                <div class="row mt-4 g-3">
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar flex-shrink-0 me-3">
+                                                                <span class="avatar-initial rounded bg-label-warning"><i class="bx bx-time"></i></span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="mb-0">{{ $pendingRequests }}</h5>
+                                                                <small class="text-muted">Pending Requests</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar flex-shrink-0 me-3">
+                                                                <span class="avatar-initial rounded bg-label-success"><i class="bx bx-check-double"></i></span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="mb-0">{{ $paymentDone }}</h5>
+                                                                <small class="text-muted">Payment Done</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar flex-shrink-0 me-3">
+                                                                <span class="avatar-initial rounded bg-label-danger"><i class="bx bx-timer"></i></span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="mb-0">{{ $myPendingRequests }}</h5>
+                                                                <small class="text-muted">My Pending Requests</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar flex-shrink-0 me-3">
+                                                                <span class="avatar-initial rounded bg-label-info"><i class="bx bx-list-check"></i></span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="mb-0">{{ $myApprovedRequests }}</h5>
+                                                                <small class="text-muted">My Approved Requests</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-5 text-center text-sm-left">
