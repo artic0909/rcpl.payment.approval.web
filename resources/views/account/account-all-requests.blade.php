@@ -461,11 +461,10 @@
                                 <script>
                                     document.write(new Date().getFullYear());
                                 </script>
-                                , made with ❤️ by
+                                Copyrigths Reserved by
                                 <a
-                                    href="https://github.com/artic0909"
-                                    target="_blank"
-                                    class="footer-link fw-bolder">Saklinmustak</a>
+                                    href="#"
+                                    class="footer-link fw-bolder">Ranihati Construction Pvt. Ltd.</a>
                             </div>
                         </div>
                     </footer>
