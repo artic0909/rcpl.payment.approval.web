@@ -280,6 +280,27 @@
                                                     Welcome Back {{ auth()->user()->name }}! 🎉
                                                 </h5>
                                                 <p class="mb-4">It's your space.</p>
+                                                
+                                                <div class="d-flex gap-3 mt-4">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar flex-shrink-0 me-3">
+                                                            <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-building-house"></i></span>
+                                                        </div>
+                                                        <div>
+                                                            <h5 class="mb-0">{{ $totalSites }}</h5>
+                                                            <small class="text-muted">Total Sites</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex align-items-center ms-4">
+                                                        <div class="avatar flex-shrink-0 me-3">
+                                                            <span class="avatar-initial rounded bg-label-success"><i class="bx bx-user-plus"></i></span>
+                                                        </div>
+                                                        <div>
+                                                            <h5 class="mb-0">{{ $totalVendors }}</h5>
+                                                            <small class="text-muted">Total Vendor Codes</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-5 text-center text-sm-left">

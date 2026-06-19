@@ -131,8 +131,10 @@ class CreatorController extends Controller
 
         $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
 
+        $totalSites = SiteCode::count();
+        $totalVendors = Vendor::count();
 
-        return view('creator.creator-dashboard', compact('paymentRequestDetails'));
+        return view('creator.creator-dashboard', compact('paymentRequestDetails', 'totalSites', 'totalVendors'));
     }
 
     // Vendor Create View
