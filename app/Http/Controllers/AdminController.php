@@ -179,8 +179,22 @@ class AdminController extends Controller
 
         $paymentRequestDetails = $query->orderBy('id', 'desc')->paginate(8)->appends($request->all());
 
+        $todayPending = PaymentApproval::where('status', 'pending')->whereDate('created_at', \Carbon\Carbon::today())->count();
+        $totalPending = PaymentApproval::where('status', 'pending')->count();
+        $approvedRequests = PaymentApproval::where('status', 'approved')->count();
+        $pendingFromAccounts = PaymentApproval::where('status', 'approved')->where('payment_status', 'Pending')->count();
+        $paymentDone = PaymentApproval::where('status', 'approved')->where('payment_status', 'Done')->count();
+        $rejectedRequests = PaymentApproval::where('status', 'rejected')->count();
 
-        return view('admin.admin-dashboard', compact('paymentRequestDetails'));
+        return view('admin.admin-dashboard', compact(
+            'paymentRequestDetails',
+            'todayPending',
+            'totalPending',
+            'approvedRequests',
+            'pendingFromAccounts',
+            'paymentDone',
+            'rejectedRequests'
+        ));
     }
 
     public function adminPdfView($id)
