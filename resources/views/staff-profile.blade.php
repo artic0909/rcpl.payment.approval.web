@@ -16,8 +16,36 @@
     <link rel="stylesheet" href="{{ asset('./css/profile.css') }}" />
     <link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
 
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+
     <!-- favicon -->
     <link rel="icon" href="{{ asset('./img/RCPL.png') }}" />
+    <style>
+        .swal2-popup-custom {
+            border-radius: 16px !important;
+            padding: 24px !important;
+            font-family: 'Poppins', sans-serif !important;
+        }
+        .swal2-title-custom {
+            font-size: 20px !important;
+            font-weight: 600 !important;
+            color: #1a2a4d !important;
+        }
+        .swal2-html-custom {
+            font-size: 14px !important;
+            color: #64748b !important;
+        }
+        .swal2-actions-custom {
+            gap: 10px !important;
+        }
+        .swal2-confirm-btn, .swal2-cancel-btn {
+            border-radius: 8px !important;
+            padding: 8px 18px !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -147,14 +175,20 @@
                                                                 class="btn btn-update d-inline-flex align-items-center justify-content-center" style="font-size: 12px; padding: 6px 10px;" title="Edit">
                                                                 <i class="fas fa-pencil"></i>
                                                             </a>
-                                                            <a href="{{ route('stuff.stuff-payment-form.delete', $payment->id) }}"
-                                                                class="btn btn-delete d-inline-flex align-items-center justify-content-center" style="font-size: 12px; padding: 6px 10px;" title="Delete" onclick="return confirm('Are you sure you want to delete this payment request?');">
+                                                            <button type="button"
+                                                                class="btn btn-delete d-inline-flex align-items-center justify-content-center btn-confirm-delete"
+                                                                style="font-size: 12px; padding: 6px 10px; border: none;"
+                                                                title="Delete"
+                                                                data-url="{{ route('stuff.stuff-payment-form.delete', $payment->id) }}">
                                                                 <i class="fas fa-trash"></i>
-                                                            </a>
-                                                            <a href="{{ route('staff.payment.rerequest', $payment->id) }}"
-                                                                class="btn btn-rerequest d-inline-flex align-items-center justify-content-center" style="font-size: 12px; padding: 6px 10px;" title="Re-request" onclick="return confirm('Are you sure you want to re-request this payment? This will update the date to today and save the previous date as old request date.');">
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-rerequest d-inline-flex align-items-center justify-content-center btn-confirm-rerequest"
+                                                                style="font-size: 12px; padding: 6px 10px; border: none;"
+                                                                title="Re-request"
+                                                                data-url="{{ route('staff.payment.rerequest', $payment->id) }}">
                                                                 <i class="fas fa-arrows-rotate"></i>
-                                                            </a>
+                                                            </button>
                                                         </div>
                                                     </td>
 
@@ -295,10 +329,10 @@
                         <div class="payment-card">
                             <div class="payment-body">
                                 <p style="text-align: right; width: 100%;">
-                                <form action="{{ route('staff.logout') }}" method="POST"
+                                <form id="logoutForm" action="{{ route('staff.logout') }}" method="POST"
                                     style="display:flex; justify-content: end;">
                                     @csrf
-                                    <button type="submit"
+                                    <button type="button" id="logoutBtn"
                                         style="color: black; text-decoration: none; background:none; border:none;"
                                         class="mb-3">
                                         <i class="fas fa-sign-out-alt"></i> Logout
@@ -446,25 +480,133 @@
         </div>
     </div>
 
-    @if (session('success'))
-        <div id="successPopup" class="custom-success-popup">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div id="errorPopup" class="custom-error-popup">
-            {{ session('error') }}
-        </div>
-    @endif
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const successPopup = document.getElementById('successPopup');
-            const errorPopup = document.getElementById('errorPopup');
+            // SweetAlert2 Confirmation for Delete
+            document.querySelectorAll('.btn-confirm-delete').forEach(function (button) {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const url = this.getAttribute('data-url');
+                    
+                    Swal.fire({
+                        title: 'Delete Payment Request?',
+                        text: 'Are you sure you want to delete this payment request? This action cannot be undone.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc3545',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: '<i class="fas fa-trash me-1"></i> Yes, Delete',
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: true,
+                        focusCancel: true,
+                        customClass: {
+                            popup: 'swal2-popup-custom',
+                            title: 'swal2-title-custom',
+                            htmlContainer: 'swal2-html-custom',
+                            actions: 'swal2-actions-custom',
+                            confirmButton: 'swal2-confirm-btn',
+                            cancelButton: 'swal2-cancel-btn'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = url;
+                        }
+                    });
+                });
+            });
 
-            if (successPopup) setTimeout(() => successPopup.remove(), 4000);
-            if (errorPopup) setTimeout(() => errorPopup.remove(), 4000);
+            // SweetAlert2 Confirmation for Re-request
+            document.querySelectorAll('.btn-confirm-rerequest').forEach(function (button) {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const url = this.getAttribute('data-url');
+                    
+                    Swal.fire({
+                        title: 'Re-request Payment?',
+                        text: 'This will update the date to today and save the previous date as old request date.',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#0284c7',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: '<i class="fas fa-arrows-rotate me-1"></i> Yes, Re-request',
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: true,
+                        focusCancel: true,
+                        customClass: {
+                            popup: 'swal2-popup-custom',
+                            title: 'swal2-title-custom',
+                            htmlContainer: 'swal2-html-custom',
+                            actions: 'swal2-actions-custom',
+                            confirmButton: 'swal2-confirm-btn',
+                            cancelButton: 'swal2-cancel-btn'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = url;
+                        }
+                    });
+                });
+            });
+
+            // SweetAlert2 Confirmation for Logout
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Logout Confirmation',
+                        text: 'Are you sure you want to log out of your session?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc3545',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: '<i class="fas fa-sign-out-alt me-1"></i> Logout',
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: true,
+                        focusCancel: true,
+                        customClass: {
+                            popup: 'swal2-popup-custom',
+                            title: 'swal2-title-custom',
+                            htmlContainer: 'swal2-html-custom',
+                            actions: 'swal2-actions-custom',
+                            confirmButton: 'swal2-confirm-btn',
+                            cancelButton: 'swal2-cancel-btn'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('logoutForm').submit();
+                        }
+                    });
+                });
+            }
+
+            // SweetAlert2 Toast notifications for Flash Messages
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: "{{ session('success') }}",
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3500,
+                    timerProgressBar: true
+                });
+            @endif
+
+            @if (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: "{{ session('error') }}",
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    timerProgressBar: true
+                });
+            @endif
         });
     </script>
 
