@@ -217,7 +217,7 @@
                                                     <td class="td">
                                                         <strong>{{ $payment->date?->format('d M Y') }}</strong>
                                                         @if($payment->old_request_date)
-                                                            <strong>{{ $payment->old_request_date->format('d M Y') }}</strong>
+                                                            <strong style="color: red;">{{ $payment->old_request_date->format('d M Y') }}</strong>
                                                         @endif
                                                     </td>
                                                     <!-- <td class="td">

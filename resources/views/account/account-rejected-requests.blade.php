@@ -337,7 +337,12 @@
                                                     <tbody>
                                                         @foreach ($paymentRequestDetails as $request)
                                                         <tr style="text-align: left;">
-                                                            <td><strong>{{ $request->date?->format('d M Y') }}</strong></td>
+                                                            <td>
+                                                                <strong>{{ $request->date?->format('d M Y') }}</strong>
+                                                                @if($request->old_request_date)
+                                                                    <strong style="color: red;">{{ $request->old_request_date->format('d M Y') }}</strong>
+                                                                @endif
+                                                            </td>
                                                             <td><strong class="text-danger" style="white-space: normal; word-wrap: break-word; max-width: 130px; line-height: 1.2;">{{ $request->remarks?? 'No Reason' }}</strong></td>
                                                             <td><span class="badge rounded bg-label-danger fw-bold">{{ $request->status }}</span></td>
                                                             <td><span class="badge rounded bg-label-warning fw-bold">{{ $request->payment_status }}</span></td>

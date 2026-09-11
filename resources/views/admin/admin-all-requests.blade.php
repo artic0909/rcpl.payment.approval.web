@@ -348,7 +348,12 @@
                                                     <tbody>
                                                         @foreach ($paymentRequestDetails as $request)
                                                         <tr style="text-align: left;">
-                                                            <td><strong>{{ $request->date?->format('d M Y') }}</strong></td>
+                                                            <td>
+                                                                <strong>{{ $request->date?->format('d M Y') }}</strong>
+                                                                @if($request->old_request_date)
+                                                                    <strong style="color: red;">{{ $request->old_request_date->format('d M Y') }}</strong>
+                                                                @endif
+                                                            </td>
                                                             <td>
                                                                 @if($request->status == 'pending')
                                                                 <span class="badge rounded bg-label-warning fw-bold">{{ $request->status }}</span>

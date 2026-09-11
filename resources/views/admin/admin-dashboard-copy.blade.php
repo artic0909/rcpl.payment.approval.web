@@ -129,7 +129,12 @@
             @forelse($paymentRequestDetails as $payment)
             <tr>
                 <!-- <td class="td">{{ $loop->iteration }}</td> -->
-                <td class="td"><strong>{{ $payment->date?->format('d M Y') }}</strong></td>
+                <td class="td">
+                    <strong>{{ $payment->date?->format('d M Y') }}</strong>
+                    @if($payment->old_request_date)
+                        <strong style="color: red;">{{ $payment->old_request_date->format('d M Y') }}</strong>
+                    @endif
+                </td>
                 <td class="td">
                     <a href="{{ route('admin.payment.pdf.view', $payment->id) }}" class="btn btn-primary">PDF</a>
                 </td>
