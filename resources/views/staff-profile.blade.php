@@ -182,6 +182,7 @@
                                                                 data-url="{{ route('stuff.stuff-payment-form.delete', $payment->id) }}">
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
+                                                            @if($payment->status == 'pending')
                                                             <button type="button"
                                                                 class="btn btn-rerequest d-inline-flex align-items-center justify-content-center btn-confirm-rerequest"
                                                                 style="font-size: 12px; padding: 6px 10px; border: none;"
@@ -189,6 +190,7 @@
                                                                 data-url="{{ route('staff.payment.rerequest', $payment->id) }}">
                                                                 <i class="fas fa-arrows-rotate"></i>
                                                             </button>
+                                                            @endif
                                                         </div>
                                                     </td>
 
