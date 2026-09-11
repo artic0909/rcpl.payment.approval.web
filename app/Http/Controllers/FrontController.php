@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class FrontController extends Controller
 {
@@ -286,6 +287,39 @@ class FrontController extends Controller
         $payment->delete();
 
         return redirect()->route('staff.staff-profile')->with('success', 'Payment deleted successfully!');
+    }
+
+    // Re-request payment
+    public function staffPaymentFormReRequest($id)
+    {
+        $user = Auth::guard('staff')->user();
+        $oldPayment = PaymentApproval::where('user_id', $user->id)->findOrFail($id);
+
+        DB::transaction(function () use ($oldPayment, $user) {
+            PaymentApproval::create([
+                'status'                 => 'pending',
+                'payment_status'         => 'Pending',
+                'remarks'                => null,
+                'user_id'                => $user->id,
+                'date'                   => now()->toDateString(),
+                'old_request_date'       => $oldPayment->date ? $oldPayment->date->format('Y-m-d') : null,
+                'request_for'            => $oldPayment->request_for,
+                'vendor_name'            => $oldPayment->vendor_name,
+                'vendor_code'            => $oldPayment->vendor_code,
+                'site_name'              => $oldPayment->site_name,
+                'amount'                 => $oldPayment->amount,
+                'amount_in_words'        => $oldPayment->amount_in_words,
+                'item_description'       => $oldPayment->item_description,
+                'party_account_number'   => $oldPayment->party_account_number,
+                'party_ifsc_code'        => $oldPayment->party_ifsc_code,
+                'party_bank_name'        => $oldPayment->party_bank_name,
+                'party_bank_branch_name' => $oldPayment->party_bank_branch_name,
+            ]);
+
+            $oldPayment->delete();
+        });
+
+        return redirect()->route('staff.staff-profile')->with('success', 'Payment re-requested successfully! New request created with current date.');
     }
 
 

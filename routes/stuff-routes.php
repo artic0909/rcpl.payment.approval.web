@@ -18,6 +18,7 @@ Route::middleware(['auth:staff'])->group(function () {
     Route::get('/staff/{id}/edit', [FrontController::class, 'staffPaymentFormEdit'])->name('stuff.stuff-payment-form.edit');
     Route::post('/staff/{id}/update', [FrontController::class, 'staffPaymentFormUpdate'])->name('stuff.stuff-payment-form.update');
     Route::get('/staff/{id}/delete', [FrontController::class, 'staffPaymentFormDelete'])->name('stuff.stuff-payment-form.delete');
+    Route::get('/staff/{id}/re-request', [FrontController::class, 'staffPaymentFormReRequest'])->name('staff.payment.rerequest');
 
     Route::get('/staff/get-vendor-details/{code}', [FrontController::class, 'getVendorDetails'])->name('staff.get-vendor-details');
 

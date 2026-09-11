@@ -17,6 +17,7 @@ class PaymentApproval extends Model
         'remarks',
         'user_id',
         'date',
+        'old_request_date',
         'request_for',
         'vendor_name',
         'vendor_code',
@@ -34,6 +35,7 @@ class PaymentApproval extends Model
     protected $casts = [
         'request_for' => 'array',
         'date' => 'date',
+        'old_request_date' => 'date',
         'amount' => 'decimal:2',
     ];
 

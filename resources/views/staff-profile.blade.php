@@ -124,6 +124,7 @@
                                                 <th class="th">Approval Status</th>
                                                 <th class="th">Payment Status</th>
                                                 <th class="th">Date</th>
+                                                <th class="th">Old Request Date</th>
                                                 <th class="th">Site Name</th>
                                                 <th class="th">Request For</th>
                                                 <th class="th">Amount</th>
@@ -138,16 +139,20 @@
                                                     <td class="td">{{ $loop->iteration }}</td>
                                                     <td class="td" style="display: flex; flex-direction: column; gap: 5px;">
                                                         <a href="{{ route('staff.payment.pdf', $payment->id) }}"
-                                                            class="btn btn-download" style="font-size: 12px;">
+                                                            class="btn btn-download" style="font-size: 12px;" title="Download PDF">
                                                             <i class="fas fa-download me-1"></i>
                                                         </a>
                                                         <a href="{{ route('stuff.stuff-payment-form.edit', $payment->id) }}"
-                                                            class="btn btn-update" style="font-size: 12px;">
+                                                            class="btn btn-update" style="font-size: 12px;" title="Edit">
                                                             <i class="fas fa-pencil me-1"></i>
                                                         </a>
                                                         <a href="{{ route('stuff.stuff-payment-form.delete', $payment->id) }}"
-                                                            class="btn btn-delete" style="font-size: 12px;">
+                                                            class="btn btn-delete" style="font-size: 12px;" title="Delete" onclick="return confirm('Are you sure you want to delete this payment request?');">
                                                             <i class="fas fa-trash me-1"></i>
+                                                        </a>
+                                                        <a href="{{ route('staff.payment.rerequest', $payment->id) }}"
+                                                            class="btn btn-rerequest" style="font-size: 12px;" title="Re-request" onclick="return confirm('Are you sure you want to re-request this payment? This will update the date to today and save the previous date as old request date.');">
+                                                            <i class="fas fa-arrows-rotate me-1"></i>
                                                         </a>
                                                     </td>
 
@@ -174,6 +179,13 @@
                                                     </td>
 
                                                     <td class="td"><strong>{{ $payment->date?->format('d M Y') }}</strong>
+                                                    </td>
+                                                    <td class="td">
+                                                        @if($payment->old_request_date)
+                                                            <strong>{{ $payment->old_request_date->format('d M Y') }}</strong>
+                                                        @else
+                                                            <span class="text-muted">-</span>
+                                                        @endif
                                                     </td>
                                                     <td class="td">{{ $payment->site_name }}</td>
                                                     <td class="td">
@@ -221,7 +233,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="11" class="text-center">No record found</td>
+                                                    <td colspan="12" class="text-center">No record found</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>

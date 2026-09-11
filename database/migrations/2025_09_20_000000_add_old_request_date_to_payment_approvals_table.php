@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('site_codes')) {
-            Schema::create('site_codes', function (Blueprint $table) {
-                $table->id();
-                $table->string('site_code');
-                $table->string('site_name');
-                $table->string('location');
-                $table->timestamps();
+        if (!Schema::hasColumn('payment_approvals', 'old_request_date')) {
+            Schema::table('payment_approvals', function (Blueprint $table) {
+                $table->date('old_request_date')->nullable()->after('date');
             });
         }
     }
@@ -27,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('site_codes');
+        Schema::table('payment_approvals', function (Blueprint $table) {
+            $table->dropColumn('old_request_date');
+        });
     }
 };

@@ -135,6 +135,21 @@ body {
     transform: translateY(-2px);
 }
 
+.btn-rerequest {
+    background: #0284c7;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.btn-rerequest:hover {
+    background: #0369a1;
+    color: white;
+    transform: translateY(-2px);
+}
+
 .payment-features {
     background: var(--light-bg);
     border-radius: 15px;

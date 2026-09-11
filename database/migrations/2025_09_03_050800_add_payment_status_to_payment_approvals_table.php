@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('payment_approvals', function (Blueprint $table) {
-            $table->string('payment_status')->after('status')->default('Pending');
-        });
+        if (!Schema::hasColumn('payment_approvals', 'payment_status')) {
+            Schema::table('payment_approvals', function (Blueprint $table) {
+                $table->string('payment_status')->after('status')->default('Pending');
+            });
+        }
     }
 
     /**
