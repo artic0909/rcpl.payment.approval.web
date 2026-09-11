@@ -124,7 +124,7 @@
                                                 <th class="th">Approval Status</th>
                                                 <th class="th">Payment Status</th>
                                                 <th class="th">Date</th>
-                                                <th class="th">Old Request Date</th>
+                                                <!-- <th class="th">Old Request Date</th> -->
                                                 <th class="th">Site Name</th>
                                                 <th class="th">Request For</th>
                                                 <th class="th">Amount</th>
@@ -137,23 +137,25 @@
                                             @forelse($paymentRequestDetails as $payment)
                                                 <tr>
                                                     <td class="td">{{ $loop->iteration }}</td>
-                                                    <td class="td" style="display: flex; flex-direction: column; gap: 5px;">
-                                                        <a href="{{ route('staff.payment.pdf', $payment->id) }}"
-                                                            class="btn btn-download" style="font-size: 12px;" title="Download PDF">
-                                                            <i class="fas fa-download me-1"></i>
-                                                        </a>
-                                                        <a href="{{ route('stuff.stuff-payment-form.edit', $payment->id) }}"
-                                                            class="btn btn-update" style="font-size: 12px;" title="Edit">
-                                                            <i class="fas fa-pencil me-1"></i>
-                                                        </a>
-                                                        <a href="{{ route('stuff.stuff-payment-form.delete', $payment->id) }}"
-                                                            class="btn btn-delete" style="font-size: 12px;" title="Delete" onclick="return confirm('Are you sure you want to delete this payment request?');">
-                                                            <i class="fas fa-trash me-1"></i>
-                                                        </a>
-                                                        <a href="{{ route('staff.payment.rerequest', $payment->id) }}"
-                                                            class="btn btn-rerequest" style="font-size: 12px;" title="Re-request" onclick="return confirm('Are you sure you want to re-request this payment? This will update the date to today and save the previous date as old request date.');">
-                                                            <i class="fas fa-arrows-rotate me-1"></i>
-                                                        </a>
+                                                    <td class="td">
+                                                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; width: max-content;">
+                                                            <a href="{{ route('staff.payment.pdf', $payment->id) }}"
+                                                                class="btn btn-download d-inline-flex align-items-center justify-content-center" style="font-size: 12px; padding: 6px 10px;" title="Download PDF">
+                                                                <i class="fas fa-download"></i>
+                                                            </a>
+                                                            <a href="{{ route('stuff.stuff-payment-form.edit', $payment->id) }}"
+                                                                class="btn btn-update d-inline-flex align-items-center justify-content-center" style="font-size: 12px; padding: 6px 10px;" title="Edit">
+                                                                <i class="fas fa-pencil"></i>
+                                                            </a>
+                                                            <a href="{{ route('stuff.stuff-payment-form.delete', $payment->id) }}"
+                                                                class="btn btn-delete d-inline-flex align-items-center justify-content-center" style="font-size: 12px; padding: 6px 10px;" title="Delete" onclick="return confirm('Are you sure you want to delete this payment request?');">
+                                                                <i class="fas fa-trash"></i>
+                                                            </a>
+                                                            <a href="{{ route('staff.payment.rerequest', $payment->id) }}"
+                                                                class="btn btn-rerequest d-inline-flex align-items-center justify-content-center" style="font-size: 12px; padding: 6px 10px;" title="Re-request" onclick="return confirm('Are you sure you want to re-request this payment? This will update the date to today and save the previous date as old request date.');">
+                                                                <i class="fas fa-arrows-rotate"></i>
+                                                            </a>
+                                                        </div>
                                                     </td>
 
                                                     <td class="td">
@@ -178,15 +180,19 @@
                                                         @endif
                                                     </td>
 
-                                                    <td class="td"><strong>{{ $payment->date?->format('d M Y') }}</strong>
-                                                    </td>
                                                     <td class="td">
+                                                        <strong>{{ $payment->date?->format('d M Y') }}</strong>
+                                                        @if($payment->old_request_date)
+                                                            <strong>{{ $payment->old_request_date->format('d M Y') }}</strong>
+                                                        @endif
+                                                    </td>
+                                                    <!-- <td class="td">
                                                         @if($payment->old_request_date)
                                                             <strong>{{ $payment->old_request_date->format('d M Y') }}</strong>
                                                         @else
                                                             <span class="text-muted">-</span>
                                                         @endif
-                                                    </td>
+                                                    </td> -->
                                                     <td class="td">{{ $payment->site_name }}</td>
                                                     <td class="td">
                                                         @if(!empty($payment->request_for))
